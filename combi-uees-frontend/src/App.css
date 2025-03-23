@@ -1,0 +1,46 @@
+@font-face {
+  font-family: "Coliner-Bold";
+  src: url("assets/fonts/Coliner-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Coliner-ExtraBold";
+  src: url("assets/fonts/Coliner-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Coliner-Light";
+  src: url("assets/fonts/Coliner-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Coliner-Medium";
+  src: url("assets/fonts/Coliner-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Coliner-Regular";
+  src: url("assets/fonts/Coliner-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Coliner-SemiBold";
+  src: url("assets/fonts/Coliner-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Minya";
+  src: url("assets/fonts/Minya DEMO.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "TebelSans";
+  src: url("assets/fonts/TebelSans-Regular.ttf") format("truetype");
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: "TebelSans";
+}

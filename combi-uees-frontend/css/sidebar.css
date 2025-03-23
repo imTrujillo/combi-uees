@@ -1,0 +1,41 @@
+nav {
+  background-color: #eabc27 !important;
+}
+
+.login-button {
+  background-color: #71ae33;
+  box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
+    -6px -1px 20px rgb(255, 251, 213);
+  transition: all 0.5s;
+  color: white;
+}
+
+.login-button:hover {
+  background-color: white;
+  color: #3c5721;
+}
+
+.text-color-nav {
+  color: #373004;
+  transition: all 0.5s;
+}
+
+.text-color-nav-link {
+  color: #373004;
+  transition: all 0.5s;
+}
+
+.text-color-nav-link:hover {
+  color: #fdfdfd;
+}
+
+.logo-text {
+  font-family: "Coliner-ExtraBold" !important;
+}
+
+@media screen and (max-width: 768px) {
+  .login-button {
+    background-color: #71ae33;
+    box-shadow: none;
+  }
+}
