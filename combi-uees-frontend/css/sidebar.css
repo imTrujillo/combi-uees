@@ -8,6 +8,11 @@
   background-color: #71ae33 !important;
 }
 
+.logo {
+  width: 8rem;
+  margin: 1rem;
+}
+
 .login-button {
   background-color: #71ae33;
   box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
@@ -58,6 +63,11 @@
 }
 
 @media screen and (max-width: 980px) {
+  .logo {
+    width: 3rem;
+    margin: 0;
+  }
+
   .login-button {
     background-color: #71ae33;
     box-shadow: none;

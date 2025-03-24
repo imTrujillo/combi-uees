@@ -25,7 +25,7 @@ export default function Sidebar() {
         }`}
       >
         <div className="py-3">
-          <img src={logo} alt="" style={{ width: "3rem" }} />
+          <img src={logo} className="logo" alt="" />
           <p
             className={`${
               tokenAdministrador || tokenMotorista ? "text-white" : ""
