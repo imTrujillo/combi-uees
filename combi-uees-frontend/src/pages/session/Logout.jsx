@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import SwalLoading from "../../assets/SwalFireLoading";
+import { MdLogout } from "react-icons/md";
 
 export default function Logout() {
   const navigate = useNavigate();
@@ -54,5 +55,13 @@ export default function Logout() {
         });
       });
   };
-  return <button onClick={handleLogout}>Cerrar Sesión</button>;
+  return (
+    <button
+      className="fw-bold text-decoration-none d-flex flex-row justify-content-center align-items-center gap-1 p-2 w-75 w-sm-100 mx-auto  mb-3 rounded-4 logout-button"
+      onClick={handleLogout}
+    >
+      <MdLogout />
+      <p className="d-none d-lg-block my-auto">Cerrar Sesion</p>
+    </button>
+  );
 }

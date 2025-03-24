@@ -1,5 +1,11 @@
-nav {
+.nav-pasajero {
   background-color: #eabc27 !important;
+}
+.nav-motorista {
+  background-color: #204b8c !important;
+}
+.nav-administrador {
+  background-color: #71ae33 !important;
 }
 
 .login-button {
@@ -13,6 +19,20 @@ nav {
 .login-button:hover {
   background-color: white;
   color: #3c5721;
+}
+
+.logout-button {
+  background-color: #d45252;
+  box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
+    -4px -1px 10px rgb(255, 251, 213);
+  transition: all 0.5s;
+  border: none;
+  color: white;
+}
+
+.logout-button:hover {
+  background-color: white;
+  color: #d45252;
 }
 
 .text-color-nav {
@@ -33,9 +53,17 @@ nav {
   font-family: "Coliner-ExtraBold" !important;
 }
 
-@media screen and (max-width: 768px) {
+.icono {
+  font-size: large;
+}
+
+@media screen and (max-width: 980px) {
   .login-button {
     background-color: #71ae33;
     box-shadow: none;
+  }
+
+  .icono {
+    font-size: 2rem;
   }
 }
