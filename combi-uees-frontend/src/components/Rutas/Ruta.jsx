@@ -47,15 +47,22 @@ export default function Ruta({
   }
 
   return (
-    <section className={propRutaBusesDisponibles > 0 ? "" : "d-none"}>
-      <div>
-        <h2>{propRutaNombre}</h2>
+    <section
+      className={
+        propRutaBusesDisponibles > 0
+          ? "d-flex flex-column flex-lg-row gap-5 p-5"
+          : "d-none"
+      }
+    >
+      <div className="col">
+        <h2 className="text-start">{propRutaNombre}</h2>
 
         <Mapas
           propRutaNombre={propRutaNombre}
           propLatitud={propLatitud}
           propLongitud={propLongitud}
         />
+
         <Reservar
           propRutaNombre={propRutaNombre}
           propViajeDestino={propViajeDestino}
@@ -64,7 +71,7 @@ export default function Ruta({
           horasHorario={horasHorario}
         />
       </div>
-      <div>
+      <div className="col">
         <h2>Horarios</h2>
         <div>
           <div className="table-responsive">
@@ -88,14 +95,13 @@ export default function Ruta({
             </table>
           </div>
         </div>
+        <Gráficas
+          propBusesDisponibles={propRutaBusesDisponibles}
+          propBusesTotales={propRutaBusesTotales}
+          listaBusesUbicación={listaBusesUbicación}
+          propRutaNombre={propRutaNombre}
+        />
       </div>
-
-      <Gráficas
-        propBusesDisponibles={propRutaBusesDisponibles}
-        propBusesTotales={propRutaBusesTotales}
-        listaBusesUbicación={listaBusesUbicación}
-        propRutaNombre={propRutaNombre}
-      />
     </section>
   );
 }

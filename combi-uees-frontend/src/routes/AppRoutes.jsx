@@ -31,7 +31,7 @@ function AppRoutesWithLocation() {
         </>
       )}
 
-      <section className="z-1 col-10">
+      <section className="z-1 col-9">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Rutas />} />

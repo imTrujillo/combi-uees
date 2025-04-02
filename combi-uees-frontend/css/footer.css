@@ -1,0 +1,22 @@
+.footer {
+  background-color: #373004;
+}
+
+.footer-btn {
+  color: white;
+  background-color: #71ae33;
+}
+
+.footer-btn:hover {
+  color: #71ae33;
+  background-color: #ffffff;
+}
+
+.feedback:focus {
+  box-shadow: 0px 0px 20px white;
+  border: 2px solid greenyellow;
+}
+
+.icono-socialmedia:hover {
+  color: rgb(194, 127, 127);
+}

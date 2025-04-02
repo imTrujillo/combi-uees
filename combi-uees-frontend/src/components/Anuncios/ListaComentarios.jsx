@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import Comentario from "./Comentario";
 import GuardarComentario from "./GuardarComentario";
+import Footer from "../Footer";
 
 export default function ListaComentarios() {
   const [listaComentarios, setListaComentarios] = useState(null);
@@ -37,30 +38,33 @@ export default function ListaComentarios() {
   }
 
   return (
-    <div>
-      <section>
-        <h1>Noticias</h1>
-        <img src={anuncio.anuncioURLFoto} alt="" style={{ width: "20rem" }} />
-      </section>
-      <section>
-        {listaComentarios.length > 0 ? (
-          listaComentarios.map((comentario) => {
-            return (
-              <Comentario
-                key={comentario.comentarioID}
-                propNombreUsuario={comentario.nombreUsuario}
-                propComentarioTitulo={comentario.comentarioTitulo}
-                propComentarioDescripción={comentario.comentarioDescripción}
-              />
-            );
-          })
-        ) : (
-          <div>Aquí aparecerán los comentarios</div>
-        )}
-        <div>
-          <GuardarComentario />
-        </div>
-      </section>
-    </div>
+    <>
+      <div>
+        <section>
+          <h1>Noticias</h1>
+          <img src={anuncio.anuncioURLFoto} alt="" style={{ width: "20rem" }} />
+        </section>
+        <section>
+          {listaComentarios.length > 0 ? (
+            listaComentarios.map((comentario) => {
+              return (
+                <Comentario
+                  key={comentario.comentarioID}
+                  propNombreUsuario={comentario.nombreUsuario}
+                  propComentarioTitulo={comentario.comentarioTitulo}
+                  propComentarioDescripción={comentario.comentarioDescripción}
+                />
+              );
+            })
+          ) : (
+            <div>Aquí aparecerán los comentarios</div>
+          )}
+          <div>
+            <GuardarComentario />
+          </div>
+        </section>
+      </div>
+      <Footer />
+    </>
   );
 }

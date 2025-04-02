@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Ruta from "./Ruta";
 import axios from "axios";
+import Footer from "../Footer";
 
 export default function ListaRutas() {
   const [loading, setLoading] = useState(true);
@@ -32,42 +33,49 @@ export default function ListaRutas() {
   const rutaActual = listaRutas[paginaActual];
 
   return (
-    <div>
-      <h2>Rutas</h2>
-      <section>
-        {rutaActual ? (
-          <Ruta
-            key={rutaActual.rutaID}
-            propRutaNombre={rutaActual.rutaNombre}
-            propRutaBusesDisponibles={rutaActual.rutaBusesDisponibles}
-            propRutaBusesTotales={rutaActual.rutaBusesTotales}
-            propLatitud={rutaActual.rutaLatitud}
-            propLongitud={rutaActual.rutaLongitud}
-            propViajeFecha={rutaActual.viajeFecha}
-            propRutaID={rutaActual.rutaID}
-            propViajeDestino={rutaActual.viajeDestino}
-          />
-        ) : (
-          <div>No hay rutas disponibles</div>
-        )}
-      </section>
-      <div>
-        <button
-          onClick={() => setPaginaActual(paginaActual - 1)}
-          disabled={paginaActual === 0}
-        >
-          Anterior
-        </button>
-        <span>
-          {paginaActual + 1} de {totalRutas}
-        </span>
-        <button
-          onClick={() => setPaginaActual(paginaActual + 1)}
-          disabled={paginaActual >= totalRutas - 1}
-        >
-          Siguiente
-        </button>
+    <>
+      <div className="w-screen p-4">
+        <h2 className="fs-1 fw-bold text-start mx-5 my-2">Rutas</h2>
+        <section>
+          {rutaActual ? (
+            <Ruta
+              key={rutaActual.rutaID}
+              propRutaNombre={rutaActual.rutaNombre}
+              propRutaBusesDisponibles={rutaActual.rutaBusesDisponibles}
+              propRutaBusesTotales={rutaActual.rutaBusesTotales}
+              propLatitud={rutaActual.rutaLatitud}
+              propLongitud={rutaActual.rutaLongitud}
+              propViajeFecha={rutaActual.viajeFecha}
+              propRutaID={rutaActual.rutaID}
+              propViajeDestino={rutaActual.viajeDestino}
+            />
+          ) : (
+            <div>No hay rutas disponibles</div>
+          )}
+        </section>
+        <div className="flex w-screen flex-row justify-content-between gap-5">
+          <button
+            onClick={() => setPaginaActual(paginaActual - 1)}
+            disabled={paginaActual === 0}
+            className="btn btn-rounded mx-4"
+            style={{ backgroundColor: "#71ae33" }}
+          >
+            Anterior
+          </button>
+          <span className="">
+            {paginaActual + 1} de {totalRutas}
+          </span>
+          <button
+            onClick={() => setPaginaActual(paginaActual + 1)}
+            disabled={paginaActual >= totalRutas - 1}
+            className="btn btn-rounded mx-4"
+            style={{ backgroundColor: "#71ae33" }}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }

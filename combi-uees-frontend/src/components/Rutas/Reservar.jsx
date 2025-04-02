@@ -2,6 +2,8 @@ import React, { useState, useMemo } from "react";
 import axios from "axios";
 import SwalLoading from "../../assets/SwalFireLoading";
 import Swal from "sweetalert2";
+import { FaCheckCircle } from "react-icons/fa";
+import "../../../css/ruta.css";
 
 export default function Reservar({
   propRutaNombre,
@@ -75,7 +77,11 @@ export default function Reservar({
 
   return (
     <div>
-      <button className="btn btn-warning" onClick={() => setModal(true)}>
+      <button
+        className="btn btn-primary m-3 p-3 rounded-5 reservar-button"
+        onClick={() => setModal(true)}
+      >
+        <FaCheckCircle size={30} className="me-3 " />
         Reservar
       </button>
 

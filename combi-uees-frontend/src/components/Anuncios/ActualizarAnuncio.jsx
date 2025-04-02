@@ -69,10 +69,23 @@ export default function ActualizarAnuncio({ tokenAdministrador }) {
 
   return (
     <section className="m-5">
-      <form action="" onSubmit={(e) => handleSubmit(e)}>
-        <input type="file" accept="image/*" onChange={changeUploadImage} />
+      <form
+        action=""
+        className="d-flex flex-row w-75"
+        onSubmit={(e) => handleSubmit(e)}
+      >
+        <input
+          type="file"
+          accept="image/*"
+          onChange={changeUploadImage}
+          className="form-control"
+        />
         {url && <img src={url} alt="" style={{ width: "5rem" }} />}
-        <input type="submit" value="Actualizar Anuncio" />
+        <input
+          type="submit"
+          value="Actualizar Anuncio"
+          className="form-control"
+        />
       </form>
     </section>
   );
