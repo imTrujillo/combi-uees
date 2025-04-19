@@ -1,0 +1,42 @@
+.btn-guardar {
+  background-color: #558c08;
+  box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
+    -6px -1px 20px rgb(255, 251, 213);
+  transition: all 0.2s;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.6rem 3rem;
+}
+
+.btn-guardar:hover {
+  background-color: white;
+  color: #3c5721;
+}
+
+.btn-cancelar {
+  background-color: #bf7b6b;
+  box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
+    -6px -1px 20px rgb(255, 251, 213);
+  transition: all 0.2s;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.6rem 3rem;
+}
+
+.btn-cancelar:hover {
+  background-color: white;
+  color: #bf7b6b;
+}
+
+.modal-backdrop-blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #74745262;
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}

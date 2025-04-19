@@ -1,11 +1,11 @@
 .nav-pasajero {
-  background-color: #eabc27 !important;
+  background-color: #f2cb05 !important;
 }
 .nav-motorista {
-  background-color: #204b8c !important;
+  background-color: #395d05 !important;
 }
 .nav-administrador {
-  background-color: #71ae33 !important;
+  background-color: #bf7b6b !important;
 }
 
 .logo {
@@ -14,7 +14,7 @@
 }
 
 .login-button {
-  background-color: #71ae33;
+  background-color: #558c08;
   box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
     -6px -1px 20px rgb(255, 251, 213);
   transition: all 0.5s;
@@ -27,7 +27,7 @@
 }
 
 .logout-button {
-  background-color: #d45252;
+  background-color: #d93d04;
   box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
     -4px -1px 10px rgb(255, 251, 213);
   transition: all 0.5s;
@@ -37,16 +37,16 @@
 
 .logout-button:hover {
   background-color: white;
-  color: #d45252;
+  color: #d93d04;
 }
 
 .text-color-nav {
-  color: #373004;
+  color: #2b4905;
   transition: all 0.5s;
 }
 
 .text-color-nav-link {
-  color: #373004;
+  color: #2b4905;
   transition: all 0.5s;
 }
 

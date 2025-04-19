@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SwalFireLoading from "../../assets/SwalFireLoading";
+import { FaMinusCircle } from "react-icons/fa";
+import "../../../css/colores.css";
 
 export default function Hora({
   propHoraID,
@@ -36,11 +38,15 @@ export default function Hora({
     <>
       <tr>
         <td>{propHora}</td>{" "}
-        <td>
-          <button onClick={handleEliminar} className="btn btn-danger">
-            Eliminar
+        <td className="text-end">
+          <button
+            onClick={handleEliminar}
+            className="btn btn-danger rounded-circle"
+            style={{ width: "3rem", height: "3rem" }}
+          >
+            <FaMinusCircle className="fs-4" />
           </button>
-        </td>{" "}
+        </td>
       </tr>
     </>
   );

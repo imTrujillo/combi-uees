@@ -4,6 +4,8 @@ import Hora from "./Hora";
 import AgregarHora from "./AgregarHora";
 import SwalFireLoading from "../../assets/SwalFireLoading";
 import Swal from "sweetalert2";
+import "../../../css/modal.css";
+import boxphoto from "../../assets/caja-vacia.png";
 import { createPortal } from "react-dom";
 
 export default function ModificarHorario({
@@ -36,56 +38,76 @@ export default function ModificarHorario({
     <td>
       <>
         <td>
-          <button className="btn btn-warning" onClick={handleButton}>
+          <button
+            className="btn btn-warning rounded-top rounded-5 amarillo"
+            onClick={handleButton}
+          >
             Ver Horario
           </button>
         </td>
         {modal &&
           createPortal(
-            <div className="modal fade show d-block" tabIndex="-1">
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5">
-                      Editar Horario de ruta {propNombre}
-                    </h1>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      onClick={() => setModal(false)}
-                    />
-                  </div>
-                  <div>
-                    <AgregarHora
-                      propIDRuta={propIDRuta}
-                      tokenAdministrador={tokenAdministrador}
-                      setHorasHorario={setHorasHorario}
-                      horasHorario={horasHorario}
-                    />
-                    <div className="table-responsive">
-                      <table className="table table-striped table-hover">
-                        <thead>
-                          <th>Hora Salida</th>
-                        </thead>
-                        <tbody>
-                          {horasHorario.map((horario) => {
-                            return (
-                              <Hora
-                                key={horario.id}
-                                propHoraID={horario.id}
-                                propHora={horario.horaSalida}
-                                tokenAdministrador={tokenAdministrador}
-                                setHorasHorario={setHorasHorario}
+            <>
+              <div className="modal-backdrop-blur"></div>
+              <div className="modal fade show d-block" tabIndex="-1">
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h1 className="modal-title fs-5">
+                        Editar Horario de ruta {propNombre}
+                      </h1>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        onClick={() => setModal(false)}
+                      />
+                    </div>
+                    <div>
+                      <AgregarHora
+                        propIDRuta={propIDRuta}
+                        tokenAdministrador={tokenAdministrador}
+                        setHorasHorario={setHorasHorario}
+                        horasHorario={horasHorario}
+                      />
+                      <div className="table-responsive p-3">
+                        <table className="table table-striped table-hover">
+                          {horasHorario.length <= 0 ? (
+                            <div className="d-flex flex-column justify-content-center align-items-center">
+                              Aquí aparecerán los horarios :)
+                              <br />
+                              <img
+                                src={boxphoto}
+                                alt=""
+                                style={{ width: "20rem" }}
                               />
-                            );
-                          })}
-                        </tbody>
-                      </table>
+                            </div>
+                          ) : (
+                            <>
+                              <thead>
+                                <th>Horario de Salida</th>
+                              </thead>
+                              <tbody>
+                                {horasHorario.map((horario) => {
+                                  return (
+                                    <Hora
+                                      key={horario.id}
+                                      propHoraID={horario.id}
+                                      propHora={horario.horaSalida}
+                                      tokenAdministrador={tokenAdministrador}
+                                      setHorasHorario={setHorasHorario}
+                                    />
+                                  );
+                                })}
+                              </tbody>
+                            </>
+                          )}
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>,
+            </>,
             document.getElementById("modal-root")
           )}
       </>

@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SwalFireLoading from "../../assets/SwalFireLoading";
+import { FaSave } from "react-icons/fa";
 
 export default function GuardarPerfil({
   id,
@@ -57,8 +58,13 @@ export default function GuardarPerfil({
       });
   };
   return (
-    <button type="submit" onClick={handleSubmit}>
-      Actualizar información
+    <button
+      type="submit"
+      className="btn-guardar px-4 py-2 rounded-3 border-0"
+      onClick={handleSubmit}
+    >
+      <FaSave className="fs-4 me-3" />
+      Guardar cambios
     </button>
   );
 }

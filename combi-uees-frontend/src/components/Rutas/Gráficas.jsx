@@ -20,8 +20,8 @@ const Gráficas = ({
   ];
   return (
     <>
-      <section className="flex flex-row">
-        <div style={{ width: "auto", height: 250 }}>
+      <section className="d-flex flex-column flex-sm-column flex-md-row justify-content-center align-items-center ">
+        <div style={{ width: 200, height: 250 }}>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
@@ -31,14 +31,14 @@ const Gráficas = ({
                 cx="50%"
                 cy="50%"
                 outerRadius={80}
-                fill="#0CF25D"
+                fill="#bf7b6b"
                 label
               />
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
         </div>
-        <div style={{ width: "auto", height: 250 }}>
+        <div style={{ width: 200, height: 250 }}>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
@@ -48,7 +48,7 @@ const Gráficas = ({
                 cx="50%"
                 cy="50%"
                 outerRadius={80}
-                fill="#025951"
+                fill="#ad4018"
                 label
               />
               <Tooltip />

@@ -22,7 +22,7 @@ class ComentariosController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombreUsuario' => 'required|string|max:50',
+            'nombreUsuario' => 'required|string|max:50|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'comentarioTitulo' => 'required|string|max:100',
             'comentarioDescripción' => 'required|string|max:200'
         ]);

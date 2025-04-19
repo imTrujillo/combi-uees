@@ -3,6 +3,7 @@ import ListaViajes from "../components/Viajes/ListaViajes";
 import Perfil from "../components/Motoristas/Perfil";
 import axios from "axios";
 import "../../css/motorista.css";
+import Loader from "../components/Loader/Loader";
 
 export default function Viajes() {
   const [listaViajes, setListaViajes] = useState([]);
@@ -14,17 +15,23 @@ export default function Viajes() {
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/v1/rutas");
         setListaRutas(response.data);
-        setLoading(false);
       } catch (error) {
         console.error("Ocurrió un error:", error);
-        setLoading(false);
       }
     };
     apiService();
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   if (loading) {
-    return <div>Cargando...</div>;
+    return <Loader />;
   }
 
   return (

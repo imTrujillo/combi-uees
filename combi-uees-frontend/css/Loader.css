@@ -1,0 +1,83 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+.loader__wrapper {
+  position: fixed;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.loader__words {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.loader__overlay {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  z-index: 4;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.9) 47%,
+    transparent,
+    transparent 47%,
+    transparent,
+    transparent 55%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.9)
+  );
+}
+
+.loader__word {
+  display: block;
+  font-size: 2.2rem;
+  color: rgb(58, 92, 58);
+  font-family: "Coliner-ExtraBold" !important;
+}
+
+.loader__progressWrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  height: 5vh;
+  width: 50%;
+  z-index: 5;
+}
+
+.loader__progress {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  transform: scaleX(0);
+  transform: translateY(-50%);
+  transform-origin: left center;
+}
+
+.loader__progressNumber {
+  position: absolute;
+  left: -5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  white-space: nowrap;
+  color: white;
+  font-size: 2.2rem;
+}

@@ -90,14 +90,12 @@ export default function Perfil({ listaRutas, setListaRutas }) {
   if (loading) return <p>Cargando...</p>;
 
   return (
-    <div>
-      <h1>Motorista: {user.name}</h1>
-      <h2>Ruta: {nombreRuta}</h2>
-
-      <h2>Editar Perfil</h2>
-      <div>
-        <Space size="200" direction="vertical">
+    <div className="text-lg-start text-sm-center text-center my-4">
+      <div className="d-flex flex-sm-column flex-lg-row flex-column align-items-center gap-sm-1 gap-lg-5 gap-1 m-3">
+        <h1>Motorista: {user.name}</h1>
+        <Space direction="vertical">
           <Switch
+            className="custom-toggle"
             checked={!estado}
             checkedChildren="Activo"
             unCheckedChildren="Inactivo"
@@ -105,35 +103,31 @@ export default function Perfil({ listaRutas, setListaRutas }) {
           />
         </Space>
       </div>
-      <form action="" onSubmit={handleSubmit} className="text-start">
+      <h2 className="px-4">Ruta: {nombreRuta}</h2>
+      <div className="mt-5">
+        <h2 className="text-center">Editar Perfil</h2>
+      </div>
+
+      <form action="" onSubmit={handleSubmit} className="text-start p-3">
         <div className="row mb-4">
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form6Example3">
-                Foto de perfil
-              </label>
-              <br />
+          <div className="col-sm-12 col-lg-4 col-12">
+            <div
+              data-mdb-input-init
+              className="form-outline  d-flex flex-column justify-content-center align-items-center gap-2"
+            >
               <img
                 src={user.motoristaURLFotoDePerfil}
+                className="border border-3 object-fit-cover"
                 alt=""
-                style={{ width: "10rem" }}
+                style={{ width: "15rem", height: "15rem" }}
                 onError={(e) => (e.target.src = photo)}
               />
-              <input type="file" accept="image/*" onChange={handleFotoPerfil} />
-            </div>
-            <br />
-            <div className="col">
-              <div className="form-outline">
-                <label className="form-label">Ubicación del motorista</label>
-                <select
-                  className="form-control"
-                  value={ubicación}
-                  onChange={(e) => setUbicación(e.target.value)}
-                >
-                  <option value="UEES">UEES</option>
-                  <option value={nombreRuta}>{nombreRuta}</option>
-                </select>
-              </div>
+              <input
+                type="file"
+                className="form-control w-50"
+                accept="image/*"
+                onChange={handleFotoPerfil}
+              />
             </div>
           </div>
 
@@ -164,7 +158,20 @@ export default function Perfil({ listaRutas, setListaRutas }) {
                 onChange={(e) => setContraseña(e.target.value)}
               />
             </div>
-
+            <br />
+            <div className="col">
+              <div className="form-outline">
+                <label className="form-label">Ubicación del motorista</label>
+                <select
+                  className="form-control"
+                  value={ubicación}
+                  onChange={(e) => setUbicación(e.target.value)}
+                >
+                  <option value="UEES">UEES</option>
+                  <option value={nombreRuta}>{nombreRuta}</option>
+                </select>
+              </div>
+            </div>
             <br />
             <GuardarPerfil
               id={id}

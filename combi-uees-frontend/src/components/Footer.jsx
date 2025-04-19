@@ -29,7 +29,7 @@ export default function Footer() {
               placeholder="Feedback..."
               className="py-1 px-2 rounded-4 feedback w-75 h-auto"
               value={message}
-              onChange={(e) => setMessage(e)}
+              onChange={(e) => setMessage(e.target.value)}
             />
             <button
               onClick="submit"

@@ -27,7 +27,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
             'motoristaURLFotoDePerfil' => 'required|url',
@@ -70,9 +70,9 @@ class UserController extends Controller
 
     public function update(Request $request, string $id)
     {
-        Log::info('Cuerpo de la solicitud en updateStatus antes:', $request->all());
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'password' => 'required|string',
             'motoristaURLFotoDePerfil' => 'required|url',
             'motoristaEstado' => 'required|boolean',
@@ -132,11 +132,6 @@ class UserController extends Controller
 
     public function updateStatus(Request $request, string $id)
     {
-        Log::info('Cuerpo de la solicitud en updateStatus antes:', $request->all());
-        Log::info('Contenido completo de la solicitud:', [
-            'headers' => $request->headers->all(),
-            'body' => $request->getContent(),
-        ]);
         $validator = Validator::make($request->all(), [
             'motoristaEstado' => 'required|boolean'
         ]);

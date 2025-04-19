@@ -34,7 +34,7 @@ export default function Sidebar() {
             COMBI-UEES
           </p>
         </div>
-        <div className="p-0 p-sm-2 p-lg-3 d-flex flex-column gap-3 fs-5">
+        <div className="p-0 p-sm-2 p-lg-3 d-flex flex-column justify-content-center align-items-center gap-3 fs-5">
           <div className={tokenAdministrador || tokenMotorista ? "d-none" : ""}>
             <Link
               to="/"

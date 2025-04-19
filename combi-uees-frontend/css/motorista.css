@@ -1,0 +1,27 @@
+.custom-toggle {
+  scale: 1.5;
+}
+
+.seccion-login {
+  background-color: #eae185;
+  padding-left: 5%;
+}
+
+.seccion-imagen-login {
+  top: 50%;
+  left: 45%;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 1000px) {
+  .seccion-login {
+    padding-left: 0px;
+    padding: 10px;
+  }
+
+  .seccion-imagen-login {
+    transform: translateY(0%);
+    top: 50%;
+    left: 0%;
+  }
+}

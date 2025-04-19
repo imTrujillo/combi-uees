@@ -46,7 +46,6 @@ export default function Reservar({
     }
 
     SwalLoading();
-    console.log(viajeHora);
 
     const nuevoViaje = {
       nombrePasajero: nombre,
@@ -55,7 +54,6 @@ export default function Reservar({
       IDRuta: propRutaID,
     };
     console.log(nuevoViaje);
-
     await axios
       .post("http://127.0.0.1:8000/api/v1/viajes", nuevoViaje)
       .then(() => {
@@ -73,12 +71,17 @@ export default function Reservar({
           icon: "error",
         });
       });
+
+    setNombre("");
+    setViajeFecha("");
+    setViajeHora("");
+    setViajeDestino("UEES");
   };
 
   return (
     <div>
       <button
-        className="btn btn-primary m-3 p-3 rounded-5 reservar-button"
+        className="m-4 p-3 rounded-5 reservar-button text-white btn-verde"
         onClick={() => setModal(true)}
       >
         <FaCheckCircle size={30} className="me-3 " />
@@ -86,103 +89,110 @@ export default function Reservar({
       </button>
 
       {modal && (
-        <div className="modal fade show d-block" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5">
-                  Reserva para "{propRutaNombre}"
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setModal(false)}
-                />
-              </div>
-              <form className="p-4 text-start" onSubmit={handleSubmit}>
-                <div className="row mb-4">
-                  <div className="col">
-                    <div className="form-outline">
-                      <label className="form-label">Nombre del pasajero</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Ingrese su nombre..."
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        autoFocus
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <div className="form-outline">
-                      <label className="form-label">
-                        Ubicación del Destino
-                      </label>
-                      <select
-                        className="form-control"
-                        value={viajeDestino}
-                        onChange={(e) => setViajeDestino(e.target.value)}
-                      >
-                        <option value="UEES">UEES</option>
-                        <option value={propRutaNombre}>{propRutaNombre}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-outline mb-4">
-                  <label className="form-label">Fecha del viaje</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    value={viajeFecha}
-                    onChange={handleFecha}
-                  />
-                </div>
-
-                <div className="form-outline mb-4">
-                  <label className="form-label">Horario</label>
-                  {horasHorario.length == 0 ? (
-                    <input
-                      type="time"
-                      className="form-control"
-                      value={viajeHora}
-                      onChange={handleHoraInput}
-                    />
-                  ) : (
-                    <select
-                      className="form-control"
-                      value={viajeHora}
-                      onChange={handleHora}
-                    >
-                      <option value="" disabled>
-                        Escoja una hora
-                      </option>
-                      {horasHorario.map((hora) => (
-                        <option key={hora.id} value={hora.horaSalida}>
-                          {hora.horaSalida}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-
-                <div className="modal-footer">
+        <>
+          <div className="modal-backdrop-blur"></div>
+          <div className="modal fade show d-block" tabIndex="-1">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5">
+                    Reserva para "{propRutaNombre}"
+                  </h1>
                   <button
                     type="button"
-                    className="btn btn-secondary"
+                    className="btn-close"
                     onClick={() => setModal(false)}
-                  >
-                    Cerrar
-                  </button>
-                  <button type="submit" className="btn btn-success">
-                    Guardar
-                  </button>
+                  />
                 </div>
-              </form>
+                <form className="p-4 text-start" onSubmit={handleSubmit}>
+                  <div className="row mb-4">
+                    <div className="col">
+                      <div className="form-outline">
+                        <label className="form-label">
+                          Nombre del pasajero
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Jacobo Cárcamo"
+                          value={nombre}
+                          onChange={(e) => setNombre(e.target.value)}
+                          autoFocus
+                        />
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="form-outline">
+                        <label className="form-label">
+                          Ubicación del Destino
+                        </label>
+                        <select
+                          className="form-control"
+                          value={viajeDestino}
+                          onChange={(e) => setViajeDestino(e.target.value)}
+                        >
+                          <option value="UEES">UEES</option>
+                          <option value={propRutaNombre}>
+                            {propRutaNombre}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-outline mb-4">
+                    <label className="form-label">Fecha del viaje</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={viajeFecha}
+                      onChange={handleFecha}
+                    />
+                  </div>
+
+                  <div className="form-outline mb-4">
+                    <label className="form-label">Horario</label>
+                    {horasHorario.length == 0 ? (
+                      <input
+                        type="time"
+                        className="form-control"
+                        value={viajeHora}
+                        onChange={handleHoraInput}
+                      />
+                    ) : (
+                      <select
+                        className="form-control"
+                        value={viajeHora}
+                        onChange={handleHora}
+                      >
+                        <option value="" disabled>
+                          Escoja una hora
+                        </option>
+                        {horasHorario.map((hora) => (
+                          <option key={hora.id} value={hora.horaSalida}>
+                            {hora.horaSalida}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+
+                  <div className="modal-footer d-flex flex-row gap-3 justify-content-center">
+                    <button
+                      type="button"
+                      className="btn-cancelar"
+                      onClick={() => setModal(false)}
+                    >
+                      Cerrar
+                    </button>
+                    <button type="submit" className="btn-guardar">
+                      Guardar
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

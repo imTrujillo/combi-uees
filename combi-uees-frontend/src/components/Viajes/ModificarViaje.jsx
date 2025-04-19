@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { createPortal } from "react-dom";
+import "../../../css/modal.css";
 import SwalFireLoading from "../../assets/SwalFireLoading";
+import { RiEditCircleFill } from "react-icons/ri";
+import { FaCheckCircle } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 export default function ModificarViaje({
   propNombrePasajero,
@@ -129,118 +133,140 @@ export default function ModificarViaje({
   return (
     <>
       {!viajeCompletado && (
-        <td>
-          <button className="btn btn-warning" onClick={() => setModal(true)}>
-            Editar
-          </button>
-        </td>
-      )}
-      {!viajeCompletado && (
-        <td>
-          <button onClick={handleCompletar} className="btn btn-success">
-            Completar
-          </button>
-        </td>
+        <>
+          <td>
+            <button
+              onClick={handleCompletar}
+              className="btn btn-success rounded-circle"
+              style={{ width: "3rem", height: "3rem" }}
+            >
+              <FaCheckCircle className="fs-4" />
+            </button>
+          </td>
+          <td>
+            <button
+              className="btn btn-warning rounded-circle"
+              style={{ width: "3rem", height: "3rem" }}
+              onClick={() => setModal(true)}
+            >
+              <RiEditCircleFill className="fs-4" />
+            </button>
+          </td>
+        </>
       )}
       <td>
-        <button onClick={handleEliminar} className="btn btn-danger">
-          Eliminar
+        <button
+          onClick={handleEliminar}
+          className="btn btn-danger rounded-circle"
+          style={{ width: "3rem", height: "3rem" }}
+        >
+          <MdDeleteForever className="fs-4" />
         </button>
       </td>
 
       {modal &&
         createPortal(
-          <div className="modal fade show d-block" tabIndex="-1">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h1 className="modal-title fs-5">
-                    Editar "{propNombrePasajero}"
-                  </h1>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={() => setModal(false)}
-                  />
-                </div>
-                <form className="p-4 text-start" onSubmit={handleSubmitEditar}>
-                  <div className="row mb-4">
-                    <div className="col">
-                      <label className="form-label">Nombre del pasajero</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Ingrese su nombre..."
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                      />
-                    </div>
-                    <div className="col">
-                      <label className="form-label">
-                        Ubicación del Destino
-                      </label>
-                      <select
-                        className="form-control"
-                        value={destino}
-                        onChange={(e) => setDestino(e.target.value)}
-                      >
-                        <option value="UEES">UEES</option>
-                        <option value={propNombreRuta}>{propNombreRuta}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label">Fecha del viaje</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      value={fecha}
-                      onChange={(e) => setFecha(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-outline mb-4">
-                    <label className="form-label">Horario</label>
-                    {horasHorario.length == 0 ? (
-                      <input
-                        type="time"
-                        className="form-control"
-                        value={hora}
-                        onChange={handleHoraInput}
-                      />
-                    ) : (
-                      <select
-                        className="form-control"
-                        value={hora}
-                        onChange={(e) => setHora(e.target.value)}
-                      >
-                        <option value="" disabled selected>
-                          Escoja una hora
-                        </option>
-                        {horasHorario.map((hora) => (
-                          <option key={hora.id} value={hora.horaSalida}>
-                            {hora.horaSalida}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-                  <div className="modal-footer">
+          <>
+            <div className="modal-backdrop-blur"></div>
+            <div className="modal fade show d-block" tabIndex="-1">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h1 className="modal-title fs-5">
+                      Editar "{propNombrePasajero}"
+                    </h1>
                     <button
                       type="button"
-                      className="btn btn-secondary"
+                      className="btn-close"
                       onClick={() => setModal(false)}
-                    >
-                      Cerrar
-                    </button>
-                    <button type="submit" className="btn btn-success">
-                      Guardar
-                    </button>
+                    />
                   </div>
-                </form>
+                  <form
+                    className="p-4 text-start"
+                    onSubmit={handleSubmitEditar}
+                  >
+                    <div className="row mb-4">
+                      <div className="col">
+                        <label className="form-label">
+                          Nombre del pasajero
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Ingrese su nombre..."
+                          value={nombre}
+                          onChange={(e) => setNombre(e.target.value)}
+                        />
+                      </div>
+                      <div className="col">
+                        <label className="form-label">
+                          Ubicación del Destino
+                        </label>
+                        <select
+                          className="form-control"
+                          value={destino}
+                          onChange={(e) => setDestino(e.target.value)}
+                        >
+                          <option value="UEES">UEES</option>
+                          <option value={propNombreRuta}>
+                            {propNombreRuta}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="form-outline mb-4">
+                      <label className="form-label">Fecha del viaje</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={fecha}
+                        onChange={(e) => setFecha(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="form-outline mb-4">
+                      <label className="form-label">Horario</label>
+                      {horasHorario.length == 0 ? (
+                        <input
+                          type="time"
+                          className="form-control"
+                          value={hora}
+                          onChange={handleHoraInput}
+                        />
+                      ) : (
+                        <select
+                          className="form-control"
+                          value={hora}
+                          onChange={(e) => setHora(e.target.value)}
+                        >
+                          <option value="" disabled selected>
+                            Escoja una hora
+                          </option>
+                          {horasHorario.map((hora) => (
+                            <option key={hora.id} value={hora.horaSalida}>
+                              {hora.horaSalida}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
+                    <div className="modal-footer d-flex flex-row gap-3 justify-content-center">
+                      <button
+                        type="button"
+                        className="btn-cancelar"
+                        onClick={() => setModal(false)}
+                      >
+                        Cerrar
+                      </button>
+                      <button type="submit" className="btn-guardar">
+                        Guardar
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>,
+          </>,
           document.getElementById("modal-root")
         )}
     </>

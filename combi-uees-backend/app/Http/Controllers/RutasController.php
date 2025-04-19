@@ -24,7 +24,7 @@ class RutasController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'rutaNombre' => 'required|string|max:30',
+            'rutaNombre' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'rutaLatitud' => 'required|numeric|between:-90,90',
             'rutaLongitud' => 'required|numeric|between:-180,180',
         ]);
@@ -53,7 +53,7 @@ class RutasController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'rutaNombre' => 'required|string|max:30',
+            'rutaNombre' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'rutaLatitud' => 'required|numeric|between:-90,90',
             'rutaLongitud' => 'required|numeric|between:-180,180',
         ]);

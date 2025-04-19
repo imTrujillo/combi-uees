@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../routes/Sidebar";
 import ActualizarAnuncios from "../components/Anuncios/ActualizarAnuncio";
 import ListaMotoristas from "../components/Motoristas/ListaMotoristas";
 import ListaRutas from "../components/AdministrarRutas/ListaRutas";
+import { FaRegHandPeace } from "react-icons/fa";
 import "../../css/administrador.css";
+import Loader from "../components/Loader/Loader";
 
 export default function Administrador() {
   const tokenAdministrador = sessionStorage.getItem("tokenAdministrador");
@@ -29,23 +30,31 @@ export default function Administrador() {
         );
         setListaMotoristas(responseMotoristas.data);
         setListaRutas(responseRutas.data);
-        setLoading(false);
       } catch (error) {
         console.error("Ocurrió un error:", error);
-        setLoading(false);
       }
     };
     apiService();
   }, [listaMotoristas, listaRutas]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   if (loading) {
-    return <div>Cargando...</div>;
+    return <Loader />;
   }
 
   return (
     <div>
-      <h1>¡¡Bienvenido admin!!</h1>
-      <ActualizarAnuncios tokenAdministrador={tokenAdministrador} />
+      <h1 className="mb-5 border-bottom border-3 p-5">
+        Bienvenido lord admin
+        <FaRegHandPeace className="mx-3" />
+      </h1>
       <ListaMotoristas
         setListaMotoristas={setListaMotoristas}
         listaMotoristas={listaMotoristas}
@@ -57,6 +66,7 @@ export default function Administrador() {
         listaRutas={listaRutas}
         tokenAdministrador={tokenAdministrador}
       />
+      <ActualizarAnuncios tokenAdministrador={tokenAdministrador} />
     </div>
   );
 }

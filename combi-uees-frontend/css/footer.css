@@ -1,14 +1,15 @@
 .footer {
-  background-color: #373004;
+  background-color: #2b4905;
+  margin: -1rem;
 }
 
 .footer-btn {
   color: white;
-  background-color: #71ae33;
+  background-color: #558c08;
 }
 
 .footer-btn:hover {
-  color: #71ae33;
+  color: #558c08;
   background-color: #ffffff;
 }
 

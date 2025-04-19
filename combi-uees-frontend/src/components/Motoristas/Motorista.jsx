@@ -19,7 +19,8 @@ export default function Motorista({
       <td>
         <img
           src={propFotoDePerfil}
-          style={{ width: "3rem" }}
+          className="object-fit-cover"
+          style={{ width: "4rem", height: "4rem" }}
           alt=""
           onError={(e) => (e.target.src = photo)}
         />

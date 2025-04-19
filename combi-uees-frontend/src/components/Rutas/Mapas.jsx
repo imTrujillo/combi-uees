@@ -25,16 +25,19 @@ export default function Mapas({ propRutaNombre, propLatitud, propLongitud }) {
   const lng = isValidLng ? parseFloat(propLongitud) : defaultLng;
 
   return (
-    <MapContainer
-      center={{ lat, lng }}
-      zoom={15}
-      style={{ height: "400px", width: "100%" }}
-    >
-      <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
+    <div className="position-relative " style={{ zIndex: "0" }}>
+      <MapContainer
+        center={{ lat, lng }}
+        zoom={15}
+        style={{ height: "400px", width: "100%" }}
+        className="rounded-5"
+      >
+        <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      <Marker position={{ lat, lng }} icon={customIcon}>
-        <Popup>{propRutaNombre}</Popup>
-      </Marker>
-    </MapContainer>
+        <Marker position={{ lat, lng }} icon={customIcon}>
+          <Popup>{propRutaNombre}</Popup>
+        </Marker>
+      </MapContainer>
+    </div>
   );
 }

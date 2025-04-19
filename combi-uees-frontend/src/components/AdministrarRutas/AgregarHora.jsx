@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SwalFireLoading from "../../assets/SwalFireLoading";
+import { MdAddCircle } from "react-icons/md";
+import "../../../css/colores.css";
 
 export default function AgregarHora({
   propIDRuta,
@@ -40,15 +42,16 @@ export default function AgregarHora({
         console.error("Error al guardar la hora:", error);
         Swal.fire("Error", "No se pudo guardar la hora.", "error");
       });
+    setHora("");
   }
 
   return (
     <>
       <form
-        className="p-4 text-start d-flex row "
+        className="p-4 text-start d-flex flex-row justify-content-end align-items-center gap-4"
         onSubmit={handleSubmitAgregar}
       >
-        <div className="col-8">
+        <div>
           <label className="form-label">Agregar una hora de salida</label>
           <input
             type="time"
@@ -58,12 +61,13 @@ export default function AgregarHora({
             onChange={(e) => setHora(e.target.value)}
           />
         </div>
-
-        <div className="modal-footer col-4">
-          <button type="submit" className="btn btn-success">
-            Agregar Hora
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="btn btn-success rounded-circle verde"
+          style={{ width: "3.3rem", height: "3.3rem" }}
+        >
+          <MdAddCircle className="fs-3" />
+        </button>
       </form>
     </>
   );

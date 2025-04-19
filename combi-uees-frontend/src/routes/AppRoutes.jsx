@@ -24,14 +24,20 @@ function AppRoutesWithLocation() {
     <main className="d-flex flex-row overflow-x-hidden">
       {!isLoginPage && (
         <>
-          <section className="z-2 position-fixed top-0 bottom-0 col-sm-2 col-lg-3 col-2 shadow-lg">
+          <section className=" position-fixed top-0 bottom-0 col-sm-2 col-lg-3 col-2 shadow-lg">
             <Sidebar />
           </section>
           <section className="col-sm-2 col-lg-3 col-2"></section>
         </>
       )}
 
-      <section className="z-1 col-9">
+      <section
+        className={
+          isLoginPage
+            ? "w-100 p-0"
+            : "col-sm-10 col-lg-9 col-10 p-sm-0 p-lg-3 p-0 overflow-hidden"
+        }
+      >
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Rutas />} />

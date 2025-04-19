@@ -28,7 +28,7 @@ class ViajesController extends Controller
         $now = Carbon::now()->format('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            'nombrePasajero' => 'required|string|max:100',
+            'nombrePasajero' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'viajeFecha' => "required|date_format:Y-m-d H:i:s|after_or_equal:$now",
             'viajeDestino' => 'required|string',
             'IDRuta' => 'required|integer|exists:rutas,rutaID'
@@ -38,6 +38,9 @@ class ViajesController extends Controller
 
             if ($viajeFecha->isSunday()) {
                 $validator->errors()->add('viajeFecha', 'La ruta no puede ser en domingo.');
+            }
+            if ($viajeFecha->gt(Carbon::now()->addWeek())) {
+                $validator->errors()->add('viajeFecha', 'La fecha del viaje no puede ser mayor a una semana desde hoy.');
             }
         });
 
@@ -64,7 +67,7 @@ class ViajesController extends Controller
         $now = Carbon::now()->format('Y-m-d H:i:s');
 
         $validator = Validator::make($request->all(), [
-            'nombrePasajero' => 'required|string|max:100',
+            'nombrePasajero' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'viajeFecha' => "required|date_format:Y-m-d H:i:s|after_or_equal:$now",
             'viajeDestino' => 'required|string',
             'IDRuta' => 'required|integer|exists:rutas,rutaID'
@@ -74,6 +77,9 @@ class ViajesController extends Controller
 
             if ($viajeFecha->isSunday()) {
                 $validator->errors()->add('viajeFecha', 'La ruta no puede ser en domingo.');
+            }
+            if ($viajeFecha->gt(Carbon::now()->addWeek())) {
+                $validator->errors()->add('viajeFecha', 'La fecha del viaje no puede ser mayor a una semana desde hoy.');
             }
         });
         if ($validator->fails()) {

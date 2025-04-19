@@ -2,21 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SwalLoading from "../../assets/SwalFireLoading";
+import { IoIosSend } from "react-icons/io";
 
 export default function GuardarComentario() {
   const [nombre, setNombre] = useState("");
   const [titulo, setTitulo] = useState("");
   const [descripción, setDescripción] = useState("");
-
-  const handleNombre = (e) => {
-    setNombre(e.target.value);
-  };
-  const handleTitulo = (e) => {
-    setTitulo(e.target.value);
-  };
-  const handleDescripción = (e) => {
-    setDescripción(e.target.value);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,50 +41,55 @@ export default function GuardarComentario() {
           icon: "error",
         });
       });
+
+    setTitulo("");
+    setNombre("");
+    setDescripción("");
   };
 
   return (
     <div>
-      <form action="" onSubmit={handleSubmit} className="text-start">
-        <div className="row mb-4">
+      <form action="" onSubmit={handleSubmit} className="text-start mt-2">
+        <div className="d-flex flex-sm-column flex-lg-row flex-column m-3 mb-4">
           <div className="col">
-            <div data-mdb-input-init className="form-outline">
+            <div data-mdb-input-init className="form-outline my-2">
               <input
                 type="text"
                 id="form6Example1"
                 className="form-control"
                 placeholder="Ingresa tu nombre..."
-                onChange={(e) => handleNombre(e)}
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
+            <div data-mdb-input-init className="form-outline mb-2">
               <input
                 type="text"
                 id="form6Example2"
                 className="form-control"
                 placeholder="Título del comentario..."
-                onChange={(e) => handleTitulo(e)}
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
               />
             </div>
-            <div className="col">
-              <div data-mdb-input-init className="form-outline">
-                <textarea
-                  type="text"
-                  id="form6Example2"
-                  className="form-control"
-                  placeholder="Comenta aquí..."
-                  onChange={(e) => handleDescripción(e)}
-                />
-              </div>
+            <div data-mdb-input-init className="form-outline">
+              <textarea
+                type="text"
+                id="form6Example2"
+                className="form-control"
+                placeholder="Comenta aquí..."
+                value={descripción}
+                onChange={(e) => setDescripción(e.target.value)}
+              />
             </div>
           </div>
+          <button
+            type="submit"
+            className="col col-11 col-lg-2 col-11 footer-btn fs-4 px-1 py-1 mt-2 h-25 rounded-4 border-0 mx-2"
+          >
+            <IoIosSend />
+          </button>
         </div>
-
-        <button type="submit" className="btn btn-primary btn-block mb-4">
-          Enviar
-        </button>
       </form>
     </div>
   );

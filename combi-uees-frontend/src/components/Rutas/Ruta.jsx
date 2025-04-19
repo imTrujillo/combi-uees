@@ -50,19 +50,17 @@ export default function Ruta({
     <section
       className={
         propRutaBusesDisponibles > 0
-          ? "d-flex flex-column flex-lg-row gap-5 p-5"
+          ? "d-flex flex-column flex-lg-row gap-5 px-0 "
           : "d-none"
       }
     >
       <div className="col">
-        <h2 className="text-start">{propRutaNombre}</h2>
-
+        <h2 className="text-sm-center text-lg-start">{propRutaNombre}</h2>
         <Mapas
           propRutaNombre={propRutaNombre}
           propLatitud={propLatitud}
           propLongitud={propLongitud}
         />
-
         <Reservar
           propRutaNombre={propRutaNombre}
           propViajeDestino={propViajeDestino}
@@ -72,29 +70,29 @@ export default function Ruta({
         />
       </div>
       <div className="col">
-        <h2>Horarios</h2>
-        <div>
-          <div className="table-responsive">
-            <table className="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>Hora</th>
-                </tr>
-              </thead>
-              <tbody>
-                {horasHorario.length > 0 ? (
-                  horasHorario.map((hora) => (
-                    <Horarios key={hora.id} propHora={hora.horaSalida} />
-                  ))
-                ) : (
+        {horasHorario.length > 0 ? (
+          <div>
+            <h2>Horarios</h2>
+            <div className="table-responsive">
+              <table className="table table-striped table-hover">
+                <thead>
                   <tr>
-                    <td>No hay horarios disponibles.</td>
+                    <th className="table-warning">Hora</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {horasHorario.map((hora) => (
+                    <Horarios key={hora.id} propHora={hora.horaSalida} />
+                  ))}
+                </tbody>
+              </table>
+            </div>{" "}
           </div>
-        </div>
+        ) : (
+          ""
+        )}
+
+        <h2 className="mt-sm-5 mt-lg-0 mt-5">Disponibilidad de buses</h2>
         <Gráficas
           propBusesDisponibles={propRutaBusesDisponibles}
           propBusesTotales={propRutaBusesTotales}

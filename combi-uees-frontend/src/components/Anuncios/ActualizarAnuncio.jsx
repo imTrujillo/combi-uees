@@ -3,8 +3,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import SwalFireLoading from "../../assets/SwalFireLoading";
 
+import photo from "../../assets/default.jpg";
+
 export default function ActualizarAnuncio({ tokenAdministrador }) {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(undefined);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,22 +70,38 @@ export default function ActualizarAnuncio({ tokenAdministrador }) {
   };
 
   return (
-    <section className="m-5">
+    <section className="w-100 d-flex flex-column justify-content-center align-items-center w-100 my-4 pb-2">
+      <h2 className="text-lg-start text-center text-start px-4 border-bottom border-2 mb-3 w-75">
+        Anuncios
+      </h2>
       <form
         action=""
-        className="d-flex flex-row w-75"
+        className="d-flex flex-sm-column flex-lg-row flex-column justify-content-between align-items-sm-center align-items-lg-start align-items-center w-75"
         onSubmit={(e) => handleSubmit(e)}
       >
+        <div className="d-flex flex-column align-items-center justify-content-center">
+          <div
+            className="border border-3 m-2"
+            style={{ width: "7rem", height: "7rem" }}
+          >
+            <img
+              src={url ? url : photo}
+              onError={(e) => (e.target.src = photo)}
+              alt="foto noticia"
+              style={{ width: "7rem", height: "7rem" }}
+              className="shadow-lg object-fit-cover"
+            />
+          </div>
+          <input
+            type="submit"
+            value="Actualizar Anuncio"
+            className="btn-guardar border-0 rounded-4 py-2 px-4 m-2"
+          />
+        </div>
         <input
           type="file"
           accept="image/*"
           onChange={changeUploadImage}
-          className="form-control"
-        />
-        {url && <img src={url} alt="" style={{ width: "5rem" }} />}
-        <input
-          type="submit"
-          value="Actualizar Anuncio"
           className="form-control"
         />
       </form>
