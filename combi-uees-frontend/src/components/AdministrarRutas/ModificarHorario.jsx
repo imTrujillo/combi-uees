@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import "../../../css/modal.css";
 import boxphoto from "../../assets/caja-vacia.png";
 import { createPortal } from "react-dom";
+import { IoEye } from "react-icons/io5";
 
 export default function ModificarHorario({
   propIDRuta,
@@ -38,11 +39,9 @@ export default function ModificarHorario({
     <td>
       <>
         <td>
-          <button
-            className="btn btn-warning rounded-top rounded-5 amarillo"
-            onClick={handleButton}
-          >
-            Ver Horario
+          <button className="btn btn-guardar rounded-2" onClick={handleButton}>
+            <IoEye className="mx-2" />
+            Mostrar
           </button>
         </td>
         {modal &&

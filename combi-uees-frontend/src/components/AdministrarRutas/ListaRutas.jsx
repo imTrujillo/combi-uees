@@ -11,9 +11,7 @@ export default function ListaRutas({
   return (
     <div className="mt-4">
       <div className="w-100 d-flex flex-sm-column flex-lg-row flex-column justify-content-center align-items-center border-bottom border-2 w-75 mb-4 pb-2">
-        <h2 className="text-lg-start text-sm-center text-center px-4 w-75 mb-3">
-          Rutas
-        </h2>
+        <h2 className="text-start logo-text fs-1 mx-5 border-2 ">HORARIOS</h2>
         <AgregarRuta
           tokenAdministrador={tokenAdministrador}
           listaRutas={listaRutas}

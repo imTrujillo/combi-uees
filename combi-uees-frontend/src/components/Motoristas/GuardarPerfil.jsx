@@ -63,7 +63,7 @@ export default function GuardarPerfil({
       className="btn-guardar px-4 py-2 rounded-3 border-0"
       onClick={handleSubmit}
     >
-      <FaSave className="fs-4 me-3" />
+      <FaSave className="fs-4 me-3 " />
       Guardar cambios
     </button>
   );

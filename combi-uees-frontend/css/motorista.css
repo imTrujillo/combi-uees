@@ -4,12 +4,13 @@
 
 .seccion-login {
   background-color: #eae185;
-  padding-left: 5%;
+  padding-left: 2%;
 }
 
 .seccion-imagen-login {
   top: 50%;
-  left: 45%;
+  left: 10%;
+  width: 90vh;
   transform: translateY(-50%);
 }
 
@@ -23,5 +24,6 @@
     transform: translateY(0%);
     top: 50%;
     left: 0%;
+    width: 100%;
   }
 }

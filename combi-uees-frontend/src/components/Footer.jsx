@@ -27,13 +27,13 @@ export default function Footer() {
             <input
               type="text"
               placeholder="Feedback..."
-              className="py-1 px-2 rounded-4 feedback w-75 h-auto"
+              className="py-1 px-2 rounded-4 feedback w-75 h-auto border-0 btn-light-shadow"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
             <button
               onClick="submit"
-              className="footer-btn fs-4 px-2 py-0 rounded-4 border-0 mx-2"
+              className="footer-btn btn-light-shadow fs-4 px-2 py-0 rounded-4 border-0 mx-2"
             >
               <IoIosSend />
             </button>
@@ -52,13 +52,13 @@ export default function Footer() {
         <h2>Redes sociales</h2>
         <ul className=" list-unstyled d-flex flex-row justify-content-center gap-5">
           <li className="fs-1">
-            <IoLogoWhatsapp className="icono-socialmedia" />
+            <IoLogoWhatsapp className="icono-socialmedia " />
           </li>
           <li className="fs-1">
-            <RiInstagramFill className="icono-socialmedia" />
+            <RiInstagramFill className="icono-socialmedia " />
           </li>
           <li className="fs-1">
-            <FaFacebook className="icono-socialmedia" />
+            <FaFacebook className="icono-socialmedia " />
           </li>
         </ul>
       </div>

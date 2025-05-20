@@ -40,8 +40,8 @@ export default function ListaViajes({
   }
   return (
     <div>
-      <div className="d-flex border-bottom border-2 w-75 mb-4">
-        <h2 className="text-start px-4 mb-3 w-75">Viajes</h2>
+      <div className="d-flex border-bottom border-2 mx-5 mb-4">
+        <h2 className="text-start logo-text fs-1 me-5 mb-3 ">VIAJES</h2>
         <AgregarViaje
           tokenMotorista={tokenMotorista}
           listaRutas={listaRutas}

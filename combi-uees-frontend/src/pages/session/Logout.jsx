@@ -40,11 +40,7 @@ export default function Logout() {
           sessionStorage.removeItem("tokenAdministrador");
           sessionStorage.removeItem("id");
         }
-        Swal.fire({
-          title: "Sesión Cerrada",
-          text: "Has cerrado sesión.",
-          icon: "success",
-        });
+        Swal.close();
         navigate("/");
       })
       .catch(() => {

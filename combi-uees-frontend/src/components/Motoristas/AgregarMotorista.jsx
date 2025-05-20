@@ -96,7 +96,7 @@ export default function AgregarMotorista({
     <>
       <td>
         <button
-          className=" d-flex align-items-center px-5 gap-2 text-white btn-verde"
+          className=" d-flex align-items-center px-5 gap-2 text-white btn-verde btn-light-shadow"
           onClick={() => setModal(true)}
         >
           <MdAddCircle className="fs-3" />

@@ -73,7 +73,7 @@ export default function AgregarViaje({
     <>
       <td>
         <button
-          className="d-flex align-items-center  gap-2 text-white btn-verde"
+          className="d-flex align-items-center  gap-2 text-white btn-verde btn-light-shadow"
           onClick={() => setModal(true)}
         >
           <MdAddCircle className="fs-3" />

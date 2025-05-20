@@ -44,8 +44,8 @@ export default function ListaRutas() {
   return (
     <>
       <div className="w-screen  p-4">
-        <h2 className="text-start fs-1 px-4 border-bottom border-2 mb-3 w-75">
-          Rutas
+        <h2 className="text-start logo-text fs-1 mx-5 border-bottom border-2 mb-3 ">
+          RUTAS
         </h2>
         <section>
           {rutaActual ? (
@@ -75,10 +75,9 @@ export default function ListaRutas() {
             <button
               onClick={() => setPaginaActual(paginaActual - 1)}
               disabled={paginaActual === 0}
-              className="relative btn btn-rounded btn-outline-primary mx-4 "
+              className="relative btn-prev mx-4 "
             >
               <GrPrevious />
-              Anterior
             </button>
             <span className="">
               | página {paginaActual + 1} de {totalRutas} |
@@ -86,9 +85,8 @@ export default function ListaRutas() {
             <button
               onClick={() => setPaginaActual(paginaActual + 1)}
               disabled={paginaActual >= totalRutas - 1}
-              className="relative btn btn-rounded btn-outline-primary mx-4"
+              className="relative btn-next mx-4"
             >
-              Siguiente
               <GrNext />
             </button>
           </div>

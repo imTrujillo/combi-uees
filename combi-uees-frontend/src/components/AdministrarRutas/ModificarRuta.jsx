@@ -58,6 +58,11 @@ export default function ModificarRuta({
       showCancelButton: true,
       confirmButtonText: "Sí, bórralo",
       cancelButtonText: "Cancelar",
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: "rojo btn-guardar mx-3 py-2 px-4 rounded",
+        cancelButton: "azul btn-guardar mx-3 py-2 px-4 rounded",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         SwalFireLoading();
@@ -83,7 +88,7 @@ export default function ModificarRuta({
     <>
       <td>
         <button
-          className="btn btn-warning rounded-circle amarillo"
+          className="btn btn-warning rounded-circle amarillo btn-light-shadow"
           style={{ width: "3rem", height: "3rem" }}
           onClick={() => setModal(true)}
         >
@@ -94,7 +99,7 @@ export default function ModificarRuta({
       <td>
         <button
           onClick={handleEliminar}
-          className="btn btn-danger rounded-circle"
+          className="btn btn-danger rounded-circle btn-light-shadow"
           style={{ width: "3rem", height: "3rem" }}
         >
           <MdDeleteForever className="fs-4" />

@@ -31,12 +31,12 @@ export default function AgregarHora({
         headers: { Authorization: `Bearer ${tokenAdministrador}` },
       })
       .then((response) => {
-        Swal.fire("Éxito", "La hora se ha guardado.", "success");
         setHorasHorario((prevHoras) => [
           ...prevHoras,
           { id: response.data.id, horaSalida: hora },
         ]);
         setHora("");
+        Swal.close();
       })
       .catch((error) => {
         console.error("Error al guardar la hora:", error);
@@ -63,7 +63,7 @@ export default function AgregarHora({
         </div>
         <button
           type="submit"
-          className="btn btn-success rounded-circle verde"
+          className="btn btn-success rounded-circle verde btn-light-shadow"
           style={{ width: "3.3rem", height: "3.3rem" }}
         >
           <MdAddCircle className="fs-3" />

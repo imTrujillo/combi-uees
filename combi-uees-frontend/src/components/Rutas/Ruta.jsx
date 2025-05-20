@@ -92,7 +92,7 @@ export default function Ruta({
           ""
         )}
 
-        <h2 className="mt-sm-5 mt-lg-0 mt-5">Disponibilidad de buses</h2>
+        <h2 className="mt-sm-5 mt-lg-0 mt-5">Estado de buses</h2>
         <Gráficas
           propBusesDisponibles={propRutaBusesDisponibles}
           propBusesTotales={propRutaBusesTotales}

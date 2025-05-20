@@ -51,10 +51,11 @@ export default function Administrador() {
 
   return (
     <div>
-      <h1 className="mb-5 border-bottom border-3 p-5">
-        Bienvenido lord admin
+      <h1 className="text-start logo-text fs-1 mt-2 mx-5 border-2 border-bottom pb-2 mb-4">
+        BIENVENIDO ADMIN!
         <FaRegHandPeace className="mx-3" />
       </h1>
+
       <ListaMotoristas
         setListaMotoristas={setListaMotoristas}
         listaMotoristas={listaMotoristas}

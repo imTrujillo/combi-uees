@@ -54,7 +54,7 @@ export default function AgregarRuta({
     <>
       <td>
         <button
-          className="btn-verde d-flex align-items-center px-5 gap-2 text-white"
+          className="btn-verde d-flex align-items-center px-5 gap-2 text-white btn-light-shadow"
           onClick={() => setModal(true)}
         >
           <MdAddCircle className="fs-3" /> Ruta

@@ -114,7 +114,7 @@ export default function Reservar({
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Jacobo Cárcamo"
+                          placeholder="Juan Pérez"
                           value={nombre}
                           onChange={(e) => setNombre(e.target.value)}
                           autoFocus

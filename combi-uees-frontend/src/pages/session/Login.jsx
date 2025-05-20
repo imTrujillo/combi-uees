@@ -44,22 +44,14 @@ export default function Login() {
           const id = response.data.id;
           sessionStorage.setItem("tokenMotorista", tokenMotorista);
           sessionStorage.setItem("id", id);
-          Swal.fire({
-            title: "Bienvenido!",
-            text: "Has iniciado sesión como motorista",
-            icon: "success",
-          });
+          Swal.close();
           navigate("/viajes");
         } else if (rol == "administrador") {
           const tokenAdministrador = response.data.token;
           const id = response.data.id;
           sessionStorage.setItem("tokenAdministrador", tokenAdministrador);
           sessionStorage.setItem("id", id);
-          Swal.fire({
-            title: "Bienvenido!",
-            text: "Has iniciado sesión como administrador",
-            icon: "success",
-          });
+          Swal.close();
           navigate("/administrador");
         }
       })
@@ -85,6 +77,7 @@ export default function Login() {
         Your browser does not support the video tag.
       </video>
       <section className="mx-4 text-white min-vh-100">
+        {/* ENCABEZADOS */}
         <div className="d-flex justify-content-lg-start justify-content-sm-center justify-content-center py-3 mx-5 gap-3">
           <img src={logo} style={{ height: "60px" }} alt="logo" />
           <img src={logoUEES} style={{ height: "60px" }} alt="logoUEES" />
@@ -94,27 +87,28 @@ export default function Login() {
             ¡Bienvenido al team UEES!
           </h2>
         </div>
-        <div className=" d-flex flex-sm-column flex-lg-row flex-column justify-content-center m-5">
+
+        {/* IMAGEN DEL LOGIN */}
+        <div className=" d-flex flex-sm-column flex-lg-row flex-column justify-content-center">
           <div className="position-relative z-2 my-3">
             <img
               src={img}
               className="position-sm-relative position-lg-absolute position-relative  shadow-lg rounded-5 seccion-imagen-login"
-              style={{ width: "100%", maxWidth: "30rem" }}
               alt="Sample image"
             />
           </div>
-          <div
-            className="d-sm-none d-lg-flex d-none"
-            style={{ width: "125px" }}
-          ></div>
 
+          {/* CUADRO DEL LOGIN */}
           <div
-            className="rounded-5 z-1 mx-2 mx-lg-5 mx-2 seccion-login"
+            className="rounded-5 z-1 seccion-login col-lg-5"
             style={{
               backgroundColor: "#4c8c08a2",
             }}
           >
-            <form onSubmit={handleSubmit} className="p-4">
+            <form
+              onSubmit={handleSubmit}
+              className="p-4 d-flex flex-column justify-content-center align-items-center h-100"
+            >
               <h5 className="text-start my-4">Ingresa tus credenciales</h5>
 
               <div data-mdb-input-init className="form-outline mb-3 text-start">
@@ -132,7 +126,7 @@ export default function Login() {
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="-------"
+                  placeholder="Tu contraseña aquí"
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>

@@ -30,7 +30,7 @@ export default function Mapas({ propRutaNombre, propLatitud, propLongitud }) {
         center={{ lat, lng }}
         zoom={15}
         style={{ height: "400px", width: "100%" }}
-        className="rounded-5"
+        className="rounded-5 "
       >
         <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
 

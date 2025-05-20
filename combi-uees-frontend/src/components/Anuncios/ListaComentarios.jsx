@@ -48,33 +48,30 @@ export default function ListaComentarios() {
 
   return (
     <>
-      <h1 className="text-start fs-1 px-4 border-bottom border-2 m-3 w-75">
-        Noticias
-      </h1>
+      <h2 className="text-start logo-text fs-1 mx-5 border-bottom border-2 mb-3 ">
+        NOTICIAS
+      </h2>
       <div className="d-flex flex-sm-column flex-lg-row flex-column justify-content-end align-items-center mb-5 mx-sm-2 me-lg-5 mx-2">
-        <section className="position-relative mb-3">
+        <section className="position-relative col-lg-6 mb-3 px-3 px-lg-0">
           <img
             src={anuncio.anuncioURLFoto}
             alt="img_noticia"
             className="position-relative shadow-lg rounded-5 seccion-imagen"
             style={{
               width: "100%",
-              maxWidth: "30rem",
               height: "auto",
             }}
           />
         </section>
-        <section
-          className="d-sm-none d-lg-flex d-none"
-          style={{ width: "12%" }}
-        ></section>
+
         <section className="rounded-5 d-flex flex-column justify-content-between shadow-lg seccion-comentarios">
           <div
             className="m-sm-3 m-auto m-3"
             style={{
               overflowY: "auto",
-              height: "calc(60vh - 60px)",
               marginTop: "10px",
+              minHeight: "10rem",
+              maxHeight: "25rem",
             }}
           >
             {listaComentarios.length > 0 ? (

@@ -41,7 +41,7 @@ export default function Hora({
         <td className="text-end">
           <button
             onClick={handleEliminar}
-            className="btn btn-danger rounded-circle"
+            className="btn btn-danger rounded-circle btn-light-shadow"
             style={{ width: "3rem", height: "3rem" }}
           >
             <FaMinusCircle className="fs-4" />

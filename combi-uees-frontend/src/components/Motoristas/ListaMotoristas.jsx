@@ -12,9 +12,7 @@ export default function ListaMotoristas({
   return (
     <div>
       <div className="w-100 d-flex flex-sm-column flex-lg-row flex-column justify-content-center align-items-center border-bottom border-2 w-75 mb-4 pb-2">
-        <h2 className="text-sm-center text-lg-start text-center px-4 mb-3 w-75">
-          Motoristas
-        </h2>
+        <h2 className="text-start logo-text fs-1 mx-5 border-2 ">MOTORISTAS</h2>
         <AgregarMotorista
           tokenAdministrador={tokenAdministrador}
           listaRutas={listaRutas}

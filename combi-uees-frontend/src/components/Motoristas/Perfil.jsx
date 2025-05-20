@@ -91,11 +91,15 @@ export default function Perfil({ listaRutas, setListaRutas }) {
 
   return (
     <div className="text-lg-start text-sm-center text-center my-4">
-      <div className="d-flex flex-sm-column flex-lg-row flex-column align-items-center gap-sm-1 gap-lg-5 gap-1 m-3">
-        <h1>Motorista: {user.name}</h1>
+      <div className="d-flex flex-sm-column flex-lg-row flex-column align-items-center justify-content-lg-between pe-5 border-bottom border-2 pb-3">
+        <div className=" mx-5 text-center text-lg-start">
+          <h2 className="logo-text fs-1 ">MOTORISTA: {user.name}</h2>
+          <h2 className="px-4">Ruta: {nombreRuta}</h2>
+        </div>
+
         <Space direction="vertical">
           <Switch
-            className="custom-toggle"
+            className="custom-toggle btn-light-shadow"
             checked={!estado}
             checkedChildren="Activo"
             unCheckedChildren="Inactivo"
@@ -103,14 +107,14 @@ export default function Perfil({ listaRutas, setListaRutas }) {
           />
         </Space>
       </div>
-      <h2 className="px-4">Ruta: {nombreRuta}</h2>
+
       <div className="mt-5">
         <h2 className="text-center">Editar Perfil</h2>
       </div>
 
       <form action="" onSubmit={handleSubmit} className="text-start p-3">
         <div className="row mb-4">
-          <div className="col-sm-12 col-lg-4 col-12">
+          <div className="col-sm-12 col-lg-4 col-12 mb-4">
             <div
               data-mdb-input-init
               className="form-outline  d-flex flex-column justify-content-center align-items-center gap-2"
@@ -124,7 +128,7 @@ export default function Perfil({ listaRutas, setListaRutas }) {
               />
               <input
                 type="file"
-                className="form-control w-50"
+                className="form-control w-75 btn-light-shadow"
                 accept="image/*"
                 onChange={handleFotoPerfil}
               />
@@ -134,7 +138,7 @@ export default function Perfil({ listaRutas, setListaRutas }) {
           <div className="col">
             <div data-mdb-input-init className="form-outline">
               <label className="form-label" htmlFor="form6Example1">
-                Nombre de usuario
+                Nombre
               </label>
               <input
                 type="text"

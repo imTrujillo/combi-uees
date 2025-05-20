@@ -57,7 +57,7 @@ export default function GuardarComentario() {
                 type="text"
                 id="form6Example1"
                 className="form-control"
-                placeholder="Ingresa tu nombre..."
+                placeholder="Nombre (alias)"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
               />
@@ -67,7 +67,7 @@ export default function GuardarComentario() {
                 type="text"
                 id="form6Example2"
                 className="form-control"
-                placeholder="Título del comentario..."
+                placeholder="Tu título"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
               />
@@ -77,7 +77,7 @@ export default function GuardarComentario() {
                 type="text"
                 id="form6Example2"
                 className="form-control"
-                placeholder="Comenta aquí..."
+                placeholder="Descripción"
                 value={descripción}
                 onChange={(e) => setDescripción(e.target.value)}
               />
@@ -85,7 +85,7 @@ export default function GuardarComentario() {
           </div>
           <button
             type="submit"
-            className="col col-11 col-lg-2 col-11 footer-btn fs-4 px-1 py-1 mt-2 h-25 rounded-4 border-0 mx-2"
+            className="col col-11 col-lg-2 col-11 footer-btn btn-light-shadow fs-4 px-1 py-1 mt-2 h-25 rounded-4 border-0 mx-2"
           >
             <IoIosSend />
           </button>

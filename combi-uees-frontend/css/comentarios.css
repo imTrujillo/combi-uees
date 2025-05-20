@@ -36,12 +36,11 @@
 .seccion-comentarios {
   background-color: #eae185;
   padding-left: 8%;
-  height: 80vh;
 }
 
 .seccion-imagen {
   top: 50%;
-  left: 40%;
+  left: 10%;
   transform: translateY(0%);
 }
 

@@ -71,12 +71,10 @@ export default function ActualizarAnuncio({ tokenAdministrador }) {
 
   return (
     <section className="w-100 d-flex flex-column justify-content-center align-items-center w-100 my-4 pb-2">
-      <h2 className="text-lg-start text-center text-start px-4 border-bottom border-2 mb-3 w-75">
-        Anuncios
-      </h2>
+      <h2 className="text-start logo-text fs-1 mx-5 mb-4">ANUNCIOS</h2>
       <form
         action=""
-        className="d-flex flex-sm-column flex-lg-row flex-column justify-content-between align-items-sm-center align-items-lg-start align-items-center w-75"
+        className="d-flex flex-sm-column flex-lg-row flex-column justify-content-center align-items-sm-center align-items-lg-start align-items-center w-75"
         onSubmit={(e) => handleSubmit(e)}
       >
         <div className="d-flex flex-column align-items-center justify-content-center">
@@ -95,14 +93,14 @@ export default function ActualizarAnuncio({ tokenAdministrador }) {
           <input
             type="submit"
             value="Actualizar Anuncio"
-            className="btn-guardar border-0 rounded-4 py-2 px-4 m-2"
+            className="btn-guardar btn-light-shadow border-0 rounded-4 py-2 px-4 m-2"
           />
         </div>
         <input
           type="file"
           accept="image/*"
           onChange={changeUploadImage}
-          className="form-control"
+          className="form-control w-50 btn-light-shadow"
         />
       </form>
     </section>
