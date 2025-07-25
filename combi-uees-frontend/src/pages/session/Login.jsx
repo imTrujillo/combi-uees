@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Swal from "sweetalert2";
-import SwalLoading from "../../assets/SwalFireLoading";
 import "../../../css/modal.css";
 import "../../../css/motorista.css";
+import { useAuth } from "./AuthProvider";
 
 import { IoLogInSharp } from "react-icons/io5";
-import img from "../../assets/loginphoto.jpg";
-import logoUEES from "../../assets/logo-uees.png";
-import logo from "../../assets/combi-uees-logo.png";
-import video from "../../assets/fondo.mp4";
+import img from "../../assets/images/loginphoto.jpg";
+import logoUEES from "../../assets/images/logo-uees.png";
+import logo from "../../assets/images/combi-uees-logo.png";
+import video from "../../assets/images/fondo.mp4";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const navigate = useNavigate();
 
+  const auth = useAuth();
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!inputs) {
       Swal.fire({
         title: "¡Alerta!",
         text: "Debes llenar todos los datos del formulario.",
@@ -29,39 +40,7 @@ export default function Login() {
       return;
     }
 
-    login(email, password);
-  };
-
-  const login = (email, password) => {
-    SwalLoading();
-    axios
-      .post("http://localhost:8000/api/v1/login", { email, password })
-      .then((response) => {
-        const rol = response.data.rol;
-
-        if (rol == "motorista") {
-          const tokenMotorista = response.data.token;
-          const id = response.data.id;
-          sessionStorage.setItem("tokenMotorista", tokenMotorista);
-          sessionStorage.setItem("id", id);
-          Swal.close();
-          navigate("/viajes");
-        } else if (rol == "administrador") {
-          const tokenAdministrador = response.data.token;
-          const id = response.data.id;
-          sessionStorage.setItem("tokenAdministrador", tokenAdministrador);
-          sessionStorage.setItem("id", id);
-          Swal.close();
-          navigate("/administrador");
-        }
-      })
-      .catch(() => {
-        Swal.fire({
-          title: "Error de sesión",
-          text: "Verifica tus credenciales",
-          icon: "error",
-        });
-      });
+    auth.login(inputs);
   };
 
   return (
@@ -115,9 +94,10 @@ export default function Login() {
                 <label className="form-label ">Correo:</label>
                 <input
                   type="email"
+                  name="email"
                   className="form-control"
                   placeholder="example@example.com"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleInput}
                 />
               </div>
 
@@ -125,9 +105,10 @@ export default function Login() {
                 <label className="form-label">Contraseña: </label>
                 <input
                   type="password"
+                  name="password"
                   className="form-control"
                   placeholder="Tu contraseña aquí"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleInput}
                 />
               </div>
 
