@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('horario_horas', function (Blueprint $table) {
+        Schema::create('horarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('IDHorario')->references('horarioID')->on('horarios')->onDelete('cascade');
+            $table->foreignId('IDRuta')->references('rutaID')->on('rutas')->onDelete('cascade');
             $table->time('horaSalida');
             $table->timestamps();
         });
@@ -25,7 +25,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('horario_horas');
+        Schema::table('horarios', function (Blueprint $table) {
+            $table->dropForeign(['IDRuta']);
+        });
+
+        Schema::dropIfExists('horarios');
     }
 };

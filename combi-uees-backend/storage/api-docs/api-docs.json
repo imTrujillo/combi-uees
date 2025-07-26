@@ -1,0 +1,1380 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "COMBI UEES con Laravel 12",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/anuncios": {
+            "get": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Obtener todos los anuncios con sus comentarios",
+                "operationId": "f67a34ceb990cbb1af33736428b485bf",
+                "responses": {
+                    "200": {
+                        "description": "Lista de anuncios con comentarios"
+                    }
+                }
+            }
+        },
+        "/api/anuncios/{anuncio}": {
+            "put": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Actualizar la URL de la foto del anuncio",
+                "operationId": "93c86ed4353d8363bca3f88d99ee97c4",
+                "parameters": [
+                    {
+                        "name": "anuncio",
+                        "in": "path",
+                        "description": "ID del anuncio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "anuncioURLFoto"
+                                ],
+                                "properties": {
+                                    "anuncioURLFoto": {
+                                        "type": "string",
+                                        "format": "url"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Anuncio actualizado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión",
+                "operationId": "80c0b886319fc75046ae8c50ca42221e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "remember": {
+                                        "type": "boolean",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso"
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión",
+                "operationId": "a90ec8a03ca670dc930ffa583f08b202",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada exitosamente"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/anuncios/{anuncio}/comentarios": {
+            "get": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Listar comentarios de un anuncio",
+                "operationId": "470792416a2bf9ac55c1e0ceb40ce107",
+                "parameters": [
+                    {
+                        "name": "anuncio",
+                        "in": "path",
+                        "description": "ID del anuncio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de comentarios"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Crear un comentario en un anuncio",
+                "operationId": "f91129b8389ffc930343fd8370b64ebc",
+                "parameters": [
+                    {
+                        "name": "anuncio",
+                        "in": "path",
+                        "description": "ID del anuncio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombreUsuario",
+                                    "comentarioTitulo",
+                                    "comentarioDescripción"
+                                ],
+                                "properties": {
+                                    "nombreUsuario": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "comentarioTitulo": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "comentarioDescripción": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Comentario registrado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/rutas/{ruta}/horarios": {
+            "get": {
+                "tags": [
+                    "Horarios"
+                ],
+                "summary": "Obtener todos los horarios de una ruta específica",
+                "operationId": "445e42400ad0066037deada60d9fdac4",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de horarios en orden descendente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Horario"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Horarios"
+                ],
+                "summary": "Crear un nuevo horario para una ruta",
+                "operationId": "dd30a4d5480ec185b0d0c0a081399b4d",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "horaSalida"
+                                ],
+                                "properties": {
+                                    "horaSalida": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "14:30:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Horario creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horario"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/horarios/{id}": {
+            "delete": {
+                "tags": [
+                    "Horarios"
+                ],
+                "summary": "Eliminar un horario por su ID",
+                "operationId": "427af64120bcdc63ed05235daf6731df",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del horario a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Horario eliminado exitosamente"
+                    },
+                    "404": {
+                        "description": "Horario no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/rutas": {
+            "get": {
+                "tags": [
+                    "Rutas"
+                ],
+                "summary": "Obtener todas las rutas con sus relaciones",
+                "operationId": "07f8f66135da1afc0dbdded354b14e48",
+                "responses": {
+                    "200": {
+                        "description": "Lista de rutas completas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ruta"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rutas"
+                ],
+                "summary": "Crear una nueva ruta",
+                "operationId": "7ae787bdba22d5f0225ce1875bc8f0d8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "rutaNombre",
+                                    "rutaLatitud",
+                                    "rutaLongitud"
+                                ],
+                                "properties": {
+                                    "rutaNombre": {
+                                        "type": "string",
+                                        "maxLength": 30,
+                                        "example": "Ruta Norte"
+                                    },
+                                    "rutaLatitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -2.1458
+                                    },
+                                    "rutaLongitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -79.9675
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ruta creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ruta"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/rutas/{ruta}": {
+            "put": {
+                "tags": [
+                    "Rutas"
+                ],
+                "summary": "Actualizar una ruta existente",
+                "operationId": "0135e1f85d528d0037e8d135e8ce00b3",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "rutaNombre",
+                                    "rutaLatitud",
+                                    "rutaLongitud"
+                                ],
+                                "properties": {
+                                    "rutaNombre": {
+                                        "type": "string",
+                                        "maxLength": 30,
+                                        "example": "Ruta Norte Actualizada"
+                                    },
+                                    "rutaLatitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -2.146
+                                    },
+                                    "rutaLongitud": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -79.968
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ruta actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ruta"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Rutas"
+                ],
+                "summary": "Eliminar una ruta",
+                "operationId": "01a00369de29f2118c46d5ea3e099c59",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ruta eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Ruta no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/rutas/{id}/ubicacion-buses": {
+            "get": {
+                "tags": [
+                    "Rutas"
+                ],
+                "summary": "Obtener conteo de motoristas por ubicación",
+                "operationId": "d8b9838ac0d10847791023c09b92c3b3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Conteo de motoristas en UEES y en la ruta",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "motoristasUEES": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "motoristasRuta": {
+                                            "type": "integer",
+                                            "example": 3
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ruta no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/rutas/{ruta}/motoristas": {
+            "get": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Obtener todos los motoristas de una ruta",
+                "operationId": "c71236c8ecb2982f4d47140489e73c00",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de motoristas ordenados por creación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Motorista"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Registrar un nuevo motorista en una ruta",
+                "operationId": "579b9995ba8dd29becd5787633c0f49a",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "motoristaURLFotoDePerfil",
+                                    "motoristaEstado",
+                                    "motoristaUbicación",
+                                    "IDRuta"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Carlos López"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "motorista@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "contraseñaSegura123"
+                                    },
+                                    "motoristaURLFotoDePerfil": {
+                                        "type": "string",
+                                        "format": "url",
+                                        "example": "https://ejemplo.com/foto.jpg"
+                                    },
+                                    "motoristaEstado": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "motoristaUbicación": {
+                                        "type": "string",
+                                        "example": "UEES"
+                                    },
+                                    "IDRuta": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Motorista registrado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Motorista"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/motoristas/{user}": {
+            "put": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Actualizar los datos de un motorista",
+                "operationId": "2d82c8795d19f356a25d0ee00cac12ba",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del motorista",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "password",
+                                    "motoristaURLFotoDePerfil",
+                                    "motoristaEstado",
+                                    "motoristaUbicación",
+                                    "IDRuta"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Carlos López"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "nuevaContraseñaSegura123"
+                                    },
+                                    "motoristaURLFotoDePerfil": {
+                                        "type": "string",
+                                        "format": "url",
+                                        "example": "https://ejemplo.com/nueva-foto.jpg"
+                                    },
+                                    "motoristaEstado": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "motoristaUbicación": {
+                                        "type": "string",
+                                        "example": "Ruta Norte"
+                                    },
+                                    "IDRuta": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Motorista actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Motorista"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/rutas/{ruta}/motoristas/{user}/estado": {
+            "patch": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Cambiar el estado de un motorista",
+                "operationId": "3dfe2a4981cb085c2abc2e5134181b26",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del motorista",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "motoristaEstado"
+                                ],
+                                "properties": {
+                                    "motoristaEstado": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado del motorista actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Motorista"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/rutas/{ruta}/motoristas/{user}": {
+            "delete": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Eliminar un motorista",
+                "operationId": "2b903332832418d10e8a589c78286741",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del motorista",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Motorista eliminado exitosamente"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/usuario": {
+            "get": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Obtener información del usuario autenticado",
+                "operationId": "491ad9f6d295f554e7ae03e37222e2ac",
+                "responses": {
+                    "200": {
+                        "description": "Información del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Motorista"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/rutas/{ruta}/viajes": {
+            "get": {
+                "tags": [
+                    "Viajes"
+                ],
+                "summary": "Obtener todos los viajes de una ruta",
+                "operationId": "7c5207f706eed9623bde20dc312dac6e",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de viajes ordenados por fecha más reciente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Viaje"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Viajes"
+                ],
+                "summary": "Crear un nuevo viaje en una ruta",
+                "operationId": "1a0c2d576660c6533f6fea668d5d447d",
+                "parameters": [
+                    {
+                        "name": "ruta",
+                        "in": "path",
+                        "description": "ID de la ruta",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombrePasajero",
+                                    "viajeFecha",
+                                    "viajeDestino"
+                                ],
+                                "properties": {
+                                    "nombrePasajero": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Juan Pérez"
+                                    },
+                                    "viajeFecha": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2023-12-15 14:30:00"
+                                    },
+                                    "viajeDestino": {
+                                        "type": "string",
+                                        "example": "Campus UEES"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Viaje creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Viaje"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Domingo no permitido": {
+                                        "summary": "Viaje en domingo",
+                                        "value": {
+                                            "errors": {
+                                                "viajeFecha": "La ruta no puede ser en domingo."
+                                            }
+                                        }
+                                    },
+                                    "Fecha mayor a una semana": {
+                                        "summary": "Fecha muy lejana",
+                                        "value": {
+                                            "errors": {
+                                                "viajeFecha": "La fecha del viaje no puede ser mayor a una semana desde hoy."
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/viajes/{id}": {
+            "put": {
+                "tags": [
+                    "Viajes"
+                ],
+                "summary": "Actualizar un viaje existente",
+                "operationId": "df036bb7fe601a4a778636258aa8b127",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del viaje",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombrePasajero",
+                                    "viajeFecha",
+                                    "viajeDestino",
+                                    "IDRuta"
+                                ],
+                                "properties": {
+                                    "nombrePasajero": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "Juan Pérez"
+                                    },
+                                    "viajeFecha": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2023-12-15 14:30:00"
+                                    },
+                                    "viajeDestino": {
+                                        "type": "string",
+                                        "example": "Campus UEES"
+                                    },
+                                    "IDRuta": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Viaje actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Viaje"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    },
+                    "404": {
+                        "description": "Viaje no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Viajes"
+                ],
+                "summary": "Eliminar un viaje",
+                "operationId": "ff1d0ae2efe59bd7d46b277e0aefe137",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del viaje",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Viaje eliminado exitosamente"
+                    },
+                    "404": {
+                        "description": "Viaje no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/viajes/{id}/estado": {
+            "patch": {
+                "tags": [
+                    "Viajes"
+                ],
+                "summary": "Cambiar el estado de un viaje",
+                "operationId": "59672e26490bc3d39190fe2095bf3cbf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del viaje",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "viajeEstado"
+                                ],
+                                "properties": {
+                                    "viajeEstado": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado del viaje actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Viaje"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validación"
+                    },
+                    "404": {
+                        "description": "Viaje no encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Horario": {
+                "title": "Horario",
+                "required": [
+                    "id",
+                    "inicio",
+                    "fin"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "inicio": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "fin": {
+                        "type": "string",
+                        "format": "time"
+                    }
+                },
+                "type": "object"
+            },
+            "Ruta": {
+                "title": "Ruta",
+                "description": "Información de una ruta de transporte",
+                "required": [
+                    "rutaID",
+                    "rutaNombre",
+                    "rutaLatitud",
+                    "rutaLongitud",
+                    "rutaBusesDisponibles",
+                    "rutaBusesTotales"
+                ],
+                "properties": {
+                    "rutaID": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "rutaNombre": {
+                        "type": "string",
+                        "maxLength": 30,
+                        "example": "Ruta Norte"
+                    },
+                    "rutaLatitud": {
+                        "type": "number",
+                        "format": "float",
+                        "example": -2.1458
+                    },
+                    "rutaLongitud": {
+                        "type": "number",
+                        "format": "float",
+                        "example": -79.9675
+                    },
+                    "rutaBusesDisponibles": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "rutaBusesTotales": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-26T15:40:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-26T15:45:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Motorista": {
+                "title": "Motorista",
+                "description": "Modelo de un motorista asignado a una ruta",
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "motoristaURLFotoDePerfil",
+                    "motoristaEstado",
+                    "motoristaUbicación",
+                    "IDRuta"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Carlos López"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "motorista@example.com"
+                    },
+                    "motoristaURLFotoDePerfil": {
+                        "type": "string",
+                        "format": "url",
+                        "example": "https://ejemplo.com/foto.jpg"
+                    },
+                    "motoristaEstado": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "motoristaUbicación": {
+                        "type": "string",
+                        "example": "Campus UEES"
+                    },
+                    "IDRuta": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-26T12:34:56Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-26T12:45:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Viaje": {
+                "title": "Viaje",
+                "description": "Información de un viaje asignado a una ruta",
+                "required": [
+                    "ViajeID",
+                    "nombrePasajero",
+                    "viajeFecha",
+                    "viajeDestino",
+                    "viajeEstado",
+                    "IDRuta"
+                ],
+                "properties": {
+                    "ViajeID": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nombrePasajero": {
+                        "type": "string",
+                        "example": "Juan Pérez"
+                    },
+                    "viajeFecha": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-01 14:30:00"
+                    },
+                    "viajeDestino": {
+                        "type": "string",
+                        "example": "Campus UEES"
+                    },
+                    "viajeEstado": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "IDRuta": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-26T12:34:56Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-26T12:45:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Anuncios",
+            "description": "Gestión de anuncios"
+        },
+        {
+            "name": "Autenticación",
+            "description": "Login y logout de usuarios"
+        },
+        {
+            "name": "Comentarios",
+            "description": "Operaciones relacionadas con comentarios en anuncios"
+        },
+        {
+            "name": "Horarios",
+            "description": "Horarios"
+        },
+        {
+            "name": "Rutas",
+            "description": "Rutas"
+        },
+        {
+            "name": "Motoristas",
+            "description": "Motoristas"
+        },
+        {
+            "name": "Viajes",
+            "description": "Viajes"
+        }
+    ]
+}

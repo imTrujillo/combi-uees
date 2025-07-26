@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Rutas;
+use App\Models\Ruta;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +15,7 @@ class Rutas_Seeder extends Seeder
     public function run(): void
     {
         //
-        Rutas::factory(3)->create();
+        Ruta::factory(5)->create();
         Log::info('Rutas_Seeder completado');
     }
 }

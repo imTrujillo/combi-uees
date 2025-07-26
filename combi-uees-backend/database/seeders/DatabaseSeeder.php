@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Anuncio;
 use App\Models\Anuncios;
 use App\Models\Roles;
 use App\Models\User;
@@ -23,10 +24,13 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'administrador']);
         Role::create(['name' => 'motorista']);
 
-        Anuncios::create([
+        // CREAR UN ANUNCIO
+        Anuncio::create([
             'anuncioID' => 1,
             'anuncioURLFoto' => 'google.com',
         ]);
+
+        // CREAR ADMIN
         $user = User::create([
             'id' => 1,
             'name' => 'administrator',
@@ -34,6 +38,8 @@ class DatabaseSeeder extends Seeder
             'password' => '123456'
         ]);
         $user->assignRole('administrador');
+
+
         Log::info('Usuarios creados: ' . $user);
         $this->call([
             Rutas_Seeder::class,

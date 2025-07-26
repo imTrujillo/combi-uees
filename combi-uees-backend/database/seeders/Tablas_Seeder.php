@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comentario;
 use App\Models\Comentarios;
 use App\Models\Rutas;
 use App\Models\User;
@@ -16,7 +17,7 @@ class Tablas_Seeder extends Seeder
     public function run(): void
     {
         //
-        Comentarios::factory(10)->create();
+        Comentario::factory(10)->create();
         User::factory(10)->create();
     }
 }

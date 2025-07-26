@@ -1,64 +1,71 @@
 <?php
 
-use App\Http\Controllers\AnunciosController;
-use App\Http\Controllers\AutenticarController;
-use App\Http\Controllers\ComentariosController;
-use App\Http\Controllers\HorarioHorasController;
-use App\Http\Controllers\HorariosController;
-use App\Http\Controllers\RutasController;
+use App\Http\Controllers\AnuncioController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\HorarioController;
+use App\Http\Controllers\RutaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ViajesController;
-use App\Models\Horarios;
+use App\Http\Controllers\ViajeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+// Ruta protegida básica
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
-
-
-//Rutas de Administrador
-Route::middleware(['auth:sanctum', 'role:administrador'])->group(function () {
-    Route::patch('/v1/anuncios/{id}', [AnunciosController::class, 'update']);
-
-    Route::get('/v1/user', [UserController::class, 'index']);
-    Route::post('/v1/user', [UserController::class, 'store']);
-    Route::delete('/v1/user/{id}', [UserController::class, 'delete']);
-
-    Route::post('/v1/rutas', [RutasController::class, 'store']);
-    Route::patch('/v1/rutas/{id}', [RutasController::class, 'update']);
-    Route::delete('/v1/rutas/{id}', [RutasController::class, 'delete']);
-
-    Route::post('/v1/horarios/horas', [HorarioHorasController::class, 'store']);
-    Route::delete('/v1/horarios/horas/{id}', [HorarioHorasController::class, 'delete']);
 });
 
-//Rutas de Motorista o Administrador
-Route::middleware(['auth:sanctum', 'role:motorista|administrador'])->group(function () {
-    Route::get('/v1/viajes', [ViajesController::class, 'index']);
-    Route::patch('/v1/viajes/{id}', [ViajesController::class, 'update']);
-    Route::patch('/v1/viajes/status/{id}', [ViajesController::class, 'updateStatus']);
-    Route::delete('/v1/viajes/{id}', [ViajesController::class, 'delete']);
+// Rutas de Administrador
+Route::middleware(['auth:sanctum', 'role:administrador'])->prefix('/v1')->group(function () {
 
-    Route::post('/v1/logout', [AutenticarController::class, 'logout']);
-    Route::get('/v1/user/{id}', [UserController::class, 'getUser']);
-    Route::patch('/v1/user/{id}', [UserController::class, 'update']);
-    Route::patch('/v1/user/status/{id}', [UserController::class, 'updateStatus']);
+    // CRUD Rutas
+    Route::resource('/rutas', RutaController::class)->only(['store', 'update', 'destroy']);
+
+    // CRUD Motoristas
+    Route::resource('/rutas/{ruta}/users', UserController::class)->only(['index', 'store', 'destroy']);
+
+    // CRUD Horarios
+    Route::resource('/rutas/{ruta}/horarios', HorarioController::class)->only(['store', 'destroy']);
+
+    // Anuncios
+    Route::put('/anuncios/{id}', [AnuncioController::class, 'update']);
 });
 
-//Rutas de usuario
-Route::post('/v1/login', [AutenticarController::class, 'login']);
-Route::get('/v1/rutas', [RutasController::class, 'index']);
-Route::get('/v1/anuncio', [AnunciosController::class, 'index']);
-Route::get('/v1/comentarios', [ComentariosController::class, 'index']);
-Route::post('/v1/comentarios', [ComentariosController::class, 'store']);
-Route::post('/v1/viajes', [ViajesController::class, 'store']);
-Route::get('/v1/horarios', [HorariosController::class, 'index']);
-Route::get('/v1/horarios/horas/{id}', [HorarioHorasController::class, 'index']);
-Route::get('/v1/rutas/ubicacion/{id}', [RutasController::class, 'ubicaciónBuses']);
+// Rutas de Motorista o Administrador
+Route::middleware(['auth:sanctum', 'role:motorista|administrador'])->prefix('/v1')->group(function () {
+    // CRUD de viajes
+    Route::resource('/rutas/{ruta}/viajes', ViajeController::class)->only(['index', 'update', 'destroy']);
 
+    //Actualizar estado de viajes
+    Route::put('/rutas/{ruta}/viajes/{id}/status', [ViajeController::class, 'updateStatus']);
 
+    // Usuarios
+    Route::get('/user', [UserController::class, 'user']);
+    Route::put('/user/{user}', [UserController::class, 'update']);
+    Route::put('/rutas/{ruta}/user/{user}/status', [UserController::class, 'updateStatus']);
 
+    // Logout
+    Route::delete('/logout', [AuthController::class, 'destroy'])->name('logout');
+});
+
+// Rutas públicas o de usuario general
+
+// Autenticación
+Route::resource('/auth', AuthController::class)->only(['create', 'store']);
+
+// Comentarios
+Route::resource('/anuncios/{anuncio}/comentarios', ComentarioController::class)->only(['index', 'store']);
+
+// Rutas, horarios, anuncios, viajes
+Route::prefix('/v1')->group(function () {
+    Route::get('/anuncio', [AnuncioController::class, 'index']);
+    Route::get('/rutas', [RutaController::class, 'index']);
+    Route::get('/rutas/ubicacion/{id}', [RutaController::class, 'ubicaciónBuses']);
+    Route::post('/rutas/{ruta}/viajes', [ViajeController::class, 'store']);
+    Route::get('/rutas/{ruta}/horarios', [HorarioController::class, 'index']);
+});
+
+// Ruta para manejar acceso sin token
 Route::get('/token', function () {
     return response()->json(['message' => 'Necesitas un token'], 401);
 })->name('login');

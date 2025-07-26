@@ -2,26 +2,25 @@
 
 namespace Database\Factories;
 
-use App\Models\Horarios;
-use App\Models\Rutas;
+use App\Models\Ruta;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\HorarioHoras>
  */
-class HorariosFactory extends Factory
+class HorarioFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = Horarios::class;
-
     public function definition(): array
     {
         return [
-            'IDRuta' => Rutas::factory(),
+            //
+            'IDRuta' => Ruta::factory(),
+            'horaSalida' => fake()->time('H:i:s'),
         ];
     }
 }

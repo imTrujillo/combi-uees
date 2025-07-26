@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Roles;
-use App\Models\Rutas;
+
+use App\Models\Ruta;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +26,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $ruta = Rutas::inRandomOrder()->first();
+        $ruta = Ruta::inRandomOrder()->first();
+
         $rutaID = $ruta ? $ruta->rutaID : null;
         $nombreRuta = $ruta ? $ruta->rutaNombre : 'Desconocido';
         return [
@@ -47,7 +48,7 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             $user->assignRole('motorista');
             if ($user->IDRuta) {
-                $ruta = Rutas::find($user->IDRuta);
+                $ruta = Ruta::find($user->IDRuta);
 
                 if ($ruta) {
                     if ($user->motoristaEstado === 1) {
