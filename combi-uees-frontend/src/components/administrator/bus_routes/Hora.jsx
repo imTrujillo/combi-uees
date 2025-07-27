@@ -8,16 +8,20 @@ import "../../../../css/colores.css";
 export default function Hora({
   propHoraID,
   propHora,
-  tokenAdministrador,
+  propIDRuta,
+  token,
   setHorasHorario,
 }) {
   function handleEliminar(e) {
     e.preventDefault();
     SwalFireLoading();
     axios
-      .delete(`http://127.0.0.1:8000/api/v1/horarios/horas/${propHoraID}`, {
-        headers: { Authorization: `Bearer ${tokenAdministrador}` },
-      })
+      .delete(
+        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/horarios/${propHoraID}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then(() => {
         Swal.fire("Eliminado", "La hora ha sido borrada.", "success");
       })

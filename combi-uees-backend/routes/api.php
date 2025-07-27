@@ -10,6 +10,7 @@ use App\Http\Controllers\ViajeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 // Ruta protegida básica
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -51,7 +52,7 @@ Route::middleware(['auth:sanctum', 'role:motorista|administrador'])->prefix('/v1
 // Rutas públicas o de usuario general
 
 // Autenticación
-Route::resource('/auth', AuthController::class)->only(['create', 'store']);
+Route::resource('/auth', AuthController::class)->only(['store']);
 
 // Comentarios
 Route::resource('/anuncios/{anuncio}/comentarios', ComentarioController::class)->only(['index', 'store']);

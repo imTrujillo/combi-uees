@@ -10,19 +10,20 @@ export default function Index() {
   const [listaViajes, setListaViajes] = useState([]);
   const [listaRutas, setListaRutas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { token, rol } = useAuth();
+  const { token, rol, id } = useAuth();
 
   useEffect(() => {
     const apiService = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/v1/rutas");
         setListaRutas(response.data);
+        setListaViajes(response.data.flatMap((ruta) => ruta.viajes || []));
       } catch (error) {
         console.error("Ocurrió un error:", error);
       }
     };
     apiService();
-  }, []);
+  }, [listaRutas, listaViajes]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -39,7 +40,12 @@ export default function Index() {
   return (
     <div>
       {rol !== "administrador" && (
-        <Perfil listaRutas={listaRutas} setListaRutas={setListaRutas} />
+        <Perfil
+          token={token}
+          propIDMotorista={id}
+          listaRutas={listaRutas}
+          setListaRutas={setListaRutas}
+        />
       )}
 
       <TripsIndex

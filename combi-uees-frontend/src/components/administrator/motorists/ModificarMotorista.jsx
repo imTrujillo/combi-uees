@@ -16,7 +16,7 @@ export default function ModificarMotorista({
   propUbicación,
   propIDRuta,
   propNombreRuta,
-  tokenAdministrador,
+  token,
   listaRutas,
 }) {
   const [modal, setModal] = useState(false);
@@ -62,11 +62,11 @@ export default function ModificarMotorista({
       IDRuta: ruta,
     };
     axios
-      .patch(
+      .put(
         `http://127.0.0.1:8000/api/v1/user/${propIDMotorista}`,
         motoristaEditado,
         {
-          headers: { Authorization: `Bearer ${tokenAdministrador}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then(() => {
@@ -86,12 +86,12 @@ export default function ModificarMotorista({
   const handleEstado = async (checked) => {
     SwalFireLoading();
     try {
-      axios.patch(
-        `http://127.0.0.1:8000/api/v1/user/status/${propIDMotorista}`,
+      axios.put(
+        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/user/${propIDMotorista}/status`,
         { motoristaEstado: checked },
         {
           headers: {
-            Authorization: `Bearer ${tokenAdministrador}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -121,9 +121,12 @@ export default function ModificarMotorista({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(`http://127.0.0.1:8000/api/v1/user/${propIDMotorista}`, {
-            headers: { Authorization: `Bearer ${tokenAdministrador}` },
-          })
+          .delete(
+            `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/users/${propIDMotorista}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
           .then(() => {
             Swal.fire("Eliminado", "El motorista ha sido borrado.", "success");
           })

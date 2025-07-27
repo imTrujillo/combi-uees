@@ -8,7 +8,7 @@ import "../../../../css/colores.css";
 
 export default function AgregarHora({
   propIDRuta,
-  tokenAdministrador,
+  token,
   setHorasHorario,
   horasHorario,
 }) {
@@ -27,9 +27,13 @@ export default function AgregarHora({
     };
 
     axios
-      .post("http://127.0.0.1:8000/api/v1/horarios/horas", nuevaHora, {
-        headers: { Authorization: `Bearer ${tokenAdministrador}` },
-      })
+      .post(
+        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/horarios`,
+        nuevaHora,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setHorasHorario((prevHoras) => [
           ...prevHoras,

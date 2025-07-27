@@ -7,6 +7,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const [id, setId] = useState(null);
   const [user, setUser] = useState(null);
   const [rol, setRol] = useState(sessionStorage.getItem("rol") || "");
   const [token, setToken] = useState(
@@ -19,12 +20,13 @@ const AuthProvider = ({ children }) => {
   const login = async (data) => {
     SwalFireLoading();
     axios
-      .post("http://localhost:8000/api/v1/login", data)
+      .post("http://localhost:8000/api/auth", data)
       .then((response) => {
         setUser(response.data.correo);
+        setId(response.data, id);
+        setToken(response.data.token);
 
         if (response.data.rol == "motorista") {
-          setToken(response.data.token);
           setRol("motorista");
           sessionStorage.setItem("rol", "motorista");
           sessionStorage.setItem("tokenMotorista", response.data.token);
@@ -33,7 +35,6 @@ const AuthProvider = ({ children }) => {
           navigate("/viajes");
           return;
         } else if (response.data.rol == "administrador") {
-          setToken(response.data.token);
           setRol("administrador");
           sessionStorage.setItem("rol", "administrador");
           sessionStorage.setItem("tokenAdministrador", response.data.token);
@@ -55,7 +56,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     SwalFireLoading();
     axios
-      .post("http://localhost:8000/api/v1/logout", null, {
+      .delete("http://localhost:8000/api/v1/logout", null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -76,11 +77,19 @@ const AuthProvider = ({ children }) => {
           text: "Verifica tus credenciales",
           icon: "error",
         });
+        setUser(null);
+        setToken("");
+        sessionStorage.removeItem("tokenMotorista");
+        sessionStorage.removeItem("tokenAdministrador");
+        sessionStorage.removeItem("id");
+        sessionStorage.removeItem("rol");
+        navigate("/");
+        Swal.close();
       });
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, rol, login, logout }}>
+    <AuthContext.Provider value={{ id, user, token, rol, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

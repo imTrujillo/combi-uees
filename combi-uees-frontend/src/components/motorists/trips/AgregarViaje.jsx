@@ -7,11 +7,7 @@ import SwalFireLoading from "../../../assets/SwalFireLoading";
 import { MdAddCircle } from "react-icons/md";
 import "../../../../css/colores.css";
 
-export default function AgregarViaje({
-  listaRutas,
-  setListaRutas,
-  tokenMotorista,
-}) {
+export default function AgregarViaje({ listaRutas, setListaRutas, token }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState("");
   const [fecha, setFecha] = useState("");
@@ -25,7 +21,7 @@ export default function AgregarViaje({
     try {
       SwalFireLoading();
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/v1/horarios/horas/${e.target.value}`
+        `http://127.0.0.1:8000/api/v1/rutas/${e.target.value}/horarios`
       );
 
       const horasOrdenadas = response.data.sort((a, b) =>
@@ -53,16 +49,20 @@ export default function AgregarViaje({
       nombrePasajero: nombre,
       viajeFecha: `${fecha} ${hora}`,
       viajeDestino: destino,
-      IDRuta: ruta,
     };
 
     axios
-      .post("http://127.0.0.1:8000/api/v1/viajes", nuevoViaje, {
-        headers: { Authorization: `Bearer ${tokenMotorista}` },
+      .post(`http://127.0.0.1:8000/api/v1/rutas/${ruta}/viajes`, nuevoViaje, {
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         Swal.fire("Éxito", "El viaje se ha guardado.", "success");
-
+        setNombre("");
+        setFecha("");
+        setHora("");
+        setDestino("");
+        setRuta("");
+        setHorasHorario([]);
         setModal(false);
       })
       .catch(() => {

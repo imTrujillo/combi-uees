@@ -9,11 +9,7 @@ import boxphoto from "../../../assets/images/caja-vacia.png";
 import { createPortal } from "react-dom";
 import { IoEye } from "react-icons/io5";
 
-export default function ModificarHorario({
-  propIDRuta,
-  propNombre,
-  tokenAdministrador,
-}) {
+export default function ModificarHorario({ propIDRuta, propNombre, token }) {
   const [modal, setModal] = useState(false);
   const [horasHorario, setHorasHorario] = useState([]);
 
@@ -22,7 +18,7 @@ export default function ModificarHorario({
     SwalFireLoading();
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/v1/horarios/horas/${propIDRuta}`
+        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/horarios`
       );
       const horasOrdenadas = response.data.sort((a, b) =>
         a.horaSalida.localeCompare(b.horaSalida)
@@ -64,7 +60,7 @@ export default function ModificarHorario({
                     <div>
                       <AgregarHora
                         propIDRuta={propIDRuta}
-                        tokenAdministrador={tokenAdministrador}
+                        token={token}
                         setHorasHorario={setHorasHorario}
                         horasHorario={horasHorario}
                       />
@@ -92,7 +88,8 @@ export default function ModificarHorario({
                                       key={horario.id}
                                       propHoraID={horario.id}
                                       propHora={horario.horaSalida}
-                                      tokenAdministrador={tokenAdministrador}
+                                      propIDRuta={propIDRuta}
+                                      token={token}
                                       setHorasHorario={setHorasHorario}
                                     />
                                   );

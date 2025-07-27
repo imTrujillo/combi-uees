@@ -6,7 +6,7 @@ import "../../../css/modal.css";
 import photo from "../../assets/images/default.jpg";
 
 export default function AgregarMotorista({
-  tokenAdministrador,
+  token,
   listaRutas,
   setListaMotoristas,
   listaMotoristas,
@@ -70,9 +70,13 @@ export default function AgregarMotorista({
     };
 
     axios
-      .post("http://127.0.0.1:8000/api/v1/user", nuevoMotorista, {
-        headers: { Authorization: `Bearer ${tokenAdministrador}` },
-      })
+      .post(
+        `http://127.0.0.1:8000/api/v1/rutas/${rutaAgregar}/users`,
+        nuevoMotorista,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then(() => {
         Swal.fire("Éxito", "El motorista se ha guardado.", "success")
           .then(() => {

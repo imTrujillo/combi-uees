@@ -5,7 +5,7 @@ import SwalFireLoading from "../../../assets/SwalFireLoading";
 
 import photo from "../../../assets/images/default.jpg";
 
-export default function ActualizarAnuncio({ tokenAdministrador }) {
+export default function ActualizarAnuncio({ token }) {
   const [url, setUrl] = useState(undefined);
 
   const handleSubmit = (e) => {
@@ -29,11 +29,11 @@ export default function ActualizarAnuncio({ tokenAdministrador }) {
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .patch(
+          .put(
             "http://127.0.0.1:8000/api/v1/anuncios/1",
             { anuncioURLFoto: url },
             {
-              headers: { Authorization: `Bearer ${tokenAdministrador}` },
+              headers: { Authorization: `Bearer ${token}` },
             }
           )
           .then(() => {

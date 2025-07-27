@@ -17,20 +17,10 @@ export default function Index() {
   useEffect(() => {
     const apiService = async () => {
       try {
-        const responseMotoristas = await axios.get(
-          "http://127.0.0.1:8000/api/v1/user",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const responseRutas = await axios.get(
-          "http://127.0.0.1:8000/api/v1/rutas",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setListaMotoristas(responseMotoristas.data);
-        setListaRutas(responseRutas.data);
+        const response = await axios.get("http://127.0.0.1:8000/api/v1/rutas");
+
+        setListaRutas(response.data);
+        setListaMotoristas(response.data.flatMap((ruta) => ruta.users));
       } catch (error) {
         console.error("Ocurrió un error:", error);
       }

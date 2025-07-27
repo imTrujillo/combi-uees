@@ -6,7 +6,7 @@ import GuardarPerfil from "./GuardarPerfil";
 import photo from "../../../assets/images/photo.jpg";
 import SwalFireLoading from "../../../assets/SwalFireLoading";
 
-export default function Perfil({ listaRutas, setListaRutas }) {
+export default function Perfil({ listaRutas, setListaRutas, token, propIDMotorista }) {
   const [user, setUser] = useState({});
   const [nombre, setNombre] = useState(user.name);
   const [contraseña, setContraseña] = useState("");
@@ -14,10 +14,6 @@ export default function Perfil({ listaRutas, setListaRutas }) {
   const [estado, setEstado] = useState(user.motoristaEstado);
   const [ubicación, setUbicación] = useState(user.motoristaUbicación);
   const [loading, setLoading] = useState(true);
-  const id = sessionStorage.getItem("id");
-  const tokenMotorista = sessionStorage.getItem("tokenMotorista");
-  const tokenAdministrador = sessionStorage.getItem("tokenAdministrador");
-  const token = tokenMotorista ? tokenMotorista : tokenAdministrador;
 
   const handleFotoPerfil = async (e) => {
     const file = e.target.files[0];
@@ -37,14 +33,11 @@ export default function Perfil({ listaRutas, setListaRutas }) {
   useEffect(() => {
     const apiService = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/v1/user/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`http://127.0.0.1:8000/api/v1/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(response.data);
         setLoading(false);
       } catch (error) {
@@ -70,8 +63,8 @@ export default function Perfil({ listaRutas, setListaRutas }) {
   const handleEstado = async (checked) => {
     SwalFireLoading();
     try {
-      axios.patch(
-        `http://127.0.0.1:8000/api/v1/user/status/${id}`,
+      axios.put(
+        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/user/${propIDMotorista}/status`,
         { motoristaEstado: checked },
         {
           headers: {

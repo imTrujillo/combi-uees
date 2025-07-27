@@ -34,7 +34,7 @@ class AuthController extends Controller
      *     @OA\Response(response=401, description="Credenciales incorrectas")
      * )
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         // Validación de entrada
         $validator = Validator::make($request->all(), [

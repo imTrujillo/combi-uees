@@ -20,14 +20,11 @@ export default function Index() {
         const responseAnuncio = await axios.get(
           "http://127.0.0.1:8000/api/v1/anuncio"
         );
-        const responseListaComentarios = await axios.get(
-          "http://127.0.0.1:8000/api/v1/comentarios"
-        );
         const anuncioId1 = responseAnuncio.data.find(
           (anuncio) => anuncio.anuncioID == 1
         );
         setAnuncio(anuncioId1);
-        setListaComentarios(responseListaComentarios.data);
+        setListaComentarios(anuncioId1.comentarios);
       } catch (error) {
         console.error("Ocurrió un error:", error);
       }

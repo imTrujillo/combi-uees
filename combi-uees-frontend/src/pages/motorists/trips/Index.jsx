@@ -11,33 +11,6 @@ export default function Index({
   setListaRutas,
   token,
 }) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const apiService = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/v1/viajes`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setListaViajes(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Ocurrió un error:", error);
-        setLoading(false);
-      }
-    };
-    apiService();
-  }, [listaViajes]);
-
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
   return (
     <div>
       <div className="d-flex border-bottom border-2 mx-5 mb-4">
@@ -84,6 +57,7 @@ export default function Index({
                       propViajeEstado={viaje.viajeEstado}
                       propIDRuta={viaje.IDRuta}
                       propNombreRuta={nombreRuta}
+                      propHorario={rutaEncontrada.horarios}
                       propViajeID={viaje.viajeID}
                       token={token}
                     />

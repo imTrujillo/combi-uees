@@ -7,7 +7,7 @@ import "../../../../css/modal.css";
 import "../../../../css/colores.css";
 
 export default function AgregarRuta({
-  tokenAdministrador,
+  token,
   listaRutas,
   setListaRutas,
 }) {
@@ -35,7 +35,7 @@ export default function AgregarRuta({
     console.log(rutaNueva);
     axios
       .post("http://127.0.0.1:8000/api/v1/rutas", rutaNueva, {
-        headers: { Authorization: `Bearer ${tokenAdministrador}` },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         Swal.fire("Éxito", "La ruta se ha guardado.", "success");

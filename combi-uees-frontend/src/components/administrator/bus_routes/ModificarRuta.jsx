@@ -12,7 +12,7 @@ export default function ModificarRuta({
   propNombre,
   propLatitud,
   propLongitud,
-  tokenAdministrador,
+  token,
   listaRutas,
 }) {
   const [modal, setModal] = useState(false);
@@ -38,7 +38,7 @@ export default function ModificarRuta({
     };
     axios
       .patch(`http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}`, rutaEditada, {
-        headers: { Authorization: `Bearer ${tokenAdministrador}` },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         Swal.fire("Éxito", "La ruta se ha actualizado.", "success");
@@ -68,7 +68,7 @@ export default function ModificarRuta({
         SwalFireLoading();
         axios
           .delete(`http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}`, {
-            headers: { Authorization: `Bearer ${tokenAdministrador}` },
+            headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {
             Swal.fire("Eliminado", "la ruta ha sido borrada.", "success");

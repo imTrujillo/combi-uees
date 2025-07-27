@@ -26,7 +26,7 @@ export default function Show({
           `http://127.0.0.1:8000/api/v1/rutas/ubicacion/${propRutaID}`
         );
         const listaHorariosResponse = await axios.get(
-          `http://127.0.0.1:8000/api/v1/horarios/horas/${propRutaID}`
+          `http://127.0.0.1:8000/api/v1/rutas/${propRutaID}/horarios`
         );
         setListaBusesUbicación(listaBusesResponse.data);
         const horasOrdenadas = listaHorariosResponse.data.sort((a, b) =>

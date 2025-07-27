@@ -13,11 +13,11 @@ export default function ModificarViaje({
   propViajeFecha,
   propViajeDestino,
   propViajeEstado,
-  tokenMotorista,
+  token,
   propNombreRuta,
   propIDRuta,
   propViajeID,
-  horasHorario,
+  propHorario,
 }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState(propNombrePasajero);
@@ -53,11 +53,11 @@ export default function ModificarViaje({
       IDRuta: ruta,
     };
     axios
-      .patch(
-        `http://127.0.0.1:8000/api/v1/viajes/${propViajeID}`,
+      .put(
+        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/viajes/${propViajeID}`,
         viajeEditado,
         {
-          headers: { Authorization: `Bearer ${tokenMotorista}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then(() => {
@@ -83,11 +83,11 @@ export default function ModificarViaje({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .patch(
-            `http://127.0.0.1:8000/api/v1/viajes/status/${propViajeID}`,
+          .put(
+            `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/viajes/${propViajeID}/status`,
             { viajeEstado: false },
             {
-              headers: { Authorization: `Bearer ${tokenMotorista}` },
+              headers: { Authorization: `Bearer ${token}` },
             }
           )
           .then(() => {
@@ -118,9 +118,12 @@ export default function ModificarViaje({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(`http://127.0.0.1:8000/api/v1/viajes/${propViajeID}`, {
-            headers: { Authorization: `Bearer ${tokenMotorista}` },
-          })
+          .delete(
+            `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/viajes/${propViajeID}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
           .then(() => {
             Swal.fire("Eliminado", "El viaje ha sido borrado.", "success");
           })
@@ -231,7 +234,7 @@ export default function ModificarViaje({
 
                     <div className="form-outline mb-4">
                       <label className="form-label">Horario</label>
-                      {horasHorario.length == 0 ? (
+                      {propHorario.length == 0 ? (
                         <input
                           type="time"
                           className="form-control"
@@ -247,7 +250,7 @@ export default function ModificarViaje({
                           <option value="" disabled selected>
                             Escoja una hora
                           </option>
-                          {horasHorario.map((hora) => (
+                          {propHorario.map((hora) => (
                             <option key={hora.id} value={hora.horaSalida}>
                               {hora.horaSalida}
                             </option>

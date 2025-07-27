@@ -9,30 +9,11 @@ export default function Show({
   propViajeDestino,
   propIDRuta,
   propViajeEstado,
+  propHorario,
   propNombreRuta,
   token,
   propViajeID,
 }) {
-  const [horasHorario, setHorasHorario] = useState([]);
-
-  useEffect(() => {
-    const apiService = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/v1/horarios/horas/${propIDRuta}`
-        );
-
-        const horasOrdenadas = response.data.sort((a, b) =>
-          a.horaSalida.localeCompare(b.horaSalida)
-        );
-        setHorasHorario(horasOrdenadas);
-      } catch (error) {
-        console.error("Ocurrió un error:", error);
-      }
-    };
-    apiService();
-  }, []);
-
   return (
     <tr>
       <td>{propNombrePasajero}</td>
@@ -49,7 +30,7 @@ export default function Show({
         propIDRuta={propIDRuta}
         token={token}
         propViajeID={propViajeID}
-        horasHorario={horasHorario}
+        propHorario={propHorario}
       />
     </tr>
   );

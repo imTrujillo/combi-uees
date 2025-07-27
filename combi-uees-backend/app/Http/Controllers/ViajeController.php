@@ -179,7 +179,7 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Ruta $ruta, string $id)
     {
         $viaje = Viaje::findOrFail($id);
 
@@ -247,7 +247,7 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function updateStatus(Request $request, string $id)
+    public function updateStatus(Request $request, Ruta $ruta, string $id)
     {
         $viaje = Viaje::where('ViajeID', $id)->first();
 
@@ -294,7 +294,7 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function destroy(string $id)
+    public function destroy(Ruta $ruta, string $id)
     {
         $viaje = Viaje::findOrFail($id);
         $viaje->delete();
