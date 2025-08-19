@@ -33,7 +33,7 @@ class ComentarioController extends Controller
 
     public function index(Anuncio $anuncio)
     {
-        $comentarios = $anuncio->comentarios()->latest()->get();
+        $comentarios = $anuncio->comentarios()->latest()->paginate(10);
 
         return response()->json($comentarios, 200);
     }

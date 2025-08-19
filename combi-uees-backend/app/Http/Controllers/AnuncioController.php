@@ -16,10 +16,10 @@ class AnuncioController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/anuncios",
-     *     summary="Obtener todos los anuncios con sus comentarios",
+     *     path="/api/anuncio",
+     *     summary="Obtener el anuncio con sus comentarios",
      *     tags={"Anuncios"},
-     *     @OA\Response(response=200, description="Lista de anuncios con comentarios")
+     *     @OA\Response(response=200, description="Anuncio con sus comentarios")
      * )
      */
     public function index(Anuncio $anuncio)
@@ -55,11 +55,11 @@ class AnuncioController extends Controller
      */
     public function update(Request $request, Anuncio $anuncio)
     {
-        $validated = $request->validate([
-            'anuncioURLFoto' => 'required|url',
-        ]);
-
-        $anuncio->update($validated);
+        $anuncio->update(
+            $request->validate([
+                'anuncioURLFoto' => 'required|url',
+            ])
+        );
 
         return response()->json(['message' => 'Anuncio actualizado exitosamente'], 200);
     }

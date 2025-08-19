@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Horario;
 use App\Models\Ruta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -21,8 +22,8 @@ use OpenApi\Annotations as OA;
  *     title="Horario",
  *     required={"id", "inicio", "fin"},
  *     @OA\Property(property="id", type="integer"),
- *     @OA\Property(property="inicio", type="string", format="time"),
- *     @OA\Property(property="fin", type="string", format="time")
+ *     @OA\Property(property="IDRuta", type="integer"),
+ *     @OA\Property(property="horaSalida", type="string", format="time")
  * )
  */
 
@@ -42,7 +43,7 @@ class HorarioController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de horarios en orden descendente",
+     *         description="Lista de horarios",
      *         @OA\JsonContent(
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Horario")
@@ -52,7 +53,7 @@ class HorarioController extends Controller
      */
     public function index(Ruta $ruta)
     {
-        $horas = $ruta->horarios()->latest()->get();
+        $horas = $ruta->horarios()->get();
 
         return response()->json($horas, 200);
     }
@@ -89,7 +90,8 @@ class HorarioController extends Controller
      */
     public function store(Request $request, Ruta $ruta)
     {
-        $validatedData = $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'horaSalida' => [
                 'required',
                 'date_format:H:i:s',
@@ -97,16 +99,21 @@ class HorarioController extends Controller
             ],
         ]);
 
-        $hora = $ruta->horarios()->create([
-            'horaSalida' => $validatedData['horaSalida'],
-        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $hora = $ruta->horarios()->create($validator->validated());
 
         return response()->json(['message' => 'Registro exitoso', 'hora' => $hora], 201);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/horarios/{id}",
+     *     path="/api/rutas/{ruta}/horarios/{id}",
      *     summary="Eliminar un horario por su ID",
      *     tags={"Horarios"},
      *     @OA\Parameter(
@@ -126,9 +133,8 @@ class HorarioController extends Controller
      *     )
      * )
      */
-    public function destroy(string $id)
+    public function destroy(Ruta $ruta, Horario $horario)
     {
-        $horario = Horario::findOrFail($id);
         $horario->delete();
 
         return response()->json(['message' => 'Hora borrada exitosamente'], 204);

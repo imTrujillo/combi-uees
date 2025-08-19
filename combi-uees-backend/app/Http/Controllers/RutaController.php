@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ruta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -67,7 +68,16 @@ use OpenApi\Annotations as OA;
  *         type="string",
  *         format="date-time",
  *         example="2025-07-26T15:45:00Z"
- *     )
+ *     ),
+ *     @OA\Property(
+ *         property="motoristasUEES",
+ *         type="integer",
+ *         example=5
+ *     ),
+ *     @OA\Property(
+ *         property="motoristasRuta",
+ *         type="integer",
+ *         example=3)
  * )
  */
 class RutaController extends Controller
@@ -89,9 +99,12 @@ class RutaController extends Controller
      */
     public function index()
     {
-        $rutas = Ruta::with(['horarios', 'viajes', 'users'])->get();
+        $rutas = Ruta::with(['horarios', 'viajes', 'users'])->conMotoristas()->paginate(1);
 
-        return response()->json($rutas, 200);
+        return response()->json(
+            $rutas,
+            200
+        );
     }
 
     /**
@@ -121,19 +134,25 @@ class RutaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'rutaNombre' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
+        $validator = Validator::make($request->all(), [
+            'rutaNombre' => 'required|string|unique:rutas,rutaNombre|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'rutaLatitud' => 'required|numeric|between:-90,90',
             'rutaLongitud' => 'required|numeric|between:-180,180',
         ]);
 
-        $ruta = Ruta::create([
-            ...$validated,
-            'rutaBusesDisponibles' => 0,
-            'rutaBusesTotales' => 0,
-        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        return response()->json(['message' => 'Ruta registrada exitosamente', 'ruta' => $ruta], 201);
+        $data = $validator->validated();
+        $data['rutaBusesDisponibles'] = 0;
+        $data['rutaBusesTotales'] = 0;
+
+        $ruta = Ruta::create($data);
+        return response()->json(['message' => 'Ruta registrada exitosamente', 'ruta' => $data], 201);
     }
 
     /**
@@ -170,20 +189,24 @@ class RutaController extends Controller
      */
     public function update(Request $request, Ruta $ruta)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'rutaNombre' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'rutaLatitud' => 'required|numeric|between:-90,90',
             'rutaLongitud' => 'required|numeric|between:-180,180',
         ]);
 
-        $ruta->update($validated);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        $motoristas = User::where('IDRuta', $ruta->rutaID)->get();
+        $ruta->update($validator->validated());
 
-        foreach ($motoristas as $motorista) {
-            if ($motorista->motoristaUbicación !== 'UEES') {
-                $motorista->motoristaUbicación = $ruta->rutaNombre;
-                $motorista->save();
+        foreach ($ruta->users as $motorista) {
+            if ($motorista->motoristaUbicación != 'UEES') {
+                $motorista->update(['motoristaUbicación' => $ruta->rutaNombre]);
             }
         }
 
@@ -217,59 +240,5 @@ class RutaController extends Controller
         $ruta->delete();
 
         return response()->json(['message' => 'Ruta borrada exitosamente'], 200);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/rutas/{id}/ubicacion-buses",
-     *     summary="Obtener conteo de motoristas por ubicación",
-     *     tags={"Rutas"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la ruta",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Conteo de motoristas en UEES y en la ruta",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="motoristasUEES", type="integer", example=5),
-     *             @OA\Property(property="motoristasRuta", type="integer", example=3)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Ruta no encontrada"
-     *     )
-     * )
-     */
-    public function ubicaciónBuses(string $id)
-    {
-        $ruta = Ruta::find($id);
-
-        if (!$ruta) {
-            return response()->json(['error' => 'Ruta no encontrada'], 404);
-        }
-
-        $motoristas = User::whereHas('roles', function ($query) {
-            $query->where('name', 'motorista');
-        })->get();
-
-        $motoristasUEES = $motoristas->filter(
-            fn($user) =>
-            $user->motoristaUbicación === 'UEES' && $ruta->rutaID == $user->IDRuta
-        )->count();
-
-        $motoristasRuta = $motoristas->filter(
-            fn($user) =>
-            $user->motoristaUbicación === $ruta->rutaNombre && $user->IDRuta == $ruta->rutaID
-        )->count();
-
-        return response()->json([
-            'motoristasUEES' => $motoristasUEES,
-            'motoristasRuta' => $motoristasRuta
-        ], 200);
     }
 }

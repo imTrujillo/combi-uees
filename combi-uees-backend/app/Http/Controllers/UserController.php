@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Ruta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * @OA\Tag(
@@ -39,7 +41,7 @@ class UserController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/rutas/{ruta}/motoristas",
+     *     path="/api/rutas/{ruta}/users",
      *     summary="Obtener todos los motoristas de una ruta",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
@@ -51,7 +53,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de motoristas ordenados por creación",
+     *         description="Lista de motoristas ordenados y paginados",
      *         @OA\JsonContent(
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Motorista")
@@ -61,14 +63,13 @@ class UserController extends Controller
      */
     public function index(Ruta $ruta)
     {
-
-        $motoristas = $ruta->users()->latest()->get();
+        $motoristas = $ruta->users()->latest()->paginate(10);
         return response()->json($motoristas, 200);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/rutas/{ruta}/motoristas",
+     *     path="/api/rutas/{ruta}/users",
      *     summary="Registrar un nuevo motorista en una ruta",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
@@ -104,41 +105,38 @@ class UserController extends Controller
      */
     public function store(Request $request, Ruta $ruta)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
             'motoristaURLFotoDePerfil' => 'required|url',
             'motoristaEstado' => 'required|boolean',
-            'motoristaUbicación' => 'required|string',
-            'IDRuta' => 'required|integer|exists:rutas,rutaID'
+            'motoristaUbicación' => 'required|string|in:UEES,rutas.rutaNombre',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'motoristaURLFotoDePerfil' => $validated['motoristaURLFotoDePerfil'],
-            'motoristaEstado' => $validated['motoristaEstado'],
-            'motoristaUbicación' => $validated['motoristaUbicación'],
-            'IDRuta' => $validated['IDRuta']
-        ]);
-
-        $ruta = Ruta::where('rutaID', $user->IDRuta)->first();
-        if ($ruta) {
-            $ruta->rutaBusesTotales += 1;
-            if ($user->motoristaEstado == 0) {
-                $ruta->rutaBusesDisponibles += 1;
-            }
-            $ruta->save();
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validator->errors()
+            ], 422);
         }
+
+        $ruta->rutaBusesTotales += 1;
+        if ($request->motoristaEstado == 0) {
+            $ruta->rutaBusesDisponibles += 1;
+        }
+        $ruta->save();
+
+        $data = $validator->validated();
+        $data['password'] = Hash::make($data['password']);
+        $user = $ruta->users()->create($data);
 
         return response()->json(['message' => 'Motorista registrado exitosamente', 'motorista' => $user], 201);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/motoristas/{user}",
+     *     path="/api/rutas/{ruta}/users/{user}",
      *     summary="Actualizar los datos de un motorista",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
@@ -175,123 +173,61 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Ruta $ruta, User $user)
     {
         Gate::authorize('update', $user);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
-            'password' => 'required|string',
-            'motoristaURLFotoDePerfil' => 'required|url',
-            'motoristaEstado' => 'required|boolean',
-            'motoristaUbicación' => 'required|string',
-            'IDRuta' => 'required|exists:rutas,rutaID'
-        ]);
-
+        // Guardar estado original antes de cambios
         $estadoOriginal = $user->motoristaEstado;
-        $rutaOriginal = Ruta::where('rutaID', $user->IDRuta)->first();
-        $rutaNueva = Ruta::where('rutaID', $validated['IDRuta'])->first();
 
-        $cambioDeRuta = $user->IDRuta !== $validated['IDRuta'];
-        $cambioDeEstado = $estadoOriginal !== (int) $validated['motoristaEstado'];
+        $user->update(array_merge(
+            $request->validate([
+                'name' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
+                'password' => 'required|string',
+                'motoristaURLFotoDePerfil' => 'required|url',
+                'motoristaEstado' => 'required|boolean',
+                'motoristaUbicación' => 'required|string|in:UEES,rutas.rutaNombre',
+                'IDRuta' => 'required|exists:rutas,rutaID'
+            ]),
+            [
+                'password' => Hash::make($request->password)
+            ]
+        ));
 
-        // Ajustes de conteo si cambia de ruta
-        if ($cambioDeRuta && $rutaOriginal && $rutaNueva) {
-            $rutaOriginal->rutaBusesTotales -= 1;
-            if ($estadoOriginal == 0) {
-                $rutaOriginal->rutaBusesDisponibles -= 1;
-            }
-            $rutaOriginal->save();
+        $rutaNueva = Ruta::find($request->IDRuta);
+        $cambioDeRuta = $ruta->IDRuta != $rutaNueva->IDRuta; //Motorista cambia de ruta
+        $cambioDeEstado = $estadoOriginal != $request->motoristaEstado; //Motorista cambia de estado
 
+        if ($cambioDeRuta) {
+            $ruta->rutaBusesTotales -= 1;
+            $ruta->rutaBusesDisponibles -= 1;
             $rutaNueva->rutaBusesTotales += 1;
-            if ((int) $validated['motoristaEstado'] == 0) {
+
+            if ($cambioDeEstado && $request->motoristaEstado == 0) {
                 $rutaNueva->rutaBusesDisponibles += 1;
+            } else if ($cambioDeEstado && $request->motoristaEstado == 1) {
+                $rutaNueva->rutaBusesDisponibles -= 1;
             }
             $rutaNueva->save();
-        } elseif ($cambioDeEstado && $rutaOriginal) {
-            if ($estadoOriginal == 1 && (int) $validated['motoristaEstado'] == 0) {
-                $rutaOriginal->rutaBusesDisponibles += 1;
-            } elseif ($estadoOriginal == 0 && (int) $validated['motoristaEstado'] == 1) {
-                $rutaOriginal->rutaBusesDisponibles -= 1;
-            }
-            $rutaOriginal->save();
-        }
-
-        $user->update([
-            'name' => $validated['name'],
-            'password' => Hash::make($validated['password']),
-            'motoristaURLFotoDePerfil' => $validated['motoristaURLFotoDePerfil'],
-            'motoristaEstado' => $validated['motoristaEstado'],
-            'motoristaUbicación' => $validated['motoristaUbicación'],
-            'IDRuta' => $validated['IDRuta']
-        ]);
-
-        return response()->json(['message' => 'Motorista actualizado exitosamente', 'motorista' => $user], 201);
-    }
-
-    /**
-     * @OA\Patch(
-     *     path="/api/rutas/{ruta}/motoristas/{user}/estado",
-     *     summary="Cambiar el estado de un motorista",
-     *     tags={"Motoristas"},
-     *     @OA\Parameter(
-     *         name="ruta",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la ruta",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="user",
-     *         in="path",
-     *         required=true,
-     *         description="ID del motorista",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"motoristaEstado"},
-     *             @OA\Property(property="motoristaEstado", type="boolean", example=true)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Estado del motorista actualizado",
-     *         @OA\JsonContent(ref="#/components/schemas/Motorista")
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     )
-     * )
-     */
-    public function updateStatus(Request $request, Ruta $ruta, User $user)
-    {
-        Gate::authorize('update', $user);
-
-        $validated = $request->validate([
-            'motoristaEstado' => 'required|boolean'
-        ]);
-
-        if ($user->motoristaEstado !== $validated['motoristaEstado'] && $ruta) {
-            if ($validated['motoristaEstado'] == 0) {
+        } else {
+            if ($cambioDeEstado && $request->motoristaEstado == 0) {
                 $ruta->rutaBusesDisponibles += 1;
-            } else {
+            } else if ($cambioDeEstado && $request->motoristaEstado == 1) {
                 $ruta->rutaBusesDisponibles -= 1;
             }
-            $ruta->save();
         }
 
-        $user->motoristaEstado = $validated['motoristaEstado'];
-        $user->save();
+        $ruta->save();
 
-        return response()->json(['message' => 'Estado del motorista actualizado exitosamente'], 201);
+        return response()->json([
+            'message' => 'Motorista actualizado exitosamente',
+            'motorista' => $user
+        ], 201);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/rutas/{ruta}/motoristas/{user}",
+     *     path="/api/rutas/{ruta}/users/{user}",
      *     summary="Eliminar un motorista",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
@@ -331,27 +267,5 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json(['message' => 'Motorista eliminado exitosamente'], 201);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/usuario",
-     *     summary="Obtener información del usuario autenticado",
-     *     tags={"Motoristas"},
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Información del usuario",
-     *         @OA\JsonContent(ref="#/components/schemas/Motorista")
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="No autenticado"
-     *     )
-     * )
-     */
-    public function user()
-    {
-        return response()->json(auth()->user(), 200);
     }
 }

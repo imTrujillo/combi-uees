@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,5 +38,13 @@ class Ruta extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class, "IDRuta");
+    }
+
+    public function scopeConMotoristas(Builder|QueryBuilder $query)
+    {
+        return $query->withCount([
+            'users as motoristasRuta' => fn($q) => $q->whereColumn('users.motoristaUbicación', 'rutas.rutaNombre'),
+            'users as motoristasUEES' => fn($q) => $q->where('users.motoristaUbicación', 'UEES')
+        ]);
     }
 }

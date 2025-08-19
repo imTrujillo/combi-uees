@@ -28,7 +28,6 @@ class User extends Authenticatable
         'motoristaURLFotoDePerfil',
         'motoristaEstado',
         'motoristaUbicación',
-        'IDRuta'
     ];
 
     /**
@@ -56,6 +55,6 @@ class User extends Authenticatable
 
     public function ruta(): BelongsTo
     {
-        return $this->belongsTo(Ruta::class, "IDRuta");
+        return $this->belongsTo(Ruta::class, 'IDRuta', 'rutaID');
     }
 }

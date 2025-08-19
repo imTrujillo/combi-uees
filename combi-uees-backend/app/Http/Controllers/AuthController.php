@@ -17,7 +17,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/api/auth/login",
      *     summary="Iniciar sesión",
      *     tags={"Autenticación"},
      *     @OA\RequestBody(
@@ -26,7 +26,6 @@ class AuthController extends Controller
      *             required={"email","password"},
      *             @OA\Property(property="email", type="string", format="email"),
      *             @OA\Property(property="password", type="string"),
-     *             @OA\Property(property="remember", type="boolean", nullable=true)
      *         )
      *     ),
      *     @OA\Response(response=200, description="Inicio de sesión exitoso"),
@@ -52,20 +51,13 @@ class AuthController extends Controller
 
         // Intentar autenticar al usuario
         $credentials = $validator->validated();
-        $remember = $request->filled('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::attempt($credentials, false)) {
             $user = Auth::user();
-
-            $rol = $user->hasRole('motorista') ? 'motorista' : ($user->hasRole('administrador') ? 'administrador' : 'otro');
-
-            $token = $user->createToken("token_$rol")->plainTextToken;
-
             return response()->json([
-                'rol' => $rol,
-                'correo' => $user->email,
-                'id' => $user->id,
-                'token' => $token
+                'rol' => $user->getRoleNames()->first(),
+                'user' => $user,
+                'token' => $user->createToken("token")->plainTextToken
             ], 200);
         } else {
             return response()->json(['message' => 'Credenciales incorrectas'], 401);
@@ -74,7 +66,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/logout",
+     *     path="/api/auth/logout",
      *     summary="Cerrar sesión",
      *     tags={"Autenticación"},
      *     security={{"sanctum": {}}},
@@ -88,6 +80,6 @@ class AuthController extends Controller
         // $request->session()->invalidate();
         // $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Has cerrado sesión']);
+        return response()->json(['message' => 'Has cerrado sesión'], 200);
     }
 }
