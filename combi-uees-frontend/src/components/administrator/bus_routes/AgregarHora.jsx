@@ -1,17 +1,12 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SwalFireLoading from "../../../assets/SwalFireLoading";
 import { MdAddCircle } from "react-icons/md";
 import "../../../../css/colores.css";
 
-export default function AgregarHora({
-  propIDRuta,
-  token,
-  setHorasHorario,
-  horasHorario,
-}) {
+export default function AgregarHora({ propIDRuta, token, setHorasHorario }) {
   const [hora, setHora] = useState("");
 
   function handleSubmitAgregar(e) {
@@ -28,7 +23,7 @@ export default function AgregarHora({
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/horarios`,
+        `http://127.0.0.1:8000/api/rutas/${propIDRuta}/horarios`,
         nuevaHora,
         {
           headers: { Authorization: `Bearer ${token}` },

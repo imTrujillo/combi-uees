@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../../../../css/modal.css";
@@ -7,7 +7,7 @@ import SwalFireLoading from "../../../assets/SwalFireLoading";
 import { MdAddCircle } from "react-icons/md";
 import "../../../../css/colores.css";
 
-export default function AgregarViaje({ listaRutas, setListaRutas, token }) {
+export default function AgregarViaje({ listaRutas, token }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState("");
   const [fecha, setFecha] = useState("");
@@ -21,7 +21,7 @@ export default function AgregarViaje({ listaRutas, setListaRutas, token }) {
     try {
       SwalFireLoading();
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/v1/rutas/${e.target.value}/horarios`
+        `http://127.0.0.1:8000/api/rutas/${e.target.value}/horarios`
       );
 
       const horasOrdenadas = response.data.sort((a, b) =>
@@ -49,10 +49,12 @@ export default function AgregarViaje({ listaRutas, setListaRutas, token }) {
       nombrePasajero: nombre,
       viajeFecha: `${fecha} ${hora}`,
       viajeDestino: destino,
+      IDRuta: ruta,
+      viajeEstado: 1,
     };
 
     axios
-      .post(`http://127.0.0.1:8000/api/v1/rutas/${ruta}/viajes`, nuevoViaje, {
+      .post(`http://127.0.0.1:8000/api/viajes`, nuevoViaje, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -65,8 +67,9 @@ export default function AgregarViaje({ listaRutas, setListaRutas, token }) {
         setHorasHorario([]);
         setModal(false);
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire("Error", "Ocurrió un error.", "error");
+        console.error(error);
       });
   }
   return (

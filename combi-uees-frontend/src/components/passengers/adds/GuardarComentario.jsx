@@ -57,7 +57,7 @@ export default function GuardarComentario() {
                 type="text"
                 id="form6Example1"
                 className="form-control"
-                placeholder="Nombre (alias)"
+                placeholder="Nombre de Usuario"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
               />
@@ -67,7 +67,7 @@ export default function GuardarComentario() {
                 type="text"
                 id="form6Example2"
                 className="form-control"
-                placeholder="Tu título"
+                placeholder="Comentario"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
               />

@@ -1,14 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AgregarMotorista from "./../../../components/modals/motoristModal";
 import Motorista from "./Show";
 import boxphoto from "../../../assets/images/caja-vacia.png";
+import axios from "axios";
+import { useAuth } from "../../session/AuthProvider";
+import Pagination from "../../../components/ui/Pagination";
+import Loader from "../../../components/Loader/Loader";
 
-export default function Index({
-  listaMotoristas,
-  listaRutas,
-  setListaMotoristas,
-  token,
-}) {
+export default function Index() {
+  const [listaMotoristas, setListaMotoristas] = useState([]);
+  const [listaRutas, setListaRutas] = useState([]);
+  const [linksMotoristas, setLinksMotoristas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { token } = useAuth();
+
+  const fetchData = async (url = "http://127.0.0.1:8000/api/users") => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+
+      const [rutasResponse, motoristasResponse] = await Promise.all([
+        axios.get("http://127.0.0.1:8000/api/rutas?paginated=0", config),
+        axios.get(url, config),
+      ]);
+      setListaRutas(rutasResponse.data);
+      setListaMotoristas(motoristasResponse.data.data);
+      setLinksMotoristas(motoristasResponse.data.links);
+    } catch (error) {
+      console.error("Ocurrió un error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div>
       <div className="w-100 d-flex flex-sm-column flex-lg-row flex-column justify-content-center align-items-center border-bottom border-2 w-75 mb-4 pb-2">
@@ -16,8 +51,7 @@ export default function Index({
         <AgregarMotorista
           token={token}
           listaRutas={listaRutas}
-          listaMotoristas={listaMotoristas}
-          setListaMotoristas={setListaMotoristas}
+          fetchData={fetchData}
         />
       </div>
 
@@ -41,13 +75,6 @@ export default function Index({
               </thead>
               <tbody>
                 {listaMotoristas.map((motorista) => {
-                  const rutaEncontrada = listaRutas.find(
-                    (ruta) => ruta.rutaID == motorista.IDRuta
-                  );
-                  const nombreRuta = rutaEncontrada
-                    ? rutaEncontrada.rutaNombre
-                    : "Desconocida";
-
                   return (
                     <Motorista
                       key={motorista.id}
@@ -58,9 +85,12 @@ export default function Index({
                       propEstado={motorista.motoristaEstado}
                       propUbicación={motorista.motoristaUbicación}
                       propIDRuta={motorista.IDRuta}
-                      propNombreRuta={nombreRuta}
+                      propNombreRuta={
+                        motorista?.ruta?.rutaNombre ?? "Desconocida"
+                      }
                       token={token}
                       listaRutas={listaRutas}
+                      fetchData={fetchData}
                     />
                   );
                 })}
@@ -68,6 +98,9 @@ export default function Index({
             </table>
           </div>
         </div>
+      )}
+      {linksMotoristas && (
+        <Pagination links={linksMotoristas} onPageChange={fetchData} />
       )}
     </div>
   );

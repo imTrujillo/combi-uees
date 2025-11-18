@@ -10,7 +10,6 @@ export default function Show({
   propLatitud,
   propLongitud,
   token,
-  listaRutas,
 }) {
   return (
     <tr>
@@ -30,7 +29,6 @@ export default function Show({
         propLatitud={propLatitud}
         propLongitud={propLongitud}
         token={token}
-        listaRutas={listaRutas}
       />
     </tr>
   );

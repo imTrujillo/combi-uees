@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Hora from "./Hora";
 import AgregarHora from "./AgregarHora";
@@ -18,7 +18,7 @@ export default function ModificarHorario({ propIDRuta, propNombre, token }) {
     SwalFireLoading();
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/horarios`
+        `http://127.0.0.1:8000/api/rutas/${propIDRuta}/horarios`
       );
       const horasOrdenadas = response.data.sort((a, b) =>
         a.horaSalida.localeCompare(b.horaSalida)
@@ -62,7 +62,6 @@ export default function ModificarHorario({ propIDRuta, propNombre, token }) {
                         propIDRuta={propIDRuta}
                         token={token}
                         setHorasHorario={setHorasHorario}
-                        horasHorario={horasHorario}
                       />
                       <div className="table-responsive p-3">
                         <table className="table table-striped table-hover">

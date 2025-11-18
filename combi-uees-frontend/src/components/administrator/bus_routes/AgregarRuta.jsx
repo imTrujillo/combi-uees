@@ -6,11 +6,7 @@ import { MdAddCircle } from "react-icons/md";
 import "../../../../css/modal.css";
 import "../../../../css/colores.css";
 
-export default function AgregarRuta({
-  token,
-  listaRutas,
-  setListaRutas,
-}) {
+export default function AgregarRuta({ token }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState("");
   const [latitud, setLatitud] = useState("");
@@ -34,7 +30,7 @@ export default function AgregarRuta({
     };
     console.log(rutaNueva);
     axios
-      .post("http://127.0.0.1:8000/api/v1/rutas", rutaNueva, {
+      .post("http://127.0.0.1:8000/api/rutas", rutaNueva, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

@@ -1,6 +1,3 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
 import ModificarViaje from "../../../components/motorists/trips/ModificarViaje";
 
 export default function Show({

@@ -3,8 +3,11 @@ import Login from "../pages/session/Login";
 
 import BusRoutes from "../pages/passengers/bus_routes/Index";
 import Adds from "../pages/passengers/adds/Index";
-import Trips from "../pages/motorists/Index";
-import Administrator from "../pages/administrator/Index";
+import Profile from "../pages/motorists/profile/Index";
+import Trips from "../pages/motorists/trips/Index";
+import Motorists from "../pages/administrator/motorists/Index";
+import UpdateAdd from "../pages/administrator/adds/Index";
+import EditBusRoutes from "../pages/administrator/bus_routes/Index";
 
 import Sidebar from "../assets/Sidebar";
 import AuthProvider from "../pages/session/AuthProvider";
@@ -53,10 +56,13 @@ function AppRoutesWithLocation() {
                 <PrivateRoute allowedRoles={["motorista", "administrador"]} />
               }
             >
+              <Route path="/perfil" element={<Profile />} />
               <Route path="/viajes" element={<Trips />} />
             </Route>
             <Route element={<PrivateRoute allowedRoles={["administrador"]} />}>
-              <Route path="/administrador" element={<Administrator />} />
+              <Route path="/motoristas" element={<Motorists />} />
+              <Route path="/actualizar-anuncio" element={<UpdateAdd />} />
+              <Route path="/editar-rutas" element={<EditBusRoutes />} />
             </Route>
           </Routes>
         </section>

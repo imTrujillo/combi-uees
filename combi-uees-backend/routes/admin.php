@@ -13,11 +13,11 @@ Route::middleware(['auth:sanctum', 'role:administrador'])->group(function () {
     Route::resource('/rutas', RutaController::class)->only(['store', 'update', 'destroy']);
 
     // CRUD Motoristas
-    Route::resource('/rutas/{ruta}/users', UserController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('/users', UserController::class)->only(['index', 'store', 'destroy']);
 
     // CRUD Horarios
     Route::resource('/rutas/{ruta}/horarios', HorarioController::class)->only(['store', 'destroy']);
 
     // Anuncios
-    Route::put('/anuncios/{id}', [AnuncioController::class, 'update']);
+    Route::put('/anuncios/{anuncio}', [AnuncioController::class, 'update']);
 });

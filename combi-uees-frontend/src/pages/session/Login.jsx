@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "../../../css/modal.css";
 import "../../../css/motorista.css";
@@ -7,7 +6,6 @@ import { useAuth } from "./AuthProvider";
 
 import { IoLogInSharp } from "react-icons/io5";
 import img from "../../assets/images/loginphoto.jpg";
-import logoUEES from "../../assets/images/logo-uees.png";
 import logo from "../../assets/images/combi-uees-logo.png";
 import video from "../../assets/images/fondo.mp4";
 
@@ -24,8 +22,6 @@ export default function Login() {
       [name]: value,
     }));
   };
-
-  const navigate = useNavigate();
 
   const auth = useAuth();
   const handleSubmit = (e) => {
@@ -59,11 +55,10 @@ export default function Login() {
         {/* ENCABEZADOS */}
         <div className="d-flex justify-content-lg-start justify-content-sm-center justify-content-center py-3 mx-5 gap-3">
           <img src={logo} style={{ height: "60px" }} alt="logo" />
-          <img src={logoUEES} style={{ height: "60px" }} alt="logoUEES" />
         </div>
         <div className="d-flex flex-row align-items-center justify-content-center">
           <h2 className="fw-bold fs-1 text-white my-3 me-3">
-            ¡Bienvenido al team UEES!
+            ¡Súbete a la combi!
           </h2>
         </div>
 
@@ -107,7 +102,7 @@ export default function Login() {
                   type="password"
                   name="password"
                   className="form-control"
-                  placeholder="Tu contraseña aquí"
+                  placeholder="helloworld123!"
                   onChange={handleInput}
                 />
               </div>

@@ -1,65 +1,59 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Ruta from "./Show";
 import axios from "axios";
 import Footer from "../../../assets/Footer";
 import Loader from "../../../components/Loader/Loader";
-import { GrPrevious, GrNext } from "react-icons/gr";
 import boxphoto from "../../../assets/images/caja-vacia.png";
+import Pagination from "../../../components/ui/Pagination";
 
 export default function Index() {
   const [loading, setLoading] = useState(true);
   const [listaRutas, setListaRutas] = useState([]);
-  const [paginaActual, setPaginaActual] = useState(0);
+  const [links, setLinks] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/api/v1/rutas");
-        const rutasConBusesDisponibles = response.data.filter(
-          (ruta) => ruta.rutaBusesDisponibles > 0
-        );
-        setListaRutas(rutasConBusesDisponibles);
-      } catch (error) {
-        console.error("Error al obtener rutas:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  const fetchData = async (url = "http://127.0.0.1:8000/api/rutas") => {
+    try {
+      const response = await axios.get(url);
+      setLinks(response.data.links);
+      setListaRutas(response.data.data);
+    } catch (error) {
+      console.error("Error al obtener rutas:", error);
+    } finally {
       setLoading(false);
-    }, 3000);
+    }
+  };
 
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    fetchData();
   }, []);
 
   if (loading) {
     return <Loader />;
   }
 
-  const totalRutas = listaRutas.length;
-  const rutaActual = listaRutas[paginaActual];
-
   return (
     <>
-      <div className="w-screen  p-4">
-        <h2 className="text-start logo-text fs-1 mx-5 border-bottom border-2 mb-3 ">
+      <div className="w-screen p-4">
+        <h2 className="text-start logo-text fs-1 mx-5 border-bottom border-2 mb-3">
           RUTAS
         </h2>
         <section>
-          {rutaActual ? (
-            <Ruta
-              key={rutaActual.rutaID}
-              propRutaNombre={rutaActual.rutaNombre}
-              propRutaBusesDisponibles={rutaActual.rutaBusesDisponibles}
-              propRutaBusesTotales={rutaActual.rutaBusesTotales}
-              propLatitud={rutaActual.rutaLatitud}
-              propLongitud={rutaActual.rutaLongitud}
-              propViajeFecha={rutaActual.viajeFecha}
-              propRutaID={rutaActual.rutaID}
-              propViajeDestino={rutaActual.viajeDestino}
-            />
+          {listaRutas.length >= 1 ? (
+            listaRutas.map((ruta) => (
+              <Ruta
+                key={ruta.rutaID}
+                propRutaNombre={ruta.rutaNombre}
+                propRutaBusesDisponibles={ruta.rutaBusesDisponibles}
+                propRutaBusesTotales={ruta.rutaBusesTotales}
+                propLatitud={ruta.rutaLatitud}
+                propLongitud={ruta.rutaLongitud}
+                propViajeFecha={ruta.viajeFecha}
+                propRutaID={ruta.rutaID}
+                propViajeDestino={ruta.viajeDestino}
+                propMotoristasRuta={ruta.motoristasRuta}
+                propMotoristasUEES={ruta.motoristasUEES}
+              />
+            ))
           ) : (
             <div>
               Aquí aparecerán las rutas :)
@@ -68,29 +62,7 @@ export default function Index() {
             </div>
           )}
         </section>
-        {totalRutas == 1 ? (
-          ""
-        ) : (
-          <div className="d-flex w-screen flex-sm-column flex-md-row flex-column justify-content-center align-items-center m-3 gap-2 ">
-            <button
-              onClick={() => setPaginaActual(paginaActual - 1)}
-              disabled={paginaActual === 0}
-              className="relative btn-prev mx-4 "
-            >
-              <GrPrevious />
-            </button>
-            <span className="">
-              | página {paginaActual + 1} de {totalRutas} |
-            </span>
-            <button
-              onClick={() => setPaginaActual(paginaActual + 1)}
-              disabled={paginaActual >= totalRutas - 1}
-              className="relative btn-next mx-4"
-            >
-              <GrNext />
-            </button>
-          </div>
-        )}
+        {links && <Pagination links={links} onPageChange={fetchData} />}
       </div>
       <Footer />
     </>

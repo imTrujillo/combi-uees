@@ -14,21 +14,18 @@ export default function Show({
   propViajeFecha,
   propRutaID,
   propViajeDestino,
+  propMotoristasRuta,
+  propMotoristasUEES,
 }) {
-  const [listaBusesUbicación, setListaBusesUbicación] = useState([]);
   const [horasHorario, setHorasHorario] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const apiService = async () => {
       try {
-        const listaBusesResponse = await axios.get(
-          `http://127.0.0.1:8000/api/v1/rutas/ubicacion/${propRutaID}`
-        );
         const listaHorariosResponse = await axios.get(
-          `http://127.0.0.1:8000/api/v1/rutas/${propRutaID}/horarios`
+          `http://127.0.0.1:8000/api/rutas/${propRutaID}/horarios`
         );
-        setListaBusesUbicación(listaBusesResponse.data);
         const horasOrdenadas = listaHorariosResponse.data.sort((a, b) =>
           a.horaSalida.localeCompare(b.horaSalida)
         );
@@ -43,7 +40,13 @@ export default function Show({
   }, []);
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return (
+      <div
+        class="spinner-border text-warning m-5"
+        style={{ width: "120px", height: "120px" }}
+        role="status"
+      ></div>
+    );
   }
 
   return (
@@ -96,7 +99,8 @@ export default function Show({
         <Gráficas
           propBusesDisponibles={propRutaBusesDisponibles}
           propBusesTotales={propRutaBusesTotales}
-          listaBusesUbicación={listaBusesUbicación}
+          propMotoristasRuta={propMotoristasRuta}
+          propMotoristasUEES={propMotoristasUEES}
           propRutaNombre={propRutaNombre}
         />
       </div>

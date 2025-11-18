@@ -26,12 +26,23 @@ class ViajeRequest extends FormRequest
         date_default_timezone_set('America/El_Salvador');
         $now = Carbon::now()->format('Y-m-d H:i:s');
 
-        return [
-            'nombrePasajero' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
-            'viajeFecha'     => "required|date_format:Y-m-d H:i:s|after_or_equal:$now",
-            'viajeEstado'    => "required|boolean",
-            'viajeDestino'   => 'required|string|max:255',
+        $viaje = $this->route('viaje');
+
+        $validations = [
+            'nombrePasajero' => ['required', 'string', 'max:100', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u'],
+            'viajeFecha'     => ['required', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . $now],
+            'viajeEstado'    => ['required', 'boolean'],
+            'viajeDestino'   => ['required', 'string', 'max:255'],
+            'IDRuta' => ['required', 'exists:rutas,rutaID']
         ];
+
+        if ($viaje) {
+            foreach ($validations as $key => $ruleSet) {
+                $validations[$key] = array_filter($ruleSet, fn($rule) => $rule !== 'required');
+            }
+        }
+
+        return $validations;
     }
 
     public function withValidator($validator)

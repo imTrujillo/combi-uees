@@ -68,17 +68,17 @@
   background-color: #ffffff;
   box-shadow: 6px 6px 20px rgba(25, 25, 26, 0.89),
     -6px -1px 20px rgb(255, 251, 213);
-  transition: all 0.1s;
+  transition: all 0.05s;
   color: #4f5a3f;
-  border: 0.15rem solid #4f5a3f;
-  border-radius: 1rem;
+  outline: 0.15rem solid #4f5a3f;
+  border-radius: 2rem !important;
   padding: 0.3rem 2rem;
 }
 
 .btn-prev:hover {
-  background-color: #4f5a3f;
-  color: white;
-  border: none;
+  background-color: #4f5a3f !important;
+  color: white !important;
+  outline: none;
 }
 
 .btn-prev:disabled {

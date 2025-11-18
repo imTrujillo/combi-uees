@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Switch, Space } from "antd";
-import GuardarPerfil from "./GuardarPerfil";
 import photo from "../../../assets/images/photo.jpg";
 import SwalFireLoading from "../../../assets/SwalFireLoading";
+import { useAuth } from "../../session/AuthProvider";
+import GuardarPerfil from "../../../components/administrator/motorists/GuardarPerfil";
 
-export default function Perfil({ listaRutas, setListaRutas, token, propIDMotorista }) {
-  const [user, setUser] = useState({});
-  const [nombre, setNombre] = useState(user.name);
+export default function Index() {
+  const { user, token } = useAuth();
+  const [nombre, setNombre] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [fotoPerfil, setFotoPerfil] = useState("");
-  const [estado, setEstado] = useState(user.motoristaEstado);
-  const [ubicación, setUbicación] = useState(user.motoristaUbicación);
+  const [estado, setEstado] = useState(false);
+  const [ubicación, setUbicación] = useState("");
+  const [rutaNombre, setRutaNombre] = useState("");
   const [loading, setLoading] = useState(true);
 
   const handleFotoPerfil = async (e) => {
+    setLoading(true);
     const file = e.target.files[0];
 
     const data = new FormData();
@@ -28,44 +31,41 @@ export default function Perfil({ listaRutas, setListaRutas, token, propIDMotoris
     );
 
     setFotoPerfil(response.data.secure_url);
+    setLoading(false);
   };
 
-  useEffect(() => {
-    const apiService = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/user`, {
+  const apiService = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/users/${user.id}`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        setUser(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Ocurrió un error:", error);
-        setLoading(false);
-      }
-    };
-    if (id && token) apiService();
-  }, [id, token]);
+        }
+      );
 
-  useEffect(() => {
-    if (user.name) setNombre(user.name);
-    if (user.motoristaEstado != null) setEstado(user.motoristaEstado);
-    if (user.motoristaUbicación) setUbicación(user.motoristaUbicación);
-  }, [user]);
-
-  const rutaEncontrada = listaRutas.find((ruta) => ruta.rutaID == user.IDRuta);
-  const nombreRuta = rutaEncontrada ? rutaEncontrada.rutaNombre : "Desconocida";
-  const handleSubmit = (e) => {
-    e.preventDefault();
+      setNombre(response.data.name);
+      setEstado(response.data.motoristaEstado);
+      setUbicación(response.data.motoristaUbicación);
+      setFotoPerfil(response.data.motoristaURLFotoDePerfil);
+      setRutaNombre(response.data.ruta.rutaNombre);
+      setLoading(false);
+    } catch (error) {
+      console.error("Ocurrió un error:", error);
+      setLoading(false);
+    }
   };
+  useEffect(() => {
+    apiService();
+  }, []);
 
   const handleEstado = async (checked) => {
     SwalFireLoading();
     try {
       axios.put(
-        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/user/${propIDMotorista}/status`,
-        { motoristaEstado: checked },
+        `http://127.0.0.1:8000/api/users/${user.id}`,
+        { motoristaEstado: checked, IDRuta: user.IDRuta },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,17 +80,24 @@ export default function Perfil({ listaRutas, setListaRutas, token, propIDMotoris
     }
   };
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading)
+    return (
+      <div
+        class="spinner-border text-success m-5"
+        style={{ width: "120px", height: "120px" }}
+        role="status"
+      ></div>
+    );
 
   return (
     <div className="text-lg-start text-sm-center text-center my-4">
-      <div className="d-flex flex-sm-column flex-lg-row flex-column align-items-center justify-content-lg-between pe-5 border-bottom border-2 pb-3">
+      <div className="d-flex flex-sm-column flex-lg-row flex-column align-items-center justify-content-lg-between border-bottom border-2 pb-5">
         <div className=" mx-5 text-center text-lg-start">
-          <h2 className="logo-text fs-1 ">MOTORISTA: {user.name}</h2>
-          <h2 className="px-4">Ruta: {nombreRuta}</h2>
+          <h2 className="logo-text fs-1 ">MOTORISTA: {nombre}</h2>
+          <h2 className="px-4">Ruta: {rutaNombre}</h2>
         </div>
 
-        <Space direction="vertical">
+        <Space direction="vertical px-5 py-3">
           <Switch
             className="custom-toggle btn-light-shadow"
             checked={!estado}
@@ -101,11 +108,11 @@ export default function Perfil({ listaRutas, setListaRutas, token, propIDMotoris
         </Space>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-4">
         <h2 className="text-center">Editar Perfil</h2>
       </div>
 
-      <form action="" onSubmit={handleSubmit} className="text-start p-3">
+      <form action="" className="text-start p-3">
         <div className="row mb-4">
           <div className="col-sm-12 col-lg-4 col-12 mb-4">
             <div
@@ -113,7 +120,7 @@ export default function Perfil({ listaRutas, setListaRutas, token, propIDMotoris
               className="form-outline  d-flex flex-column justify-content-center align-items-center gap-2"
             >
               <img
-                src={user.motoristaURLFotoDePerfil}
+                src={fotoPerfil}
                 className="border border-3 object-fit-cover"
                 alt=""
                 style={{ width: "15rem", height: "15rem" }}
@@ -165,19 +172,21 @@ export default function Perfil({ listaRutas, setListaRutas, token, propIDMotoris
                   onChange={(e) => setUbicación(e.target.value)}
                 >
                   <option value="UEES">UEES</option>
-                  <option value={nombreRuta}>{nombreRuta}</option>
+                  <option value={rutaNombre ?? "Ruta desconocida"}>
+                    {rutaNombre ?? "Ruta desconocida"}
+                  </option>
                 </select>
               </div>
             </div>
             <br />
             <GuardarPerfil
-              id={id}
+              id={user.id}
               nombre={nombre}
               contraseña={contraseña}
               fotoPerfil={fotoPerfil}
               estado={estado}
               ubicación={ubicación}
-              ruta={rutaEncontrada.rutaID}
+              ruta={user.IDRuta}
               token={token}
             />
           </div>

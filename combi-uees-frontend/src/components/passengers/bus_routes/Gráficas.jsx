@@ -5,7 +5,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 const Gráficas = ({
   propBusesTotales,
   propBusesDisponibles,
-  listaBusesUbicación,
+  propMotoristasRuta,
+  propMotoristasUEES,
   propRutaNombre,
 }) => {
   // GRÁFICA DE ESTADO DE BUSES
@@ -47,10 +48,10 @@ const Gráficas = ({
 
   // GRÁFICA DE UBICACIÓN DE BUSES
   const data02 = [
-    { name: "UEES", value: listaBusesUbicación.motoristasUEES },
+    { name: "UEES", value: propMotoristasUEES },
     {
       name: propRutaNombre,
-      value: listaBusesUbicación.motoristasRuta,
+      value: propMotoristasRuta,
     },
   ];
   return (

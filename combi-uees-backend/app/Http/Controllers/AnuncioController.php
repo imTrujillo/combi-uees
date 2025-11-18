@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anuncio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -55,11 +56,19 @@ class AnuncioController extends Controller
      */
     public function update(Request $request, Anuncio $anuncio)
     {
-        $anuncio->update(
-            $request->validate([
-                'anuncioURLFoto' => 'required|url',
-            ])
-        );
+        $validator = Validator::make($request->all(), [
+            'anuncioURLFoto' => 'required|url',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $anuncio->update($validator->validated());
+        $anuncio->comentarios()->delete();
 
         return response()->json(['message' => 'Anuncio actualizado exitosamente'], 200);
     }

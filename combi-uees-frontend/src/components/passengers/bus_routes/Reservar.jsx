@@ -1,17 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import SwalLoading from "../../../assets/SwalFireLoading";
 import Swal from "sweetalert2";
 import { FaCheckCircle } from "react-icons/fa";
 import "../../../../css/ruta.css";
 
-export default function Reservar({
-  propRutaNombre,
-  propViajeDestino,
-  propViajeFecha,
-  propRutaID,
-  horasHorario,
-}) {
+export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState("");
   const [viajeDestino, setViajeDestino] = useState("UEES");
@@ -51,11 +45,12 @@ export default function Reservar({
       nombrePasajero: nombre,
       viajeFecha: `${viajeFecha} ${viajeHora}`,
       viajeDestino,
+      viajeEstado: 1,
       IDRuta: propRutaID,
     };
     console.log(nuevoViaje);
     await axios
-      .post("http://127.0.0.1:8000/api/v1/viajes", nuevoViaje)
+      .post("http://127.0.0.1:8000/api/viajes", nuevoViaje)
       .then(() => {
         Swal.fire({
           title: "Éxito",

@@ -13,6 +13,7 @@ export default function Show({
   propNombreRuta,
   token,
   listaRutas,
+  fetchData,
 }) {
   return (
     <tr>
@@ -35,10 +36,10 @@ export default function Show({
         propFotoDePerfil={propFotoDePerfil}
         propEstado={propEstado}
         propUbicación={propUbicación}
-        propNombreRuta={propNombreRuta}
         propIDRuta={propIDRuta}
         token={token}
         listaRutas={listaRutas}
+        fetchData={fetchData}
       />
     </tr>
   );

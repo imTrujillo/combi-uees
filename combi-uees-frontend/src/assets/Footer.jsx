@@ -17,14 +17,14 @@ export default function Footer() {
     window.open(url, "_blank");
   };
   return (
-    <footer className="footer text-white p-4 d-flex flex-column flex-lg-row w-full gap-4">
-      <div className="col text-start">
-        <h2 className="logo-text">COMBI-UEES</h2>
+    <footer className="footer text-white p-4 d-flex flex-column flex-lg-row w-full gap-5">
+      <div className="text-center text-lg-start">
+        <h2 className="logo-text">LA COMBI</h2>
         <form action="" className="px-2" onSubmit={(e) => handleSubmit(e)}>
           <label htmlFor="" className="ms-2">
             Buzón de sugerencias
           </label>
-          <div className="d-flex flex-row mt-2">
+          <div className="d-flex flex-row mt-2 justify-content-center justify-content-lg-start">
             <input
               type="text"
               placeholder="Feedback..."
@@ -41,15 +41,15 @@ export default function Footer() {
           </div>
         </form>
       </div>
-      <div className="col text-start ps-4">
+      <div className="text-center text-lg-start">
         <h2>Contacto</h2>
-        <ul className="text-start">
+        <ul className="text-start list-unstyled d-flex flex-column align-items-center d-lg-block">
           <li>Dirección</li>
           <li>Email</li>
           <li>Teléfono</li>
         </ul>
       </div>
-      <div className="col">
+      <div>
         <h2>Redes sociales</h2>
         <ul className=" list-unstyled d-flex flex-row justify-content-center gap-5">
           <li className="fs-1">

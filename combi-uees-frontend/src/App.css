@@ -44,3 +44,25 @@
   text-align: center;
   font-family: "TebelSans";
 }
+
+/* Firefox (más limitado) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f2cb05 transparent;
+}
+
+/* Scrollbar base (WebKit: Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #f2cb05;
+  border-radius: 10px;
+}

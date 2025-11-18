@@ -16,16 +16,10 @@ export default function GuardarPerfil({
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!nombre || !contraseña || !fotoPerfil || !ubicación) {
-      Swal.fire({
-        title: "Usuario incompleto",
-        text: "Por favor, completa todos los campos",
-        icon: "warning",
-      });
-      return;
-    }
+
     SwalFireLoading();
-    const usuarioActualizado = {
+
+    const data = {
       name: nombre,
       password: contraseña,
       motoristaURLFotoDePerfil: fotoPerfil,
@@ -34,8 +28,14 @@ export default function GuardarPerfil({
       IDRuta: ruta,
     };
 
+    const usuarioActualizado = Object.fromEntries(
+      Object.entries(data).filter(
+        ([_, value]) => value !== null && value !== "" && value !== undefined
+      )
+    );
+
     axios
-      .put(`http://127.0.0.1:8000/api/v1/user/${id}`, usuarioActualizado, {
+      .put(`http://127.0.0.1:8000/api/users/${id}`, usuarioActualizado, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,10 +45,9 @@ export default function GuardarPerfil({
           title: "!Operación exitosa!",
           text: "Se actualizó el perfil",
           icon: "success",
-        }).then(() => location.reload());
+        });
       })
       .catch((error) => {
-        console.log(usuarioActualizado);
         console.error(error.response.data);
         Swal.fire({
           title: "!Operación fallida!",

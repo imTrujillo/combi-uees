@@ -33,7 +33,6 @@ class RutaFactory extends Factory
     {
         return $this->afterCreating(function (Ruta $ruta) {
             Horario::factory(3)->create(['IDRuta' => $ruta->rutaID]);
-            Log::info('Horario creado para ruta: ' . $ruta->rutaNombre);
         });
     }
 }

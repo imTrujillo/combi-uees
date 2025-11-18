@@ -3,8 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -56,5 +59,12 @@ class User extends Authenticatable
     public function ruta(): BelongsTo
     {
         return $this->belongsTo(Ruta::class, 'IDRuta', 'rutaID');
+    }
+
+    public function scopeWithBusRouteName(Builder|EloquentBuilder $q)
+    {
+        return $q->with([
+            'ruta' => fn($query) => $query->select('rutaID', 'rutaNombre')
+        ]);
     }
 }

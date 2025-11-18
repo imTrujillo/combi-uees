@@ -18,7 +18,7 @@ export default function Index() {
     const apiService = async () => {
       try {
         const responseAnuncio = await axios.get(
-          "http://127.0.0.1:8000/api/v1/anuncio"
+          "http://127.0.0.1:8000/api/anuncio"
         );
         const anuncioId1 = responseAnuncio.data.find(
           (anuncio) => anuncio.anuncioID == 1
@@ -47,7 +47,7 @@ export default function Index() {
   return (
     <>
       <h2 className="text-start logo-text fs-1 mx-5 border-bottom border-2 mb-3 ">
-        NOTICIAS
+        ANUNCIOS
       </h2>
       <div className="d-flex flex-sm-column flex-lg-row flex-column justify-content-end align-items-center mb-5 mx-sm-2 me-lg-5 mx-2">
         <section className="position-relative col-lg-6 mb-3 px-3 px-lg-0">

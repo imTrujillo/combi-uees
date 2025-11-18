@@ -22,7 +22,7 @@ Route::resource('/anuncios/{anuncio}/comentarios', ComentarioController::class)-
 // Rutas, horarios, anuncios, viajes
 Route::get('/anuncio', [AnuncioController::class, 'index']);
 Route::get('/rutas', [RutaController::class, 'index']);
-Route::post('/rutas/{ruta}/viajes', [ViajeController::class, 'store']);
+Route::post('/viajes', [ViajeController::class, 'store']);
 Route::get('/rutas/{ruta}/horarios', [HorarioController::class, 'index']);
 
 

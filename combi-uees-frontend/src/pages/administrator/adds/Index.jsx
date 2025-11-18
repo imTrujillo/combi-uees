@@ -4,9 +4,12 @@ import Swal from "sweetalert2";
 import SwalFireLoading from "../../../assets/SwalFireLoading";
 
 import photo from "../../../assets/images/default.jpg";
+import { useAuth } from "../../session/AuthProvider";
 
-export default function ActualizarAnuncio({ token }) {
+export default function Index() {
+  const { token } = useAuth();
   const [url, setUrl] = useState(undefined);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,9 +31,10 @@ export default function ActualizarAnuncio({ token }) {
     }).then((result) => {
       if (result.isConfirmed) {
         SwalFireLoading();
+        console.log(url);
         axios
           .put(
-            "http://127.0.0.1:8000/api/v1/anuncios/1",
+            "http://127.0.0.1:8000/api/anuncios/1",
             { anuncioURLFoto: url },
             {
               headers: { Authorization: `Bearer ${token}` },
@@ -41,7 +45,8 @@ export default function ActualizarAnuncio({ token }) {
               title: "!Operación exitosa!",
               text: "Se actualizó el anuncio",
               icon: "success",
-            }).then(() => location.reload());
+            });
+            setUrl(undefined);
           })
           .catch(() => {
             Swal.fire({
@@ -55,6 +60,7 @@ export default function ActualizarAnuncio({ token }) {
   };
 
   const changeUploadImage = async (e) => {
+    setLoading(true);
     const file = e.target.files[0];
 
     const data = new FormData();
@@ -67,17 +73,28 @@ export default function ActualizarAnuncio({ token }) {
     );
 
     setUrl(response.data.secure_url);
+    setLoading(false);
   };
+
+  if (loading) {
+    return (
+      <div
+        class="spinner-border text-danger m-5"
+        style={{ width: "120px", height: "120px" }}
+        role="status"
+      ></div>
+    );
+  }
 
   return (
     <section className="w-100 d-flex flex-column justify-content-center align-items-center w-100 my-4 pb-2">
       <h2 className="text-start logo-text fs-1 mx-5 mb-4">ANUNCIOS</h2>
       <form
         action=""
-        className="d-flex flex-sm-column flex-lg-row flex-column justify-content-center align-items-sm-center align-items-lg-start align-items-center w-75"
+        className="d-flex flex-sm-column flex-lg-row flex-column justify-content-center align-items-sm-center align-items-lg-start align-items-center w-75 gap-3"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <div className="d-flex flex-column align-items-center justify-content-center">
+        <div className="d-flex flex-column align-items-center justify-content-center gap-2">
           <div
             className="border border-3 m-2"
             style={{ width: "7rem", height: "7rem" }}

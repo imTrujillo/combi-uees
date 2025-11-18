@@ -7,10 +7,11 @@ use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
+    public function show(User $user, User $model): bool
+    {
+        return $user->hasRole('administrador') || $user->id === $model->id;
+    }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, User $model): bool
     {
         return $user->hasRole('administrador') || $user->id === $model->id;

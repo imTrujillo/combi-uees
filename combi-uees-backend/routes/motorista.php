@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Route;
 // Rutas de Motorista o Administrador
 Route::middleware(['auth:sanctum', 'role:motorista|administrador'])->group(function () {
     // CRUD de viajes
-    Route::resource('/rutas/{ruta}/viajes', ViajeController::class)->only(['index', 'update', 'destroy']);
+    Route::resource('/viajes', ViajeController::class)->only(['index', 'update', 'destroy']);
 
     // Usuarios
-    Route::resource('/rutas/{ruta}/users', UserController::class)->only(['update']);
+    Route::resource('/users', UserController::class)->only(['show', 'update']);
 
     // Logout
     Route::post('/auth/logout', [AuthController::class, 'destroy'])->name('auth.logout');

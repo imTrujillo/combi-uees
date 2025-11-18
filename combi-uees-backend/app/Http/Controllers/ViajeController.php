@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ViajeRequest;
 use App\Models\Ruta;
 use App\Models\Viaje;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * @OA\Tag(
@@ -61,9 +57,16 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function index(Ruta $ruta)
+    public function index(Request $request)
     {
-        $viajes = $ruta->viajes()->latest()->paginate(10);
+        $viajes = Viaje::latest();
+
+        $isPaginated = $request->query('paginated', 1);
+        if ($isPaginated) {
+            $viajes = $viajes->paginate(10);
+        } else {
+            $viajes = $viajes->get();
+        }
 
         return response()->json($viajes, 200);
     }
@@ -112,8 +115,9 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function store(ViajeRequest $request, Ruta $ruta)
+    public function store(ViajeRequest $request)
     {
+        $ruta = Ruta::find($request->IDRuta);
         $viaje = $ruta->viajes()->create($request->validated());
 
         return response()->json(['message' => 'Viaje registrado exitosamente', 'viaje' => $viaje], 201);
@@ -156,7 +160,7 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function update(ViajeRequest $request, Ruta $ruta, Viaje $viaje)
+    public function update(ViajeRequest $request, Viaje $viaje)
     {
         $viaje = $viaje->update($request->validated());
 
@@ -185,7 +189,7 @@ class ViajeController extends Controller
      *     )
      * )
      */
-    public function destroy(Ruta $ruta, Viaje $viaje)
+    public function destroy(Viaje $viaje)
     {
         $viaje->delete();
 

@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import SwalFireLoading from "../../../assets/SwalFireLoading";
@@ -17,13 +16,16 @@ export default function Hora({
     SwalFireLoading();
     axios
       .delete(
-        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/horarios/${propHoraID}`,
+        `http://127.0.0.1:8000/api/rutas/${propIDRuta}/horarios/${propHoraID}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then(() => {
         Swal.fire("Eliminado", "La hora ha sido borrada.", "success");
+        setHorasHorario((prevHoras) =>
+          prevHoras.filter((hora) => hora.id !== propHoraID)
+        );
       })
       .catch(() => {
         Swal.fire(
@@ -32,10 +34,6 @@ export default function Hora({
           "error"
         );
       });
-
-    setHorasHorario((prevHoras) =>
-      prevHoras.filter((hora) => hora.id !== propHoraID)
-    );
   }
 
   return (

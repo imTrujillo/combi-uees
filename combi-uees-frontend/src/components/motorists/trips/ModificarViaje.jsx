@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { createPortal } from "react-dom";
@@ -10,7 +10,6 @@ import { MdDeleteForever } from "react-icons/md";
 
 export default function ModificarViaje({
   propNombrePasajero,
-  propViajeFecha,
   propViajeDestino,
   propViajeEstado,
   token,
@@ -22,7 +21,6 @@ export default function ModificarViaje({
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState(propNombrePasajero);
   const [destino, setDestino] = useState(propViajeDestino);
-  const [ruta, setRuta] = useState(propIDRuta);
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
   const [viajeCompletado, setViajeCompletado] = useState(
@@ -36,37 +34,38 @@ export default function ModificarViaje({
 
   function handleSubmitEditar(e) {
     e.preventDefault();
-    if (!nombre || !fecha || !hora || !destino || !ruta) {
-      Swal.fire(
-        "Error",
-        "Debes ingresar todos los campos del formulario.",
-        "error"
-      );
-      return;
-    }
+
     SwalFireLoading();
 
-    const viajeEditado = {
+    const data = {
       nombrePasajero: nombre,
       viajeFecha: `${fecha} ${hora}`,
       viajeDestino: destino,
-      IDRuta: ruta,
+      viajeEstado: 1,
+      IDRuta: propIDRuta,
     };
-    axios
-      .put(
-        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/viajes/${propViajeID}`,
-        viajeEditado,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+
+    const viajeEditado = Object.fromEntries(
+      Object.entries(data).filter(
+        ([_, value]) =>
+          value !== "" &&
+          value !== null &&
+          value !== undefined &&
+          value !== "undefined undefined"
       )
+    );
+
+    axios
+      .put(`http://127.0.0.1:8000/api/viajes/${propViajeID}`, viajeEditado, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
         Swal.fire("Éxito", "El viaje se ha actualizado.", "success");
 
         setModal(false);
       })
-      .catch(() => {
-        console.log(viajeEditado);
+      .catch((error) => {
+        console.error(error);
         Swal.fire("Error", "Ocurrió un error.", "error");
       });
   }
@@ -84,8 +83,8 @@ export default function ModificarViaje({
         SwalFireLoading();
         axios
           .put(
-            `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/viajes/${propViajeID}/status`,
-            { viajeEstado: false },
+            `http://127.0.0.1:8000/api/viajes/${propViajeID}`,
+            { viajeEstado: 0, IDRuta: propIDRuta },
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -94,7 +93,8 @@ export default function ModificarViaje({
             setViajeCompletado(true);
             Swal.fire("Éxito", "El viaje se ha completado.", "success");
           })
-          .catch(() => {
+          .catch((error) => {
+            console.error(error);
             Swal.fire("Error", "No se pudo completar el viaje.", "error");
           });
       }
@@ -118,12 +118,9 @@ export default function ModificarViaje({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(
-            `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/viajes/${propViajeID}`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
+          .delete(`http://127.0.0.1:8000/api/viajes/${propViajeID}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
           .then(() => {
             Swal.fire("Eliminado", "El viaje ha sido borrado.", "success");
           })

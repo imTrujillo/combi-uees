@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         // CREAR UN ANUNCIO
         Anuncio::create([
             'anuncioID' => 1,
-            'anuncioURLFoto' => 'google.com',
+            'anuncioURLFoto' => '/anuncio.jpg',
         ]);
 
         // CREAR ADMIN

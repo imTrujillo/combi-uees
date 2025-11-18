@@ -5,13 +5,9 @@ import { MdAddCircle } from "react-icons/md";
 import "../../../css/modal.css";
 import photo from "../../assets/images/default.jpg";
 
-export default function AgregarMotorista({
-  token,
-  listaRutas,
-  setListaMotoristas,
-  listaMotoristas,
-}) {
+export default function AgregarMotorista({ token, listaRutas, fetchData }) {
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [nombreAgregar, setNombreAgregar] = useState("");
   const [emailAgregar, setEmailAgregar] = useState("");
   const [contraseñaAgregar, setContraseñaAgregar] = useState("");
@@ -21,6 +17,7 @@ export default function AgregarMotorista({
   const [rutaAgregar, setRutaAgregar] = useState("");
 
   const changeUploadImage = async (e) => {
+    setLoading(true);
     const file = e.target.files[0];
 
     const data = new FormData();
@@ -32,6 +29,7 @@ export default function AgregarMotorista({
       data
     );
     setFotoDePerfilAgregar(response.data.secure_url);
+    setLoading(false);
   };
 
   function handleSubmitAgregar(e) {
@@ -59,6 +57,7 @@ export default function AgregarMotorista({
         Swal.showLoading();
       },
     });
+
     const nuevoMotorista = {
       name: nombreAgregar,
       email: emailAgregar,
@@ -70,19 +69,17 @@ export default function AgregarMotorista({
     };
 
     axios
-      .post(
-        `http://127.0.0.1:8000/api/v1/rutas/${rutaAgregar}/users`,
-        nuevoMotorista,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .post(`http://127.0.0.1:8000/api/users`, nuevoMotorista, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => {
+        Swal.close();
         Swal.fire("Éxito", "El motorista se ha guardado.", "success")
           .then(() => {
             setModal(false);
           })
-          .catch(() => {
+          .catch((error) => {
+            console.error(error);
             Swal.fire("Error", "No se pudo guardar el motorista.", "error");
           });
       });
@@ -94,6 +91,7 @@ export default function AgregarMotorista({
     setEstadoAgregar(true);
     setUbicaciónAgregar("");
     setRutaAgregar("");
+    fetchData();
   }
 
   return (
@@ -135,26 +133,37 @@ export default function AgregarMotorista({
                     </div>
                   </div>
 
-                  <div className="d-flex flex-column align-items-start my-3">
-                    <label>Foto de Perfil</label>
+                  {loading ? (
                     <div
-                      className="border border-3 m-2"
-                      style={{ width: "7rem", height: "7rem" }}
-                    >
-                      <img
-                        src={fotoDePerfilAgregar ? fotoDePerfilAgregar : photo}
-                        onError={(e) => (e.target.src = photo)}
-                        alt="foto motorista"
+                      class="spinner-border text-danger m-5"
+                      style={{ width: "120px", height: "120px" }}
+                      role="status"
+                    ></div>
+                  ) : (
+                    <div className="d-flex flex-column align-items-start my-3">
+                      <label>Foto de Perfil</label>
+                      <div
+                        className="border border-3 m-2"
                         style={{ width: "7rem", height: "7rem" }}
-                        className="shadow-lg object-fit-cover"
+                      >
+                        <img
+                          src={
+                            fotoDePerfilAgregar ? fotoDePerfilAgregar : photo
+                          }
+                          onError={(e) => (e.target.src = photo)}
+                          alt="foto motorista"
+                          style={{ width: "7rem", height: "7rem" }}
+                          className="shadow-lg object-fit-cover"
+                        />
+                      </div>
+
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={changeUploadImage}
                       />
                     </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={changeUploadImage}
-                    />
-                  </div>
+                  )}
 
                   <div className="row mb-4">
                     <div className="col">
@@ -176,7 +185,6 @@ export default function AgregarMotorista({
                         value={contraseñaAgregar}
                         onChange={(e) => setContraseñaAgregar(e.target.value)}
                         minLength="6"
-                        required
                       />
                     </div>
                   </div>

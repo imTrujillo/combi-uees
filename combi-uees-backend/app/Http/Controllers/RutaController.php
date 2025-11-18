@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ruta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
@@ -97,9 +98,23 @@ class RutaController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rutas = Ruta::with(['horarios', 'viajes', 'users'])->conMotoristas()->paginate(1);
+        $query = Ruta::with(['horarios', 'viajes', 'users'])->conMotoristas();
+
+        $isPaginated = $request->query('paginated', 1);
+        $isAuth = $request->query('isAuth', 0);
+
+        if (!$isAuth) {
+            $rutas = $query->where('rutaBusesDisponibles', '>', 0)->get();
+            if ($isPaginated) {
+                $rutas =  $query->paginate(1);
+            }
+        } else {
+            if ($isPaginated) {
+                $rutas =  $query->paginate(10);
+            }
+        }
 
         return response()->json(
             $rutas,

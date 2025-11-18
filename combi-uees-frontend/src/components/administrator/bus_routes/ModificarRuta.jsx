@@ -13,7 +13,6 @@ export default function ModificarRuta({
   propLatitud,
   propLongitud,
   token,
-  listaRutas,
 }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState(propNombre);
@@ -37,7 +36,7 @@ export default function ModificarRuta({
       rutaLongitud: longitud,
     };
     axios
-      .patch(`http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}`, rutaEditada, {
+      .patch(`http://127.0.0.1:8000/api/rutas/${propIDRuta}`, rutaEditada, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -67,11 +66,11 @@ export default function ModificarRuta({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(`http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}`, {
+          .delete(`http://127.0.0.1:8000/api/rutas/${propIDRuta}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {
-            Swal.fire("Eliminado", "la ruta ha sido borrada.", "success");
+            Swal.fire("Eliminado", "La ruta ha sido borrada.", "success");
           })
           .catch(() => {
             Swal.fire(

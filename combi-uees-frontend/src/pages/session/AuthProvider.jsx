@@ -1,4 +1,4 @@
-import { useContext, createContext, children, useState } from "react";
+import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SwalFireLoading from "../../assets/SwalFireLoading";
 import Swal from "sweetalert2";
@@ -7,8 +7,9 @@ import axios from "axios";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [id, setId] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    JSON.parse(sessionStorage.getItem("user") || "null")
+  );
   const [rol, setRol] = useState(sessionStorage.getItem("rol") || "");
   const [token, setToken] = useState(
     sessionStorage.getItem("tokenMotorista") ||
@@ -20,27 +21,25 @@ const AuthProvider = ({ children }) => {
   const login = async (data) => {
     SwalFireLoading();
     axios
-      .post("http://localhost:8000/api/auth", data)
+      .post("http://localhost:8000/api/auth/login", data)
       .then((response) => {
-        setUser(response.data.correo);
-        setId(response.data, id);
+        setUser(response.data.user);
         setToken(response.data.token);
+        sessionStorage.setItem("user", JSON.stringify(response.data.user));
 
         if (response.data.rol == "motorista") {
           setRol("motorista");
           sessionStorage.setItem("rol", "motorista");
           sessionStorage.setItem("tokenMotorista", response.data.token);
-          sessionStorage.setItem("id", response.data.id);
           Swal.close();
-          navigate("/viajes");
+          navigate("/perfil");
           return;
         } else if (response.data.rol == "administrador") {
           setRol("administrador");
           sessionStorage.setItem("rol", "administrador");
           sessionStorage.setItem("tokenAdministrador", response.data.token);
-          sessionStorage.setItem("id", response.data.id);
           Swal.close();
-          navigate("/administrador");
+          navigate("/editar-rutas");
           return;
         }
       })
@@ -56,7 +55,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     SwalFireLoading();
     axios
-      .delete("http://localhost:8000/api/v1/logout", null, {
+      .post("http://localhost:8000/api/auth/logout", null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,10 +63,12 @@ const AuthProvider = ({ children }) => {
       .then(() => {
         setUser(null);
         setToken("");
+        setRol("");
         sessionStorage.removeItem("tokenMotorista");
         sessionStorage.removeItem("tokenAdministrador");
         sessionStorage.removeItem("id");
         sessionStorage.removeItem("rol");
+        sessionStorage.removeItem("user");
         navigate("/");
         Swal.close();
       })
@@ -79,17 +80,19 @@ const AuthProvider = ({ children }) => {
         });
         setUser(null);
         setToken("");
+        setRol("");
         sessionStorage.removeItem("tokenMotorista");
         sessionStorage.removeItem("tokenAdministrador");
         sessionStorage.removeItem("id");
         sessionStorage.removeItem("rol");
+        sessionStorage.removeItem("user");
         navigate("/");
         Swal.close();
       });
   };
 
   return (
-    <AuthContext.Provider value={{ id, user, token, rol, login, logout }}>
+    <AuthContext.Provider value={{ user, token, rol, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

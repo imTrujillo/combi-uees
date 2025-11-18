@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Switch, Space } from "antd";
@@ -8,6 +8,8 @@ import { createPortal } from "react-dom";
 import { RiEditCircleFill } from "react-icons/ri";
 import { MdDeleteForever } from "react-icons/md";
 
+import photo from "../../../assets/images/photo.jpg";
+
 export default function ModificarMotorista({
   propIDMotorista,
   propNombre,
@@ -15,11 +17,12 @@ export default function ModificarMotorista({
   propEstado,
   propUbicación,
   propIDRuta,
-  propNombreRuta,
   token,
   listaRutas,
+  fetchData,
 }) {
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [nombre, setNombre] = useState(propNombre);
   const [contraseña, setContraseña] = useState("");
   const [fotoDePerfil, setFotoDePerfil] = useState(propFotoDePerfil);
@@ -28,6 +31,7 @@ export default function ModificarMotorista({
   const [ruta, setRuta] = useState(propIDRuta);
 
   const changeUploadImage = async (e) => {
+    setLoading(true);
     const file = e.target.files[0];
 
     const data = new FormData();
@@ -40,20 +44,14 @@ export default function ModificarMotorista({
     );
 
     setFotoDePerfil(response.data.secure_url);
+    setLoading(false);
   };
 
   function handleSubmitEditar(e) {
     e.preventDefault();
-    if (!nombre || !contraseña || !fotoDePerfil || !ubicación || !ruta) {
-      Swal.fire(
-        "Error",
-        "Debes ingresar todos los campos del formulario.",
-        "error"
-      );
-      return;
-    }
     SwalFireLoading();
-    const motoristaEditado = {
+
+    const data = {
       name: nombre,
       password: contraseña,
       motoristaURLFotoDePerfil: fotoDePerfil,
@@ -61,9 +59,16 @@ export default function ModificarMotorista({
       motoristaUbicación: ubicación,
       IDRuta: ruta,
     };
+
+    const motoristaEditado = Object.fromEntries(
+      Object.entries(data).filter(
+        ([_, value]) => value !== null && value !== "" && value !== undefined
+      )
+    );
+
     axios
       .put(
-        `http://127.0.0.1:8000/api/v1/user/${propIDMotorista}`,
+        `http://127.0.0.1:8000/api/users/${propIDMotorista}`,
         motoristaEditado,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -71,7 +76,7 @@ export default function ModificarMotorista({
       )
       .then(() => {
         Swal.fire("Éxito", "El motorista se ha actualizado.", "success");
-
+        fetchData();
         setModal(false);
       })
       .catch((error) => {
@@ -87,8 +92,8 @@ export default function ModificarMotorista({
     SwalFireLoading();
     try {
       axios.put(
-        `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/user/${propIDMotorista}/status`,
-        { motoristaEstado: checked },
+        `http://127.0.0.1:8000/api/users/${propIDMotorista}`,
+        { motoristaEstado: checked, IDRuta: ruta },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,12 +126,9 @@ export default function ModificarMotorista({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(
-            `http://127.0.0.1:8000/api/v1/rutas/${propIDRuta}/users/${propIDMotorista}`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
+          .delete(`http://127.0.0.1:8000/api/users/${propIDMotorista}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
           .then(() => {
             Swal.fire("Eliminado", "El motorista ha sido borrado.", "success");
           })
@@ -215,31 +217,38 @@ export default function ModificarMotorista({
                           value={contraseña}
                           onChange={(e) => setContraseña(e.target.value)}
                           minLength="6"
-                          required
                         />
                       </div>
                     </div>
 
-                    <div className="d-flex flex-column align-items-start my-3">
-                      <label>Foto de Perfil</label>
+                    {loading ? (
                       <div
-                        className="border border-3 m-2"
-                        style={{ width: "7rem", height: "7rem" }}
-                      >
-                        <img
-                          src={fotoDePerfil ? fotoDePerfil : photo}
-                          onError={(e) => (e.target.src = photo)}
-                          alt="foto motorista"
+                        class="spinner-border text-danger m-5"
+                        style={{ width: "120px", height: "120px" }}
+                        role="status"
+                      ></div>
+                    ) : (
+                      <div className="d-flex flex-column align-items-start my-3">
+                        <label>Foto de Perfil</label>
+                        <div
+                          className="border border-3 m-2"
                           style={{ width: "7rem", height: "7rem" }}
-                          className="shadow-lg object-fit-cover"
+                        >
+                          <img
+                            src={fotoDePerfil ? fotoDePerfil : photo}
+                            onError={(e) => (e.target.src = photo)}
+                            alt="foto motorista"
+                            style={{ width: "7rem", height: "7rem" }}
+                            className="shadow-lg object-fit-cover"
+                          />
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={changeUploadImage}
                         />
                       </div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={changeUploadImage}
-                      />
-                    </div>
+                    )}
 
                     <div className="col">
                       <label className="form-label">Ruta</label>
