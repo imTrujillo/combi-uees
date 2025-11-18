@@ -1,0 +1,41 @@
+# ============================================
+# 1. Imagen base con PHP 8.2 + Nginx + Composer
+# ============================================
+FROM serversideup/php:8.2-fpm-nginx
+
+# ============================================
+# 2. Instalar extensiones necesarias para Laravel
+# ============================================
+RUN install-php-extensions pdo_mysql mbstring tokenizer xml ctype json gd
+
+# ============================================
+# 3. Copiar código de la aplicación
+# ============================================
+WORKDIR /var/www/html
+COPY . .
+
+# ============================================
+# 4. Instalar dependencias de backend (Laravel)
+# ============================================
+RUN composer install --no-dev --optimize-autoloader
+
+# ============================================
+# 5. Crear APP_KEY automáticamente
+# ============================================
+RUN php artisan key:generate
+
+# ============================================
+# 6. Dar permisos a storage + cache
+# ============================================
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# ============================================
+# 7. Configurar Nginx (servidor web)
+# ============================================
+# Render usa el puerto 8080
+EXPOSE 8080
+
+# ============================================
+# 8. Mezcla PHP-FPM + Nginx (ya integrado)
+# ============================================
+CMD ["/usr/bin/supervisord"]
