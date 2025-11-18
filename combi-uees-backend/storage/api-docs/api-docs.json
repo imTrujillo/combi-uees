@@ -280,7 +280,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Horario creado exitosamente",
+                        "description": "Hora creada exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -295,18 +295,18 @@
                 }
             }
         },
-        "/api/rutas/{ruta}/horarios/{id}": {
+        "/api/rutas/{ruta}/horarios/{horario}": {
             "delete": {
                 "tags": [
                     "Horarios"
                 ],
-                "summary": "Eliminar un horario por su ID",
-                "operationId": "9ab5a2ed178fb781b515ee3dd4f4e61d",
+                "summary": "Eliminar una hora por su ID",
+                "operationId": "cf847ea1d2a73eeadbc20db63d3cc437",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID del horario a eliminar",
+                        "description": "ID de la hora a eliminar",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -315,10 +315,10 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Horario eliminado exitosamente"
+                        "description": "Hora eliminada exitosamente"
                     },
                     "404": {
-                        "description": "Horario no encontrado"
+                        "description": "Hora no encontrada"
                     }
                 }
             }
@@ -494,34 +494,41 @@
                 }
             }
         },
-        "/api/rutas/{ruta}/users": {
+        "/api/users": {
             "get": {
                 "tags": [
                     "Motoristas"
                 ],
-                "summary": "Obtener todos los motoristas de una ruta",
-                "operationId": "1bba8f2f046f3c097d28c88a5b420b57",
+                "summary": "Obtener lista de motoristas",
+                "operationId": "c457726701591d1183b53aa71fc13441",
                 "parameters": [
                     {
-                        "name": "ruta",
-                        "in": "path",
-                        "description": "ID de la ruta",
-                        "required": true,
+                        "name": "paginated",
+                        "in": "query",
+                        "description": "1 para paginar, 0 para obtener toda la lista",
+                        "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista de motoristas ordenados y paginados",
+                        "description": "Lista de motoristas",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Motorista"
-                                    }
+                                    "oneOf": [
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Motorista"
+                                            }
+                                        },
+                                        {
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -532,19 +539,8 @@
                 "tags": [
                     "Motoristas"
                 ],
-                "summary": "Registrar un nuevo motorista en una ruta",
-                "operationId": "5fa753d2bf771f0f82cf9081773a6e11",
-                "parameters": [
-                    {
-                        "name": "ruta",
-                        "in": "path",
-                        "description": "ID de la ruta",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Registrar un nuevo motorista",
+                "operationId": "592819a0265360b2014512d6dbfaf0e7",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -562,22 +558,19 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "maxLength": 100,
                                         "example": "Carlos López"
                                     },
                                     "email": {
                                         "type": "string",
-                                        "format": "email",
                                         "example": "motorista@example.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "contraseñaSegura123"
+                                        "example": "contra123"
                                     },
                                     "motoristaURLFotoDePerfil": {
                                         "type": "string",
-                                        "format": "url",
-                                        "example": "https://ejemplo.com/foto.jpg"
+                                        "example": "https://cloudinary.com/foto.jpg"
                                     },
                                     "motoristaEstado": {
                                         "type": "boolean",
@@ -599,7 +592,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Motorista registrado exitosamente",
+                        "description": "Motorista creado exitosamente",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -614,13 +607,13 @@
                 }
             }
         },
-        "/api/rutas/{ruta}/users/{user}": {
-            "put": {
+        "/api/users/{user}": {
+            "get": {
                 "tags": [
                     "Motoristas"
                 ],
-                "summary": "Actualizar los datos de un motorista",
-                "operationId": "1a25064ebd7cfffa247bb6e3eebf412b",
+                "summary": "Obtener detalles de un motorista",
+                "operationId": "d3a14968f8b7a072620c75c7c78ed6f8",
                 "parameters": [
                     {
                         "name": "user",
@@ -628,7 +621,40 @@
                         "description": "ID del motorista",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del motorista",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Motorista"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Motoristas"
+                ],
+                "summary": "Actualizar un motorista",
+                "operationId": "e29fc231c7937ab09483d35e6e3d1214",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "ID del motorista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
@@ -637,40 +663,24 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "name",
-                                    "password",
-                                    "motoristaURLFotoDePerfil",
-                                    "motoristaEstado",
-                                    "motoristaUbicación",
-                                    "IDRuta"
-                                ],
                                 "properties": {
                                     "name": {
-                                        "type": "string",
-                                        "maxLength": 100,
-                                        "example": "Carlos López"
+                                        "type": "string"
                                     },
                                     "password": {
-                                        "type": "string",
-                                        "example": "nuevaContraseñaSegura123"
+                                        "type": "string"
                                     },
                                     "motoristaURLFotoDePerfil": {
-                                        "type": "string",
-                                        "format": "url",
-                                        "example": "https://ejemplo.com/nueva-foto.jpg"
+                                        "type": "string"
                                     },
                                     "motoristaEstado": {
-                                        "type": "boolean",
-                                        "example": false
+                                        "type": "boolean"
                                     },
                                     "motoristaUbicación": {
-                                        "type": "string",
-                                        "example": "Ruta Norte"
+                                        "type": "string"
                                     },
                                     "IDRuta": {
-                                        "type": "integer",
-                                        "example": 2
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -680,7 +690,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Motorista actualizado exitosamente",
+                        "description": "Motorista actualizado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -702,24 +712,15 @@
                     "Motoristas"
                 ],
                 "summary": "Eliminar un motorista",
-                "operationId": "23391d63a70d6b7e3df015e2613e5505",
+                "operationId": "e0f9a385a1d6788b99e519bd98cf7239",
                 "parameters": [
-                    {
-                        "name": "ruta",
-                        "in": "path",
-                        "description": "ID de la ruta",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "name": "user",
                         "in": "path",
                         "description": "ID del motorista",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -733,21 +734,22 @@
                 }
             }
         },
-        "/api/rutas/{ruta}/viajes": {
+        "/api/viajes": {
             "get": {
                 "tags": [
                     "Viajes"
                 ],
-                "summary": "Obtener todos los viajes de una ruta",
-                "operationId": "7c5207f706eed9623bde20dc312dac6e",
+                "summary": "Obtener todos los viajes",
+                "operationId": "6c690df6789ce03f514b7f2693787e98",
                 "parameters": [
                     {
-                        "name": "ruta",
-                        "in": "path",
-                        "description": "ID de la ruta",
-                        "required": true,
+                        "name": "paginated",
+                        "in": "query",
+                        "description": "1 para paginado, 0 para traer todos",
+                        "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "example": 1
                         }
                     }
                 ],
@@ -771,19 +773,8 @@
                 "tags": [
                     "Viajes"
                 ],
-                "summary": "Crear un nuevo viaje en una ruta",
-                "operationId": "1a0c2d576660c6533f6fea668d5d447d",
-                "parameters": [
-                    {
-                        "name": "ruta",
-                        "in": "path",
-                        "description": "ID de la ruta",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Crear un nuevo viaje",
+                "operationId": "aa3575ed8633a6fd102b7d066a0f1fef",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -792,22 +783,26 @@
                                 "required": [
                                     "nombrePasajero",
                                     "viajeFecha",
-                                    "viajeDestino"
+                                    "viajeDestino",
+                                    "IDRuta"
                                 ],
                                 "properties": {
                                     "nombrePasajero": {
                                         "type": "string",
-                                        "maxLength": 100,
                                         "example": "Juan Pérez"
                                     },
                                     "viajeFecha": {
                                         "type": "string",
                                         "format": "date-time",
-                                        "example": "2023-12-15 14:30:00"
+                                        "example": "2025-01-15 14:30:00"
                                     },
                                     "viajeDestino": {
                                         "type": "string",
                                         "example": "Campus UEES"
+                                    },
+                                    "IDRuta": {
+                                        "type": "integer",
+                                        "example": 3
                                     }
                                 },
                                 "type": "object"
@@ -827,49 +822,26 @@
                         }
                     },
                     "422": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "examples": {
-                                    "Domingo no permitido": {
-                                        "summary": "Viaje en domingo",
-                                        "value": {
-                                            "errors": {
-                                                "viajeFecha": "La ruta no puede ser en domingo."
-                                            }
-                                        }
-                                    },
-                                    "Fecha mayor a una semana": {
-                                        "summary": "Fecha muy lejana",
-                                        "value": {
-                                            "errors": {
-                                                "viajeFecha": "La fecha del viaje no puede ser mayor a una semana desde hoy."
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "description": "Error de validación"
                     }
                 }
             }
         },
-        "/api/rutas/{ruta}/viajes/{id}": {
+        "/api/viajes/{viaje}": {
             "put": {
                 "tags": [
                     "Viajes"
                 ],
                 "summary": "Actualizar un viaje existente",
-                "operationId": "817af306b449ee7918ceff3a866f19c6",
+                "operationId": "0af64335c113fc6b09c6c6053d37c109",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "viaje",
                         "in": "path",
                         "description": "ID del viaje",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -887,13 +859,12 @@
                                 "properties": {
                                     "nombrePasajero": {
                                         "type": "string",
-                                        "maxLength": 100,
                                         "example": "Juan Pérez"
                                     },
                                     "viajeFecha": {
                                         "type": "string",
                                         "format": "date-time",
-                                        "example": "2023-12-15 14:30:00"
+                                        "example": "2025-01-15 14:30:00"
                                     },
                                     "viajeDestino": {
                                         "type": "string",
@@ -920,11 +891,11 @@
                             }
                         }
                     },
-                    "422": {
-                        "description": "Error de validación"
-                    },
                     "404": {
                         "description": "Viaje no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
                     }
                 }
             },
@@ -933,20 +904,20 @@
                     "Viajes"
                 ],
                 "summary": "Eliminar un viaje",
-                "operationId": "6b944d1e4a6d3877798650d3bdd8c5f0",
+                "operationId": "5eb01c502df35ce1423a5e9ad0b0781e",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "viaje",
                         "in": "path",
                         "description": "ID del viaje",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
                 "responses": {
-                    "204": {
+                    "200": {
                         "description": "Viaje eliminado exitosamente"
                     },
                     "404": {
@@ -1041,20 +1012,10 @@
             },
             "Motorista": {
                 "title": "Motorista",
-                "description": "Modelo de un motorista asignado a una ruta",
-                "required": [
-                    "id",
-                    "name",
-                    "email",
-                    "motoristaURLFotoDePerfil",
-                    "motoristaEstado",
-                    "motoristaUbicación",
-                    "IDRuta"
-                ],
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "example": 1
+                        "example": 10
                     },
                     "name": {
                         "type": "string",
@@ -1062,12 +1023,10 @@
                     },
                     "email": {
                         "type": "string",
-                        "format": "email",
                         "example": "motorista@example.com"
                     },
                     "motoristaURLFotoDePerfil": {
                         "type": "string",
-                        "format": "url",
                         "example": "https://ejemplo.com/foto.jpg"
                     },
                     "motoristaEstado": {
@@ -1076,21 +1035,19 @@
                     },
                     "motoristaUbicación": {
                         "type": "string",
-                        "example": "Campus UEES"
+                        "example": "UEES"
                     },
                     "IDRuta": {
                         "type": "integer",
-                        "example": 2
+                        "example": 3
                     },
                     "created_at": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-26T12:34:56Z"
+                        "format": "date-time"
                     },
                     "updated_at": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-26T12:45:00Z"
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -1134,13 +1091,11 @@
                     },
                     "created_at": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-26T12:34:56Z"
+                        "format": "date-time"
                     },
                     "updated_at": {
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-26T12:45:00Z"
+                        "format": "date-time"
                     }
                 },
                 "type": "object"

@@ -254,6 +254,6 @@ class RutaController extends Controller
     {
         $ruta->delete();
 
-        return response()->json(['message' => 'Ruta borrada exitosamente'], 200);
+        return response()->json(['message' => 'Ruta eliminada exitosamente'], 200);
     }
 }

@@ -79,7 +79,7 @@ class HorarioController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Horario creado exitosamente",
+     *         description="Hora creada exitosamente",
      *         @OA\JsonContent(ref="#/components/schemas/Horario")
      *     ),
      *     @OA\Response(
@@ -108,28 +108,28 @@ class HorarioController extends Controller
 
         $hora = $ruta->horarios()->create($validator->validated());
 
-        return response()->json(['message' => 'Registro exitoso', 'hora' => $hora], 201);
+        return response()->json(['message' => 'Hora creada exitosamente', 'hora' => $hora], 201);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/rutas/{ruta}/horarios/{id}",
-     *     summary="Eliminar un horario por su ID",
+     *     path="/api/rutas/{ruta}/horarios/{horario}",
+     *     summary="Eliminar una hora por su ID",
      *     tags={"Horarios"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID del horario a eliminar",
+     *         description="ID de la hora a eliminar",
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="Horario eliminado exitosamente"
+     *         description="Hora eliminada exitosamente"
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Horario no encontrado"
+     *         description="Hora no encontrada"
      *     )
      * )
      */
@@ -137,6 +137,6 @@ class HorarioController extends Controller
     {
         $horario->delete();
 
-        return response()->json(['message' => 'Hora borrada exitosamente'], 204);
+        return response()->json(['message' => 'Hora eliminada exitosamente'], 204);
     }
 }

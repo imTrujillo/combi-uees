@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 /**
  * @OA\Tag(
  *     name="Motoristas",
- *     description="Gestión de motoristas de transporte"
+ *     description="Gestión de motoristas del sistema"
  * )
  */
 
@@ -20,46 +20,46 @@ use Illuminate\Support\Facades\Validator;
  * @OA\Schema(
  *     schema="Motorista",
  *     title="Motorista",
- *     description="Modelo de un motorista asignado a una ruta",
  *     type="object",
- *     required={
- *         "id", "name", "email", "motoristaURLFotoDePerfil", "motoristaEstado", "motoristaUbicación", "IDRuta"
- *     },
- *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="id", type="integer", example=10),
  *     @OA\Property(property="name", type="string", example="Carlos López"),
- *     @OA\Property(property="email", type="string", format="email", example="motorista@example.com"),
- *     @OA\Property(property="motoristaURLFotoDePerfil", type="string", format="url", example="https://ejemplo.com/foto.jpg"),
+ *     @OA\Property(property="email", type="string", example="motorista@example.com"),
+ *     @OA\Property(property="motoristaURLFotoDePerfil", type="string", example="https://ejemplo.com/foto.jpg"),
  *     @OA\Property(property="motoristaEstado", type="boolean", example=true),
- *     @OA\Property(property="motoristaUbicación", type="string", example="Campus UEES"),
- *     @OA\Property(property="IDRuta", type="integer", example=2),
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-26T12:34:56Z"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-26T12:45:00Z")
+ *     @OA\Property(property="motoristaUbicación", type="string", example="UEES"),
+ *     @OA\Property(property="IDRuta", type="integer", example=3),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
  */
+
 class UserController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/rutas/{ruta}/users",
-     *     summary="Obtener todos los motoristas de una ruta",
+     *     path="/api/users",
+     *     summary="Obtener lista de motoristas",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
-     *         name="ruta",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la ruta",
-     *         @OA\Schema(type="string")
+     *         name="paginated",
+     *         in="query",
+     *         required=false,
+     *         description="1 para paginar, 0 para obtener toda la lista",
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de motoristas ordenados y paginados",
+     *         description="Lista de motoristas",
      *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Motorista")
+     *             oneOf={
+     *                 @OA\Schema(type="array", @OA\Items(ref="#/components/schemas/Motorista")),
+     *                 @OA\Schema(type="object")
+     *             }
      *         )
      *     )
      * )
      */
+
     public function index(Request $request)
     {
         $users = User::withBusRouteName()->where('id', '<>', '1');
@@ -77,23 +77,21 @@ class UserController extends Controller
     /**
      * @OA\Get(
      *     path="/api/users/{user}",
-     *     summary="Obtener un motorista de una ruta",
+     *     summary="Obtener detalles de un motorista",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
-     *         name="ruta",
+     *         name="user",
      *         in="path",
      *         required=true,
-     *         description="ID de la ruta",
-     *         @OA\Schema(type="string")
+     *         description="ID del motorista",
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Detalles de un Motorista",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Motorista")
-     *         )
-     *     )
+     *         description="Detalles del motorista",
+     *         @OA\JsonContent(ref="#/components/schemas/Motorista")
+     *     ),
+     *     @OA\Response(response=403, description="No autorizado")
      * )
      */
     public function show(Request $request, User $user)
@@ -107,24 +105,21 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/rutas/{ruta}/users",
-     *     summary="Registrar un nuevo motorista en una ruta",
+     *     path="/api/users",
+     *     summary="Registrar un nuevo motorista",
      *     tags={"Motoristas"},
-     *     @OA\Parameter(
-     *         name="ruta",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la ruta",
-     *         @OA\Schema(type="string")
-     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "email", "password", "motoristaURLFotoDePerfil", "motoristaEstado", "motoristaUbicación", "IDRuta"},
-     *             @OA\Property(property="name", type="string", maxLength=100, example="Carlos López"),
-     *             @OA\Property(property="email", type="string", format="email", example="motorista@example.com"),
-     *             @OA\Property(property="password", type="string", example="contraseñaSegura123"),
-     *             @OA\Property(property="motoristaURLFotoDePerfil", type="string", format="url", example="https://ejemplo.com/foto.jpg"),
+     *             required={
+     *                 "name","email","password",
+     *                 "motoristaURLFotoDePerfil","motoristaEstado",
+     *                 "motoristaUbicación","IDRuta"
+     *             },
+     *             @OA\Property(property="name", type="string", example="Carlos López"),
+     *             @OA\Property(property="email", type="string", example="motorista@example.com"),
+     *             @OA\Property(property="password", type="string", example="contra123"),
+     *             @OA\Property(property="motoristaURLFotoDePerfil", type="string", example="https://cloudinary.com/foto.jpg"),
      *             @OA\Property(property="motoristaEstado", type="boolean", example=true),
      *             @OA\Property(property="motoristaUbicación", type="string", example="UEES"),
      *             @OA\Property(property="IDRuta", type="integer", example=1)
@@ -132,13 +127,10 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Motorista registrado exitosamente",
+     *         description="Motorista creado exitosamente",
      *         @OA\JsonContent(ref="#/components/schemas/Motorista")
      *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Error de validación"
-     *     )
+     *     @OA\Response(response=422, description="Error de validación")
      * )
      */
     public function store(Request $request)
@@ -187,41 +179,34 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/rutas/{ruta}/users/{user}",
-     *     summary="Actualizar los datos de un motorista",
+     *     path="/api/users/{user}",
+     *     summary="Actualizar un motorista",
      *     tags={"Motoristas"},
      *     @OA\Parameter(
      *         name="user",
      *         in="path",
-     *         required=true,
      *         description="ID del motorista",
-     *         @OA\Schema(type="string")
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "password", "motoristaURLFotoDePerfil", "motoristaEstado", "motoristaUbicación", "IDRuta"},
-     *             @OA\Property(property="name", type="string", maxLength=100, example="Carlos López"),
-     *             @OA\Property(property="password", type="string", example="nuevaContraseñaSegura123"),
-     *             @OA\Property(property="motoristaURLFotoDePerfil", type="string", format="url", example="https://ejemplo.com/nueva-foto.jpg"),
-     *             @OA\Property(property="motoristaEstado", type="boolean", example=false),
-     *             @OA\Property(property="motoristaUbicación", type="string", example="Ruta Norte"),
-     *             @OA\Property(property="IDRuta", type="integer", example=2)
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="motoristaURLFotoDePerfil", type="string"),
+     *             @OA\Property(property="motoristaEstado", type="boolean"),
+     *             @OA\Property(property="motoristaUbicación", type="string"),
+     *             @OA\Property(property="IDRuta", type="integer")
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Motorista actualizado exitosamente",
+     *         description="Motorista actualizado",
      *         @OA\JsonContent(ref="#/components/schemas/Motorista")
      *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Error de validación"
-     *     )
+     *     @OA\Response(response=403, description="No autorizado"),
+     *     @OA\Response(response=422, description="Error de validación")
      * )
      */
     public function update(Request $request, User $user)
@@ -293,31 +278,21 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/rutas/{ruta}/users/{user}",
+     *     path="/api/users/{user}",
      *     summary="Eliminar un motorista",
      *     tags={"Motoristas"},
-     *     @OA\Parameter(
-     *         name="ruta",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la ruta",
-     *         @OA\Schema(type="string")
-     *     ),
      *     @OA\Parameter(
      *         name="user",
      *         in="path",
      *         required=true,
      *         description="ID del motorista",
-     *         @OA\Schema(type="string")
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Motorista eliminado exitosamente"
      *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="No autorizado"
-     *     )
+     *     @OA\Response(response=403, description="No autorizado")
      * )
      */
     public function destroy(User $user)
