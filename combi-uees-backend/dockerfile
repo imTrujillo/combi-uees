@@ -1,52 +1,28 @@
-# --------------------------
-# Stage 1 - Build frontend
-# --------------------------
-FROM node:18 AS frontend
-WORKDIR /app
-
-# Copia solo lo necesario para install/build (mejor cache)
-COPY package*.json ./
-RUN npm ci
-
-COPY . .
-# Ajusta si en tu package.json el build output no es "dist"
-RUN npm run build
-
-# --------------------------
-# Stage 2 - Backend (PHP)
-# --------------------------
+# Imagen base PHP + FPM
 FROM php:8.2-fpm
 
-# Instalar dependencias del sistema necesarias para extensiones
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    git curl unzip libpng-dev libjpeg-dev libfreetype6-dev libonig-dev pkg-config zip \
-    && rm -rf /var/lib/apt/lists/*
+    git curl unzip libpng-dev libjpeg-dev libfreetype6-dev \
+    libonig-dev libzip-dev zip \
+    && docker-php-ext-install pdo_mysql mbstring zip
 
-# Configurar GD (si lo necesita tu app)
-RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
-    && docker-php-ext-install pdo_mysql mbstring gd zip
-
-# Instalar Composer (copiar binario desde la imagen oficial)
+# Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Configurar directorio del proyecto
 WORKDIR /var/www/html
 
-# Copiar archivos de la app
+# Copiar código de Laravel API
 COPY . .
 
-# Copiar el build del frontend generado en la stage "frontend"
-# Nota: Vite por defecto genera /app/dist
-# Copiamos su contenido dentro de public/ (para que Laravel lo sirva)
-COPY --from=frontend /app/dist /var/www/html/public/dist
-
 # Instalar dependencias PHP
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+RUN composer install --no-dev --optimize-autoloader
 
-# Permisos
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Permisos si usas storage
+RUN chown -R www-data:www-data storage bootstrap/cache
 
-# No generar APP_KEY aquí (se hará al arrancar)
 EXPOSE 8000
 
-# CMD para desarrollo/portafolio (built-in server). En producción usar nginx.
+# No generes APP_KEY en build; hazlo en Render Shell o en Variables
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
