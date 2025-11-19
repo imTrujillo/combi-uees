@@ -1,16 +1,22 @@
-# ============================================
-# 1. Imagen base con PHP + Apache
-# ============================================
 FROM php:8.2-apache
 
 # Habilitar mod_rewrite
 RUN a2enmod rewrite
 
-# Instalar dependencias del sistema
+# Instalar dependencias necesarias para extensiones PHP
 RUN apt-get update && apt-get install -y \
-    zip unzip curl libpng-dev
+    libonig-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip unzip curl pkg-config
 
-# Instalar extensiones PHP necesarias para Laravel
+# Configurar GD correctamente
+RUN docker-php-ext-configure gd \
+    --with-freetype=/usr/include/ \
+    --with-jpeg=/usr/include/
+
+# Instalar extensiones PHP
 RUN docker-php-ext-install pdo_mysql mbstring gd
 
 # Instalar Composer
@@ -19,14 +25,13 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copiar código de Laravel
 COPY . /var/www/html
 
-# Dar permisos
+# Permisos
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Instalar dependencias de Laravel
+# Instalar dependencias Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# El build NO genera APP_KEY
-# APP_KEY se generará en el start command
-
 EXPOSE 80
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+
+# EL KEY SE GENERA EN RUN COMMAND (NO EN EL BUILD)
+CMD ["apache2-foreground"]
