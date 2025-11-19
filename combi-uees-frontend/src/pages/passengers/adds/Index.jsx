@@ -29,7 +29,6 @@ export default function Index() {
     }
   };
 
-
   useEffect(() => {
     apiService();
     const timer = setTimeout(() => {
@@ -51,7 +50,7 @@ export default function Index() {
       <div className="d-flex flex-sm-column flex-lg-row flex-column justify-content-end align-items-center mb-5 mx-sm-2 me-lg-5 mx-2">
         <section className="position-relative col-lg-6 mb-3 px-3 px-lg-0">
           <img
-            src={anuncio.anuncioURLFoto}
+            src={anuncio?.anuncioURLFoto ?? "/anuncio.jpg"}
             alt="img_noticia"
             className="position-relative shadow-lg rounded-5 seccion-imagen"
             style={{
