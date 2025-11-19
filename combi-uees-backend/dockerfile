@@ -1,37 +1,36 @@
-FROM php:8.2-apache
+# Stage 1 - Build Frontend (Vite)
+FROM node:18 AS frontend
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-# Habilitar mod_rewrite
-RUN a2enmod rewrite
+# Stage 2 - Backend (Laravel + PHP + Composer)
+FROM php:8.2-fpm AS backend
 
-# Instalar dependencias necesarias para extensiones PHP
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libonig-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip unzip curl pkg-config
+    git curl unzip libpq-dev libonig-dev libzip-dev zip \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip
 
-# Configurar GD correctamente
-RUN docker-php-ext-configure gd \
-    --with-freetype=/usr/include/ \
-    --with-jpeg=/usr/include/
-
-# Instalar extensiones PHP
-RUN docker-php-ext-install pdo_mysql mbstring gd
-
-# Instalar Composer
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copiar código de Laravel
-COPY . /var/www/html
+WORKDIR /var/www
 
-# Permisos
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Copy app files
+COPY . .
 
-# Instalar dependencias Laravel
+# Copy built frontend from Stage 1
+COPY --from=frontend /app/public/dist ./public/dist
+
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-EXPOSE 80
+# Laravel setup
+RUN php artisan config:clear && \
+    php artisan route:clear && \
+    php artisan view:clear
 
-# EL KEY SE GENERA EN RUN COMMAND (NO EN EL BUILD)
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
