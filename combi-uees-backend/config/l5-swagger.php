@@ -18,8 +18,8 @@ return [
                 /*
                  * Edit to include full URL in ui for assets
                  */
-                'use_absolute_path' => true,
-                'base' => env('APP_URL', null),
+                'use_absolute_path' => false,
+                'base' => "/",
 
                 /*
                 * Edit to set path where swagger ui assets should be stored

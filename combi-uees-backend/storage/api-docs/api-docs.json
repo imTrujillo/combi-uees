@@ -4,6 +4,11 @@
         "title": "COMBI UEES con Laravel 12",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
     "paths": {
         "/api/anuncio": {
             "get": {
