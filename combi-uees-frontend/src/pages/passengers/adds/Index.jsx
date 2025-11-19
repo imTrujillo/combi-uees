@@ -70,8 +70,8 @@ export default function Index() {
               maxHeight: "25rem",
             }}
           >
-            {listaComentarios.length > 0 ? (
-              listaComentarios.map((comentario) => {
+            {listaComentarios?.length > 0 ? (
+              listaComentarios?.map((comentario) => {
                 return (
                   <Show
                     key={comentario.comentarioID}
