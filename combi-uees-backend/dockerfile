@@ -1,36 +1,52 @@
-# Stage 1 - Build Frontend (Vite)
+# --------------------------
+# Stage 1 - Build frontend
+# --------------------------
 FROM node:18 AS frontend
 WORKDIR /app
+
+# Copia solo lo necesario para install/build (mejor cache)
 COPY package*.json ./
-RUN npm install
+RUN npm ci
+
 COPY . .
+# Ajusta si en tu package.json el build output no es "dist"
 RUN npm run build
 
-# Stage 2 - Backend (Laravel + PHP + Composer)
-FROM php:8.2-fpm AS backend
+# --------------------------
+# Stage 2 - Backend (PHP)
+# --------------------------
+FROM php:8.2-fpm
 
-# Install system dependencies
+# Instalar dependencias del sistema necesarias para extensiones
 RUN apt-get update && apt-get install -y \
-    git curl unzip libpq-dev libonig-dev libzip-dev zip \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip
+    git curl unzip libpng-dev libjpeg-dev libfreetype6-dev libonig-dev pkg-config zip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
+# Configurar GD (si lo necesita tu app)
+RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
+    && docker-php-ext-install pdo_mysql mbstring gd zip
+
+# Instalar Composer (copiar binario desde la imagen oficial)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-# Copy app files
+# Copiar archivos de la app
 COPY . .
 
-# Copy built frontend from Stage 1
-COPY --from=frontend /app/public/dist ./public/dist
+# Copiar el build del frontend generado en la stage "frontend"
+# Nota: Vite por defecto genera /app/dist
+# Copiamos su contenido dentro de public/ (para que Laravel lo sirva)
+COPY --from=frontend /app/dist /var/www/html/public/dist
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Instalar dependencias PHP
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-# Laravel setup
-RUN php artisan config:clear && \
-    php artisan route:clear && \
-    php artisan view:clear
+# Permisos
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-CMD ["php-fpm"]
+# No generar APP_KEY aquí (se hará al arrancar)
+EXPOSE 8000
+
+# CMD para desarrollo/portafolio (built-in server). En producción usar nginx.
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
