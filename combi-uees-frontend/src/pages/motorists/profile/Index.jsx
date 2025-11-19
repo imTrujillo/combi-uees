@@ -37,7 +37,7 @@ export default function Index() {
   const apiService = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/users/${user.id}`,
+        `${import.meta.env.VITE_API_URL}users/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export default function Index() {
     SwalFireLoading();
     try {
       axios.put(
-        `http://127.0.0.1:8000/api/users/${user.id}`,
+        `${import.meta.env.VITE_API_URL}users/${user.id}`,
         { motoristaEstado: checked, IDRuta: user.IDRuta },
         {
           headers: {

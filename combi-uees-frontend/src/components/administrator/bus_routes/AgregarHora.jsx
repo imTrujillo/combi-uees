@@ -23,7 +23,7 @@ export default function AgregarHora({ propIDRuta, token, setHorasHorario }) {
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/rutas/${propIDRuta}/horarios`,
+        `${import.meta.env.VITE_API_URL}rutas/${propIDRuta}/horarios`,
         nuevaHora,
         {
           headers: { Authorization: `Bearer ${token}` },

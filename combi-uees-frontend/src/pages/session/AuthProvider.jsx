@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
   const login = async (data) => {
     SwalFireLoading();
     axios
-      .post("http://localhost:8000/api/auth/login", data)
+      .post(`${import.meta.env.VITE_API_URL}auth/login`, data)
       .then((response) => {
         setUser(response.data.user);
         setToken(response.data.token);
@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     SwalFireLoading();
     axios
-      .post("http://localhost:8000/api/auth/logout", null, {
+      .post(`${import.meta.env.VITE_API_URL}auth/logout`, null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

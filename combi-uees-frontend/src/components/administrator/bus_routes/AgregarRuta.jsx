@@ -30,7 +30,7 @@ export default function AgregarRuta({ token }) {
     };
     console.log(rutaNueva);
     axios
-      .post("http://127.0.0.1:8000/api/rutas", rutaNueva, {
+      .post(`${import.meta.env.VITE_API_URL}rutas`, rutaNueva, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

@@ -68,7 +68,7 @@ export default function ModificarMotorista({
 
     axios
       .put(
-        `http://127.0.0.1:8000/api/users/${propIDMotorista}`,
+        `${import.meta.env.VITE_API_URL}users/${propIDMotorista}`,
         motoristaEditado,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -92,7 +92,7 @@ export default function ModificarMotorista({
     SwalFireLoading();
     try {
       axios.put(
-        `http://127.0.0.1:8000/api/users/${propIDMotorista}`,
+        `${import.meta.env.VITE_API_URL}users/${propIDMotorista}`,
         { motoristaEstado: checked, IDRuta: ruta },
         {
           headers: {
@@ -126,7 +126,7 @@ export default function ModificarMotorista({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(`http://127.0.0.1:8000/api/users/${propIDMotorista}`, {
+          .delete(`${import.meta.env.VITE_API_URL}users/${propIDMotorista}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {

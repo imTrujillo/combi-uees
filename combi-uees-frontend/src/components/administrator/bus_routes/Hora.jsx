@@ -16,7 +16,9 @@ export default function Hora({
     SwalFireLoading();
     axios
       .delete(
-        `http://127.0.0.1:8000/api/rutas/${propIDRuta}/horarios/${propHoraID}`,
+        `${
+          import.meta.env.VITE_API_URL
+        }rutas/${propIDRuta}/horarios/${propHoraID}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

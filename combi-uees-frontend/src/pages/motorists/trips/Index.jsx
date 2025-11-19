@@ -14,12 +14,12 @@ export default function Index() {
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
-  const fetchData = async (url = "http://127.0.0.1:8000/api/viajes") => {
+  const fetchData = async (url = `${import.meta.env.VITE_API_URL}viajes`) => {
     const config = { headers: { Authorization: `Bearer ${token}` } };
     try {
       const [viajesResponse, rutasResponse] = await Promise.all([
         axios.get(url, config),
-        axios.get("http://127.0.0.1:8000/api/rutas?paginated=0", config),
+        axios.get(`${import.meta.env.VITE_API_URL}rutas?paginated=0`, config),
       ]);
       setListaViajes(viajesResponse.data.data);
       setListaRutas(rutasResponse.data);
@@ -31,9 +31,6 @@ export default function Index() {
 
   useEffect(() => {
     fetchData();
-  }, [listaRutas, listaViajes]);
-
-  useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);

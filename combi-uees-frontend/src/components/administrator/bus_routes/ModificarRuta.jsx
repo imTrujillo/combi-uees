@@ -36,9 +36,13 @@ export default function ModificarRuta({
       rutaLongitud: longitud,
     };
     axios
-      .patch(`http://127.0.0.1:8000/api/rutas/${propIDRuta}`, rutaEditada, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .patch(
+        `${import.meta.env.VITE_API_URL}rutas/${propIDRuta}`,
+        rutaEditada,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then(() => {
         Swal.fire("Éxito", "La ruta se ha actualizado.", "success");
 
@@ -66,7 +70,7 @@ export default function ModificarRuta({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(`http://127.0.0.1:8000/api/rutas/${propIDRuta}`, {
+          .delete(`${import.meta.env.VITE_API_URL}rutas/${propIDRuta}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {

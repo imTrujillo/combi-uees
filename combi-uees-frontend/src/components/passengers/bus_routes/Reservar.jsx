@@ -50,7 +50,7 @@ export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
     };
     console.log(nuevoViaje);
     await axios
-      .post("http://127.0.0.1:8000/api/viajes", nuevoViaje)
+      .post(`${import.meta.env.VITE_API_URL}viajes`, nuevoViaje)
       .then(() => {
         Swal.fire({
           title: "Éxito",

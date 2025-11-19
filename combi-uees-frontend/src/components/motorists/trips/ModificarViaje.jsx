@@ -56,9 +56,13 @@ export default function ModificarViaje({
     );
 
     axios
-      .put(`http://127.0.0.1:8000/api/viajes/${propViajeID}`, viajeEditado, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .put(
+        `${import.meta.env.VITE_API_URL}viajes/${propViajeID}`,
+        viajeEditado,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then(() => {
         Swal.fire("Éxito", "El viaje se ha actualizado.", "success");
 
@@ -83,7 +87,7 @@ export default function ModificarViaje({
         SwalFireLoading();
         axios
           .put(
-            `http://127.0.0.1:8000/api/viajes/${propViajeID}`,
+            `${import.meta.env.VITE_API_URL}viajes/${propViajeID}`,
             { viajeEstado: 0, IDRuta: propIDRuta },
             {
               headers: { Authorization: `Bearer ${token}` },
@@ -118,7 +122,7 @@ export default function ModificarViaje({
       if (result.isConfirmed) {
         SwalFireLoading();
         axios
-          .delete(`http://127.0.0.1:8000/api/viajes/${propViajeID}`, {
+          .delete(`${import.meta.env.VITE_API_URL}viajes/${propViajeID}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {

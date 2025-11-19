@@ -34,7 +34,7 @@ export default function Index() {
         console.log(url);
         axios
           .put(
-            "http://127.0.0.1:8000/api/anuncios/1",
+            `${import.meta.env.VITE_API_URL}anuncios/1`,
             { anuncioURLFoto: url },
             {
               headers: { Authorization: `Bearer ${token}` },

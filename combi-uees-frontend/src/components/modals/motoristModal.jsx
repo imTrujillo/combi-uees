@@ -69,7 +69,7 @@ export default function AgregarMotorista({ token, listaRutas, fetchData }) {
     };
 
     axios
-      .post(`http://127.0.0.1:8000/api/users`, nuevoMotorista, {
+      .post(`${import.meta.env.VITE_API_URL}users`, nuevoMotorista, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

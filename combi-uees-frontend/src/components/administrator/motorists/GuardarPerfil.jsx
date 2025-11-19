@@ -35,7 +35,7 @@ export default function GuardarPerfil({
     );
 
     axios
-      .put(`http://127.0.0.1:8000/api/users/${id}`, usuarioActualizado, {
+      .put(`${import.meta.env.VITE_API_URL}users/${id}`, usuarioActualizado, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

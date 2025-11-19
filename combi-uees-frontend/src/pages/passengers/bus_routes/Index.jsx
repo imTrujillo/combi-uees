@@ -11,7 +11,7 @@ export default function Index() {
   const [listaRutas, setListaRutas] = useState([]);
   const [links, setLinks] = useState([]);
 
-  const fetchData = async (url = "http://127.0.0.1:8000/api/rutas") => {
+  const fetchData = async (url = `${import.meta.env.VITE_API_URL}rutas`) => {
     try {
       const response = await axios.get(url);
       setLinks(response.data.links);

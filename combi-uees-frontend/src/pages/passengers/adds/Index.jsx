@@ -14,25 +14,24 @@ export default function Index() {
   const [loading, setLoading] = useState(true);
   const [anuncio, setAnuncio] = useState(null);
 
-  useEffect(() => {
-    const apiService = async () => {
-      try {
-        const responseAnuncio = await axios.get(
-          "http://127.0.0.1:8000/api/anuncio"
-        );
-        const anuncioId1 = responseAnuncio.data.find(
-          (anuncio) => anuncio.anuncioID == 1
-        );
-        setAnuncio(anuncioId1);
-        setListaComentarios(anuncioId1.comentarios);
-      } catch (error) {
-        console.error("Ocurrió un error:", error);
-      }
-    };
-    apiService();
-  }, [listaComentarios]);
+  const apiService = async () => {
+    try {
+      const responseAnuncio = await axios.get(
+        `${import.meta.env.VITE_API_URL}anuncio`
+      );
+      const anuncioId1 = responseAnuncio.data.find(
+        (anuncio) => anuncio.anuncioID == 1
+      );
+      setAnuncio(anuncioId1);
+      setListaComentarios(anuncioId1.comentarios);
+    } catch (error) {
+      console.error("Ocurrió un error:", error);
+    }
+  };
+
 
   useEffect(() => {
+    apiService();
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);

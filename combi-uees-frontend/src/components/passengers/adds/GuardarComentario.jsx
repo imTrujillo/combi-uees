@@ -26,7 +26,10 @@ export default function GuardarComentario() {
     };
 
     axios
-      .post("http://127.0.0.1:8000/api/anuncios/1/comentarios", nuevoComentario)
+      .post(
+        `${import.meta.env.VITE_API_URL}anuncios/1/comentarios`,
+        nuevoComentario
+      )
       .then(() => {
         Swal.fire({
           title: "!Operación exitosa!",

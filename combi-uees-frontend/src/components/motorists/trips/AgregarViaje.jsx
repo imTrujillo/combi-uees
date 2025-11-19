@@ -21,7 +21,7 @@ export default function AgregarViaje({ listaRutas, token }) {
     try {
       SwalFireLoading();
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/rutas/${e.target.value}/horarios`
+        `${import.meta.env.VITE_API_URL}rutas/${e.target.value}/horarios`
       );
 
       const horasOrdenadas = response.data.sort((a, b) =>
@@ -54,7 +54,7 @@ export default function AgregarViaje({ listaRutas, token }) {
     };
 
     axios
-      .post(`http://127.0.0.1:8000/api/viajes`, nuevoViaje, {
+      .post(`${import.meta.env.VITE_API_URL}viajes`, nuevoViaje, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

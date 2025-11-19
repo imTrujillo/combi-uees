@@ -13,7 +13,7 @@ export default function Index() {
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
-  const fetchData = async (url = "http://127.0.0.1:8000/api/rutas") => {
+  const fetchData = async (url = `${import.meta.env.VITE_API_URL}rutas`) => {
     try {
       const response = await axios.get(url + "?isAuth=1");
 
@@ -26,9 +26,6 @@ export default function Index() {
 
   useEffect(() => {
     fetchData();
-  }, [listaRutas]);
-
-  useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
