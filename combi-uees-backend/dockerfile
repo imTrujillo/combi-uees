@@ -26,7 +26,6 @@ COPY . .
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:cache || true
 
 # Permisos si usas storage
 RUN chown -R www-data:www-data storage bootstrap/cache
