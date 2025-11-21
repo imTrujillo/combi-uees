@@ -90,7 +90,7 @@ export default function Index() {
             )}
           </div>
           <div>
-            <GuardarComentario />
+            <GuardarComentario apiService={apiService} />
           </div>
         </section>
       </div>

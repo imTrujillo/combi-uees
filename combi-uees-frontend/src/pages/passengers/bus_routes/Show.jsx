@@ -24,7 +24,7 @@ export default function Show({
     const apiService = async () => {
       try {
         const listaHorariosResponse = await axios.get(
-          `http://127.0.0.1:8000/api/rutas/${propRutaID}/horarios`
+          `${import.meta.env.VITE_API_URL}rutas/${propRutaID}/horarios`
         );
         const horasOrdenadas = listaHorariosResponse.data.sort((a, b) =>
           a.horaSalida.localeCompare(b.horaSalida)

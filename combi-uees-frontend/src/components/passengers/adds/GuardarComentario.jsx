@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import SwalLoading from "../../../assets/SwalFireLoading";
 import { IoIosSend } from "react-icons/io";
 
-export default function GuardarComentario() {
+export default function GuardarComentario({ apiService }) {
   const [nombre, setNombre] = useState("");
   const [titulo, setTitulo] = useState("");
   const [descripción, setDescripción] = useState("");
@@ -48,6 +48,7 @@ export default function GuardarComentario() {
     setTitulo("");
     setNombre("");
     setDescripción("");
+    apiService();
   };
 
   return (
