@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "COMBI UEES con Laravel 12",
+        "title": "COMBI SV con Laravel 12",
         "version": "1.0.0"
     },
     "servers": [
@@ -583,7 +583,7 @@
                                     },
                                     "motoristaUbicación": {
                                         "type": "string",
-                                        "example": "UEES"
+                                        "example": "Universidad"
                                     },
                                     "IDRuta": {
                                         "type": "integer",
@@ -803,7 +803,7 @@
                                     },
                                     "viajeDestino": {
                                         "type": "string",
-                                        "example": "Campus UEES"
+                                        "example": "Universidad"
                                     },
                                     "IDRuta": {
                                         "type": "integer",
@@ -873,7 +873,7 @@
                                     },
                                     "viajeDestino": {
                                         "type": "string",
-                                        "example": "Campus UEES"
+                                        "example": "Universidad"
                                     },
                                     "IDRuta": {
                                         "type": "integer",
@@ -1004,7 +1004,7 @@
                         "format": "date-time",
                         "example": "2025-07-26T15:45:00Z"
                     },
-                    "motoristasUEES": {
+                    "motoristasSV": {
                         "type": "integer",
                         "example": 5
                     },
@@ -1040,7 +1040,7 @@
                     },
                     "motoristaUbicación": {
                         "type": "string",
-                        "example": "UEES"
+                        "example": "Universidad"
                     },
                     "IDRuta": {
                         "type": "integer",
@@ -1084,7 +1084,7 @@
                     },
                     "viajeDestino": {
                         "type": "string",
-                        "example": "UEES"
+                        "example": "Universidad"
                     },
                     "viajeEstado": {
                         "type": "boolean",
