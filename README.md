@@ -117,3 +117,7 @@ Usado en Railway:
 - MySQL
 - Deploy con Dockerfile y entrypoint personalizado
 - Port 8000 expuesto usando php artisan serve
+
+## Enlaces 
+- API       -> https://la-combi-backend.onrender.com
+- LACOMBI   -> https://lacombi.vercel.app/
