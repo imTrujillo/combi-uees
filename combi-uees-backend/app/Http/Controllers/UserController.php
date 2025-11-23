@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Validator;
  *     @OA\Property(property="email", type="string", example="motorista@example.com"),
  *     @OA\Property(property="motoristaURLFotoDePerfil", type="string", example="https://ejemplo.com/foto.jpg"),
  *     @OA\Property(property="motoristaEstado", type="boolean", example=true),
- *     @OA\Property(property="motoristaUbicación", type="string", example="UEES"),
+ *     @OA\Property(property="motoristaUbicación", type="string", example="Universidad"),
  *     @OA\Property(property="IDRuta", type="integer", example=3),
  *     @OA\Property(property="created_at", type="string", format="date-time"),
  *     @OA\Property(property="updated_at", type="string", format="date-time")
@@ -121,7 +121,7 @@ class UserController extends Controller
      *             @OA\Property(property="password", type="string", example="contra123"),
      *             @OA\Property(property="motoristaURLFotoDePerfil", type="string", example="https://cloudinary.com/foto.jpg"),
      *             @OA\Property(property="motoristaEstado", type="boolean", example=true),
-     *             @OA\Property(property="motoristaUbicación", type="string", example="UEES"),
+     *             @OA\Property(property="motoristaUbicación", type="string", example="Universidad"),
      *             @OA\Property(property="IDRuta", type="integer", example=1)
      *         )
      *     ),
@@ -165,7 +165,7 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
         $ubicacion = $data['motoristaUbicación'];
 
-        if ($ruta->rutaNombre !== $ubicacion && $ubicacion !== "UEES") {
+        if ($ruta->rutaNombre !== $ubicacion && $ubicacion !== "Universidad") {
             return response()->json([
                 'error' => 'La ubicación del motorista debe coincidir con la ruta seleccionada.',
                 'rutaNombreEsperado' => $ruta->rutaNombre,
@@ -219,7 +219,7 @@ class UserController extends Controller
         $ruta = Ruta::find($user->IDRuta);
         $ubicacion = $request->motoristaUbicación;
 
-        if ($ruta->rutaNombre !== $ubicacion && $ubicacion !== "UEES" && $ubicacion !== null) {
+        if ($ruta->rutaNombre !== $ubicacion && $ubicacion !== "Universidad" && $ubicacion !== null) {
             return response()->json([
                 'error' => 'La ubicación del motorista debe coincidir con la ruta seleccionada.',
                 'rutaNombreEsperado' => $ruta->rutaNombre,

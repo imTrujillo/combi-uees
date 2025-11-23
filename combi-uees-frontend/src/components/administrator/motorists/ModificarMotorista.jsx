@@ -268,7 +268,7 @@ export default function ModificarMotorista({
                         value={ubicación}
                         onChange={(e) => setUbicación(e.target.value)}
                       >
-                        <option value="UEES">UEES</option>
+                        <option value="Universidad">Universidad</option>
                         {ruta && (
                           <option
                             value={

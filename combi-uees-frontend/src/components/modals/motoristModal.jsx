@@ -219,7 +219,7 @@ export default function AgregarMotorista({ token, listaRutas, fetchData }) {
                         <option value="" disabled>
                           Ubicación actual
                         </option>
-                        <option value="UEES">UEES</option>
+                        <option value="Universidad">Universidad</option>
                         {rutaAgregar && (
                           <option value={rutaAgregar.rutaNombre}>
                             {listaRutas.find((r) => r.rutaID == rutaAgregar)

@@ -15,7 +15,7 @@ export default function Show({
   propRutaID,
   propViajeDestino,
   propMotoristasRuta,
-  propMotoristasUEES,
+  propMotoristasUniversidad,
 }) {
   const [horasHorario, setHorasHorario] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +100,7 @@ export default function Show({
           propBusesDisponibles={propRutaBusesDisponibles}
           propBusesTotales={propRutaBusesTotales}
           propMotoristasRuta={propMotoristasRuta}
-          propMotoristasUEES={propMotoristasUEES}
+          propMotoristasUniversidad={propMotoristasUniversidad}
           propRutaNombre={propRutaNombre}
         />
       </div>

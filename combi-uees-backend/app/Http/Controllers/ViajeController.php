@@ -26,7 +26,7 @@ use Illuminate\Http\Request;
  *     @OA\Property(property="ViajeID", type="integer", example=1),
  *     @OA\Property(property="nombrePasajero", type="string", example="Juan Pérez"),
  *     @OA\Property(property="viajeFecha", type="string", format="date-time", example="2025-08-01 14:30:00"),
- *     @OA\Property(property="viajeDestino", type="string", example="UEES"),
+ *     @OA\Property(property="viajeDestino", type="string", example="Universidad"),
  *     @OA\Property(property="viajeEstado", type="boolean", example=true),
  *     @OA\Property(property="IDRuta", type="integer", example=2),
  *     @OA\Property(property="created_at", type="string", format="date-time"),
@@ -82,7 +82,7 @@ class ViajeController extends Controller
      *             required={"nombrePasajero", "viajeFecha", "viajeDestino", "IDRuta"},
      *             @OA\Property(property="nombrePasajero", type="string", example="Juan Pérez"),
      *             @OA\Property(property="viajeFecha", type="string", format="date-time", example="2025-01-15 14:30:00"),
-     *             @OA\Property(property="viajeDestino", type="string", example="Campus UEES"),
+     *             @OA\Property(property="viajeDestino", type="string", example="Universidad"),
      *             @OA\Property(property="IDRuta", type="integer", example=3)
      *         )
      *     ),
@@ -123,7 +123,7 @@ class ViajeController extends Controller
      *             required={"nombrePasajero", "viajeFecha", "viajeDestino", "IDRuta"},
      *             @OA\Property(property="nombrePasajero", type="string", example="Juan Pérez"),
      *             @OA\Property(property="viajeFecha", type="string", format="date-time", example="2025-01-15 14:30:00"),
-     *             @OA\Property(property="viajeDestino", type="string", example="Campus UEES"),
+     *             @OA\Property(property="viajeDestino", type="string", example="Universidad"),
      *             @OA\Property(property="IDRuta", type="integer", example=1)
      *         )
      *     ),

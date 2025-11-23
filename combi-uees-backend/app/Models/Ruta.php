@@ -44,7 +44,7 @@ class Ruta extends Model
     {
         return $query->withCount([
             'users as motoristasRuta' => fn($q) => $q->whereColumn('users.motoristaUbicación', 'rutas.rutaNombre'),
-            'users as motoristasUEES' => fn($q) => $q->where('users.motoristaUbicación', 'UEES')
+            'users as motoristasUniversidad' => fn($q) => $q->where('users.motoristaUbicación', 'Universidad')
         ]);
     }
 }

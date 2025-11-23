@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 /**
  * @OA\Info(
- *    title="COMBI UEES con Laravel 12",
+ *    title="COMBI SV con Laravel 12",
  *    version="1.0.0",
  * )
  * @OA\SecurityScheme(

@@ -216,7 +216,7 @@ export default function ModificarViaje({
                           value={destino}
                           onChange={(e) => setDestino(e.target.value)}
                         >
-                          <option value="UEES">UEES</option>
+                          <option value="Universidad">Universidad</option>
                           <option value={propNombreRuta}>
                             {propNombreRuta}
                           </option>

@@ -145,7 +145,7 @@ export default function AgregarViaje({ listaRutas, token }) {
                         <option value="" disabled>
                           Seleccione el punto de llegada
                         </option>
-                        <option value="UEES">UEES</option>
+                        <option value="Universidad">Universidad</option>
                         {ruta && (
                           <option value={ruta.rutaNombre}>
                             {listaRutas.find((r) => r.rutaID == ruta)

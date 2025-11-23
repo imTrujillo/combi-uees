@@ -8,7 +8,7 @@ import "../../../../css/ruta.css";
 export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
   const [modal, setModal] = useState(false);
   const [nombre, setNombre] = useState("");
-  const [viajeDestino, setViajeDestino] = useState("UEES");
+  const [viajeDestino, setViajeDestino] = useState("Universidad");
   const [viajeFecha, setViajeFecha] = useState(getCurrentDate());
   const [viajeHora, setViajeHora] = useState("");
 
@@ -71,7 +71,7 @@ export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
     setNombre("");
     setViajeFecha("");
     setViajeHora("");
-    setViajeDestino("UEES");
+    setViajeDestino("Universidad");
   };
 
   return (
@@ -127,7 +127,7 @@ export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
                           value={viajeDestino}
                           onChange={(e) => setViajeDestino(e.target.value)}
                         >
-                          <option value="UEES">UEES</option>
+                          <option value="Universidad">Universidad</option>
                           <option value={propRutaNombre}>
                             {propRutaNombre}
                           </option>

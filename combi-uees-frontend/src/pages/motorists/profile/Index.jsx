@@ -171,7 +171,7 @@ export default function Index() {
                   value={ubicación}
                   onChange={(e) => setUbicación(e.target.value)}
                 >
-                  <option value="UEES">UEES</option>
+                  <option value="Universidad">Universidad</option>
                   <option value={rutaNombre ?? "Ruta desconocida"}>
                     {rutaNombre ?? "Ruta desconocida"}
                   </option>

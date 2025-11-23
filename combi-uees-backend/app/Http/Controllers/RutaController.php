@@ -71,7 +71,7 @@ use OpenApi\Annotations as OA;
  *         example="2025-07-26T15:45:00Z"
  *     ),
  *     @OA\Property(
- *         property="motoristasUEES",
+ *         property="motoristasSV",
  *         type="integer",
  *         example=5
  *     ),
@@ -220,7 +220,7 @@ class RutaController extends Controller
         $ruta->update($validator->validated());
 
         foreach ($ruta->users as $motorista) {
-            if ($motorista->motoristaUbicación != 'UEES') {
+            if ($motorista->motoristaUbicación != 'Universidad') {
                 $motorista->update(['motoristaUbicación' => $ruta->rutaNombre]);
             }
         }

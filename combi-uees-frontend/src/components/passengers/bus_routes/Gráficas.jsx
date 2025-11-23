@@ -1,4 +1,3 @@
-import React, { PureComponent, useState } from "react";
 import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
@@ -6,7 +5,7 @@ const Gráficas = ({
   propBusesTotales,
   propBusesDisponibles,
   propMotoristasRuta,
-  propMotoristasUEES,
+  propMotoristasUniversidad,
   propRutaNombre,
 }) => {
   // GRÁFICA DE ESTADO DE BUSES
@@ -48,7 +47,7 @@ const Gráficas = ({
 
   // GRÁFICA DE UBICACIÓN DE BUSES
   const data02 = [
-    { name: "UEES", value: propMotoristasUEES },
+    { name: "Universidad", value: propMotoristasUniversidad },
     {
       name: propRutaNombre,
       value: propMotoristasRuta,

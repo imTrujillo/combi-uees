@@ -38,7 +38,7 @@ class UserFactory extends Factory
             'motoristaURLFotoDePerfil' => fake()->url(),
             'motoristaEstado' => false,
             'IDRuta' => $rutaID,
-            'motoristaUbicación' => fake()->randomElement(['UEES', $nombreRuta]),
+            'motoristaUbicación' => fake()->randomElement(['Universidad', $nombreRuta]),
             'remember_token' => Str::random(10),
         ];
     }

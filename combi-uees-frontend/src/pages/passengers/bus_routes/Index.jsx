@@ -51,7 +51,7 @@ export default function Index() {
                 propRutaID={ruta.rutaID}
                 propViajeDestino={ruta.viajeDestino}
                 propMotoristasRuta={ruta.motoristasRuta}
-                propMotoristasUEES={ruta.motoristasUEES}
+                propMotoristasUniversidad={ruta.motoristasUniversidad}
               />
             ))
           ) : (
