@@ -81,10 +81,7 @@ export default function ModificarMotorista({
       })
       .catch((error) => {
         Swal.fire("Error", "No se pudo actualizar el motorista.", "error");
-        console.error(
-          "Error en la petición:",
-          error.response?.data || error.message
-        );
+        console.error("Ocurrió un error:", error);
       });
   }
 

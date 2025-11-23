@@ -69,7 +69,7 @@ export default function ModificarViaje({
         setModal(false);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Ocurrió un error:", error);
         Swal.fire("Error", "Ocurrió un error.", "error");
       });
   }

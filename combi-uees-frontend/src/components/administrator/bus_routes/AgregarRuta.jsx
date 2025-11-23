@@ -28,7 +28,6 @@ export default function AgregarRuta({ token }) {
       rutaLatitud: latitud,
       rutaLongitud: longitud,
     };
-    console.log(rutaNueva);
     axios
       .post(`${import.meta.env.VITE_API_URL}rutas`, rutaNueva, {
         headers: { Authorization: `Bearer ${token}` },
@@ -38,7 +37,8 @@ export default function AgregarRuta({ token }) {
 
         setModal(false);
       })
-      .catch(() => {
+      .catch((error) => {
+              console.error("Ocurrió un error:", error);
         Swal.fire("Error", "No se pudo guardar la ruta.", "error");
       });
 

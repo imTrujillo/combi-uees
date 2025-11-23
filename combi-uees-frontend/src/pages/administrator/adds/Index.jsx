@@ -31,7 +31,7 @@ export default function Index() {
     }).then((result) => {
       if (result.isConfirmed) {
         SwalFireLoading();
-        console.log(url);
+
         axios
           .put(
             `${import.meta.env.VITE_API_URL}anuncios/1`,
@@ -48,7 +48,8 @@ export default function Index() {
             });
             setUrl(undefined);
           })
-          .catch(() => {
+          .catch((error) => {
+            console.error("Ocurrió un error:", error);
             Swal.fire({
               title: "!Operación fallida!",
               text: "Ocurrió un error al actualizar el anuncio",

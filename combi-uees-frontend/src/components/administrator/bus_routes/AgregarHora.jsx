@@ -38,7 +38,7 @@ export default function AgregarHora({ propIDRuta, token, setHorasHorario }) {
         Swal.close();
       })
       .catch((error) => {
-        console.error("Error al guardar la hora:", error);
+              console.error("Ocurrió un error:", error);
         Swal.fire("Error", "No se pudo guardar la hora.", "error");
       });
     setHora("");

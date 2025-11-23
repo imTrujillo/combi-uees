@@ -48,7 +48,7 @@ export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
       viajeEstado: 1,
       IDRuta: propRutaID,
     };
-    console.log(nuevoViaje);
+
     await axios
       .post(`${import.meta.env.VITE_API_URL}viajes`, nuevoViaje)
       .then(() => {
@@ -59,7 +59,8 @@ export default function Reservar({ propRutaNombre, propRutaID, horasHorario }) {
         });
         setModal(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Ocurrió un error:", error);
         Swal.fire({
           title: "¡Operación fallida!",
           text: "Error al guardar la reserva.",

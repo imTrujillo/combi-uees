@@ -29,7 +29,8 @@ export default function Hora({
           prevHoras.filter((hora) => hora.id !== propHoraID)
         );
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Ocurrió un error:", error);
         Swal.fire(
           "¡Error!",
           "Ocurrió un problema al eliminar la hora.",

@@ -79,7 +79,7 @@ export default function AgregarMotorista({ token, listaRutas, fetchData }) {
             setModal(false);
           })
           .catch((error) => {
-            console.error(error);
+            console.error("Ocurrió un error:", error);
             Swal.fire("Error", "No se pudo guardar el motorista.", "error");
           });
       });

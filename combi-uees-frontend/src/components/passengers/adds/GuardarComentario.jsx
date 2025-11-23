@@ -37,7 +37,8 @@ export default function GuardarComentario({ apiService }) {
           icon: "success",
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Ocurrió un error:", error);
         Swal.fire({
           title: "!Operación fallida!",
           text: "Error al añadir el comentario",

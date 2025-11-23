@@ -48,7 +48,7 @@ export default function GuardarPerfil({
         });
       })
       .catch((error) => {
-        console.error(error.response.data);
+        console.error("Ocurrió un error:", error);
         Swal.fire({
           title: "!Operación fallida!",
           text: "Ocurrió un error al actualizar el usuario",

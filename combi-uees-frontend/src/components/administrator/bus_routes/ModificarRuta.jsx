@@ -45,10 +45,10 @@ export default function ModificarRuta({
       )
       .then(() => {
         Swal.fire("Éxito", "La ruta se ha actualizado.", "success");
-
         setModal(false);
       })
-      .catch(() => {
+      .catch((error) => {
+              console.error("Ocurrió un error:", error);
         Swal.fire("Error", "No se pudo actualizar la ruta.", "error");
       });
   }
