@@ -1,6 +1,6 @@
 # 🚌 Sistema de Gestión de Rutas y Transporte – LACOMBI
 
-![Logo del proyecto](https://lacombi.vercel.app/combi-uees-logo.png)
+<img src="https://lacombi.vercel.app/combi-uees-logo.png" width="200" alt="Logo del proyecto">
 
 
 ## 📌 Descripción General
