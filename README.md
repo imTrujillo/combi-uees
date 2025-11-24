@@ -36,7 +36,7 @@ El frontend está construido con React + Vite, usando:
 - React Router
 - Axios para consumir la API
 - Context/Auth Provider
-- TailwindCSS (si aplica)
+- Bootstrap
 
 ### Funcionalidades Principales
 
@@ -52,7 +52,7 @@ El frontend está construido con React + Vite, usando:
 #### 👷 Motorista
 - Ver viajes asignados
 - Actualizar estado de un viaje (ej. completado)
-- Eliminar un viaje (si aplica)
+- Eliminar un viaje
 
 ![Motorista](https://lacombi.vercel.app/motorista.png)
 
